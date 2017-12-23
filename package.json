@@ -1,0 +1,41 @@
+{
+  "name": "libmb-feathers-api",
+  "productName": "libMB Feathers API",
+  "description": "A barebones Feathers API server",
+  "version": "1.0.0",
+  "homepage": "https://github.com/motionbank/libmb-feathers-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motionbank/libmb-feathers-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/motionbank/libmb-feathers-api/issues"
+  },
+  "main": "dist",
+  "keywords": [
+    "feathers"
+  ],
+  "author": "Motion Bank / Mainz University of Applied Sciences",
+  "directories": {
+    "lib": "src",
+    "test": "test/"
+  },
+  "engines": {
+    "node": "^9.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "metapak": {
+    "configs": [
+      "babel",
+      "eslint",
+      "readme",
+      "codeclimate",
+      "feathers"
+    ]
+  },
+  "devDependencies": {
+    "metapak": "^1.0.2",
+    "metapak-motionbank": "^1.3.23"
+  },
+  "license": "MIT"
+}
