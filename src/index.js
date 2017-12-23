@@ -1,7 +1,20 @@
 /* eslint-disable no-console */
 import logger from 'winston'
-import app from './app'
+import { app, initialize } from './core-api'
 import * as pkg from '../package.json'
+
+import mongoose from './persistence/mongoose'
+import realtime from './realtime'
+import resources from './resources'
+
+initialize({
+  persistence: mongoose,
+  realtime: realtime,
+  resources: [
+    resources.annotations,
+    resources.maps
+  ]
+})
 
 const port = app.get('port')
 const server = app.listen(port)

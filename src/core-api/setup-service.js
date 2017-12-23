@@ -1,4 +1,4 @@
-import defaultHooks from '../hooks/default-resource-hooks'
+import defaultHooks from './hooks/default-resource-hooks'
 
 export default function (app, resource, backend) {
   const
