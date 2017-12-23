@@ -1,58 +1,67 @@
-const path = require('path')
-const favicon = require('serve-favicon')
-const compress = require('compression')
-const cors = require('cors')
-const helmet = require('helmet')
-const logger = require('winston')
+import path from 'path'
+import favicon from 'serve-favicon'
+import compress from 'compression'
+import cors from 'cors'
+import helmet from 'helmet'
+import logger from 'winston'
 
-const feathers = require('@feathersjs/feathers')
-const configuration = require('@feathersjs/configuration')
-const express = require('@feathersjs/express')
+import feathers from '@feathersjs/feathers'
+import configuration from '@feathersjs/configuration'
+import express from '@feathersjs/express'
 
-const primus = require('@feathersjs/primus')
-
-const middleware = require('./middleware')
-const resources = require('libmb-feathers-services')
-const appHooks = require('./hooks/app.hooks')
-const channels = require('./channels')
-
-const mongoose = require('./mongoose')
-
-const authentication = require('./authentication')
+import resources from 'libmb-feathers-services'
+import authentication from './auth/authentication'
+import mongoose from './database/mongoose'
+import realtime from './realtime'
+import middleware from './middleware'
+import appHooks from './hooks/app-hooks'
 
 const app = express(feathers())
 
-// Load app configuration
+//
+// Configuration (see config/default.json)
+//
 app.configure(configuration())
-// Enable CORS, security, compression, favicon and body parsing
+//
+// Basics
+//
 app.use(cors())
 app.use(helmet())
 app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
-// Host the public folder
 app.use('/', express.static(app.get('public')))
-
-// Set up Plugins and providers
+//
+// Provider
+//
 app.configure(express.rest())
-
-app.configure(primus({ transformer: 'websockets' }))
-app.configure(mongoose)
-// Configure other middleware (see `middleware/index.js`)
+app.configure(realtime.provider)
+app.configure(mongoose.client)
+//
+// Middleware
+//
 app.configure(middleware)
 app.configure(authentication)
-// Set up our services (see `services/index.js`)
-app.configure(resources.annotations)
-app.configure(resources.maps)
-app.configure(resources.users)
-// Set up event channels (see channels.js)
-app.configure(channels)
-
-// Configure a middleware for 404s and the error handler
+//
+// Resources
+// see: https://github.com/motionbank/libmb-feathers-services
+//
+app.configure(resources.annotations, mongoose)
+app.configure(resources.maps, mongoose)
+app.configure(resources.users, mongoose)
+//
+// Event Channels
+//
+app.configure(realtime.channels)
+//
+// Error handler
+//
 app.use(express.notFound())
 app.use(express.errorHandler({ logger }))
-
+//
+// App Hooks
+//
 app.hooks(appHooks)
 
-module.exports = app
+export default app
