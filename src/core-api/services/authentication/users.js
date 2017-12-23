@@ -1,4 +1,4 @@
-import setup from '../../setup-service'
+import setup from '../setup'
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
 

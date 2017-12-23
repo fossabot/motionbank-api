@@ -4,12 +4,25 @@ import { app, initialize } from './core-api'
 import * as pkg from '../package.json'
 
 import mongoose from './persistence/mongoose'
-import realtime from './realtime'
+import realTime from './real-time'
 import resources from './resources'
 
+//
+// See config/default.json for general config
+//
+
 initialize({
+  //
+  // Set persistence adapter
+  //
   persistence: mongoose,
-  realtime: realtime,
+  //
+  // Sockets communication package
+  //
+  realTime: realTime,
+  //
+  // Mounted resources
+  //
   resources: [
     resources.annotations,
     resources.maps

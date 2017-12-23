@@ -1,7 +1,20 @@
 const assert = require('assert')
 const rp = require('request-promise')
 const url = require('url')
-const app = require('../src/app')
+const api = require('../src/core-api')
+const mongoose = require('../src/persistence').mongoose
+const resources = require('../src/resources')
+const realTime = require('../src/real-time')
+
+api.initialize({
+  persistence: mongoose,
+  realTime: realTime,
+  resources: [
+    resources.annotations,
+    resources.maps
+  ]
+})
+const app = api.app
 
 const port = app.get('port') || 3030
 const getUrl = pathname => url.format({

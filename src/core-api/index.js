@@ -4,6 +4,7 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import logger from 'winston'
+import assert from 'assert'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
@@ -16,6 +17,8 @@ import appHooks from './hooks/app-hooks'
 const app = express(feathers())
 
 function initialize (options = {}) {
+  assert.ok(app instanceof Object, 'Fatal: Invalid app object.')
+
   //
   // Configuration (see config/default.json)
   //
@@ -23,15 +26,16 @@ function initialize (options = {}) {
 
   options = Object.assign({
     persistence: null,
-    realtime: null,
+    realTime: null,
     resources: []
   }, options)
-  const useSockets = options.realtime &&
-    typeof options.realtime.provider === 'function',
+  const useSockets = options.realTime &&
+      typeof options.realTime.provider === 'function',
+    useChannels = options.realTime &&
+      typeof options.realTime.channels === 'function',
     usePersistence = options.persistence &&
-      typeof options.persistence.client === 'function',
-    useChannels = options.realtime &&
-      typeof options.realtime.channels === 'function'
+      typeof options.persistence.client === 'function'
+
   //
   // Basics
   //
@@ -47,7 +51,7 @@ function initialize (options = {}) {
   //
   app.configure(express.rest())
   if (useSockets) {
-    app.configure(options.realtime.provider)
+    app.configure(options.realTime.provider)
   }
   if (usePersistence) {
     app.configure(options.persistence.client)
@@ -59,16 +63,15 @@ function initialize (options = {}) {
   app.configure(authentication(options.persistence))
   //
   // Resources
-  // see: https://github.com/motionbank/libmb-feathers-services
   //
   for (let resource of options.resources) {
-    app.configure(resource, usePersistence ? options.persistence : undefined)
+    app.configure(resource(options.persistence))
   }
   //
   // Event Channels
   //
   if (useChannels) {
-    app.configure(options.realtime.channels)
+    app.configure(options.realTime.channels)
   }
   //
   // Error handler
