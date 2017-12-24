@@ -8,8 +8,8 @@ const annotations = {
   }
 }
 
-export default function (backend) {
+export default function (persistence) {
   return function (app) {
-    setup(app, annotations, backend)
+    setup(app, annotations, persistence)
   }
 }

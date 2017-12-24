@@ -8,8 +8,8 @@ const maps = {
   }
 }
 
-export default function (backend) {
+export default function (persistence) {
   return function (app) {
-    setup(app, maps, backend)
+    setup(app, maps, persistence)
   }
 }

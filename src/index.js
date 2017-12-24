@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import logger from 'winston'
-import { app, initialize } from './core'
+import { app, initialize, services } from './core'
 import * as pkg from '../package.json'
 
 import resources from './resources'
@@ -37,3 +37,8 @@ process.on('unhandledRejection', (reason, p) =>
 server.on('listening', () =>
   logger.info(`${pkg.productName || pkg.name} v${pkg.version} ` +
     `started on http://%s:%d`, app.get('host'), port))
+
+export {
+  resources,
+  services
+}

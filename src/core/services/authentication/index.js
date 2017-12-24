@@ -6,10 +6,10 @@ import Auth0Strategy from 'passport-auth0'
 
 import users from './users'
 
-// TODO: https://docs.feathersjs.com/api/client.html#react-native
+// TODO: https://docs.feathersjs.com/api/client.html
 // TODO: https://docs.feathersjs.com/api/authentication/client.html
 
-export default function (backend) {
+export default function (persistence) {
   return function (app) {
     const config = app.get('authentication')
 
@@ -37,6 +37,6 @@ export default function (backend) {
       }
     })
 
-    app.configure(users(backend))
+    app.configure(users(persistence))
   }
 }
