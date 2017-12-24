@@ -9,6 +9,9 @@ const users = {
   name: 'users',
   path: '/users',
   schema: {
+    name: {type: String, required: true},
+    location: {type: String},
+    organisation: {type: String},
     email: {type: String, unique: true},
     password: {type: String},
     auth0Id: {type: String}
