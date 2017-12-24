@@ -1,4 +1,4 @@
-import baseHooks from './base-hooks'
+import baseHooks from '../base/hooks'
 import authentication from '@feathersjs/authentication'
 const { authenticate } = authentication.hooks
 

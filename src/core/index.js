@@ -11,8 +11,9 @@ import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
 import authentication from './services/authentication'
-import middleware from './middleware'
-import appHooks from './hooks/app-hooks'
+import hooks from './hooks'
+import services from './services'
+import sockets from './sockets'
 
 const app = express(feathers())
 
@@ -23,18 +24,13 @@ function initialize (options = {}) {
   // Configuration (see config/default.json)
   //
   app.configure(configuration())
-
   options = Object.assign({
     persistence: null,
-    realTime: null,
-    resources: []
+    resources: [],
+    middleware: {}
   }, options)
-  const useSockets = options.realTime &&
-      typeof options.realTime.provider === 'function',
-    useChannels = options.realTime &&
-      typeof options.realTime.channels === 'function',
-    usePersistence = options.persistence &&
-      typeof options.persistence.client === 'function'
+  const usePersistence = options.persistence &&
+    typeof options.persistence.client === 'function'
 
   //
   // Basics
@@ -50,29 +46,33 @@ function initialize (options = {}) {
   // Provider
   //
   app.configure(express.rest())
-  if (useSockets) {
-    app.configure(options.realTime.provider)
-  }
+  app.configure(sockets.provider.primus)
   if (usePersistence) {
     app.configure(options.persistence.client)
   }
   //
   // Middleware
   //
-  app.configure(middleware)
+  if (options.middleware.preAuth) {
+    app.configure(options.middleware.preAuth)
+  }
   app.configure(authentication(options.persistence))
+  if (options.middleware.postAuth) {
+    app.configure(options.middleware.postAuth)
+  }
   //
   // Resources
   //
   for (let resource of options.resources) {
     app.configure(resource(options.persistence))
   }
+  if (options.middleware.postResource) {
+    app.configure(options.middleware.postResource)
+  }
   //
   // Event Channels
   //
-  if (useChannels) {
-    app.configure(options.realTime.channels)
-  }
+  app.configure(sockets.channels)
   //
   // Error handler
   //
@@ -81,10 +81,12 @@ function initialize (options = {}) {
   //
   // App Hooks
   //
-  app.hooks(appHooks)
+  app.hooks(hooks.app)
 }
 
 export {
   initialize,
-  app
+  app,
+  hooks,
+  services
 }

@@ -1,4 +1,4 @@
-import setup from '../core-api/services/setup'
+import setup from '../core/services/setup'
 
 const maps = {
   name: 'maps',

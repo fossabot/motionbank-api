@@ -1,10 +1,11 @@
 const assert = require('assert')
 const rp = require('request-promise')
 const url = require('url')
+
 const api = require('../src/core-api')
 const mongoose = require('../src/persistence').mongoose
 const resources = require('../src/resources')
-const realTime = require('../src/real-time')
+const realTime = require('../src/core/sockets/provider-primus')
 
 api.initialize({
   persistence: mongoose,

@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import logger from 'winston'
-import { app, initialize } from './core-api'
+import { app, initialize } from './core'
 import * as pkg from '../package.json'
 
 import mongoose from './persistence/mongoose'
-import realTime from './real-time'
 import resources from './resources'
+import middleware from './middleware'
 
 //
 // See config/default.json for general config
@@ -17,16 +17,21 @@ initialize({
   //
   persistence: mongoose,
   //
-  // Sockets communication package
-  //
-  realTime: realTime,
-  //
   // Mounted resources
   //
   resources: [
     resources.annotations,
     resources.maps
-  ]
+  ],
+  //
+  // Adding middleware (entry points pre-auth,
+  // post-auth and post-resource)
+  //
+  middleware: {
+    preAuth: middleware,
+    postAuth: null,
+    postResource: null
+  }
 })
 
 const port = app.get('port')
