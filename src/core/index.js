@@ -14,6 +14,7 @@ import authentication from './services/authentication'
 import hooks from './hooks'
 import services from './services'
 import sockets from './sockets'
+import persistence from './persistence'
 
 const app = express(feathers())
 
@@ -25,12 +26,9 @@ function initialize (options = {}) {
   //
   app.configure(configuration())
   options = Object.assign({
-    persistence: null,
     resources: [],
     middleware: {}
   }, options)
-  const usePersistence = options.persistence &&
-    typeof options.persistence.client === 'function'
 
   //
   // Basics
@@ -47,16 +45,14 @@ function initialize (options = {}) {
   //
   app.configure(express.rest())
   app.configure(sockets.provider.primus)
-  if (usePersistence) {
-    app.configure(options.persistence.client)
-  }
+  app.configure(persistence.mongoose.client)
   //
   // Middleware
   //
   if (options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
-  app.configure(authentication(options.persistence))
+  app.configure(authentication(persistence.mongoose))
   if (options.middleware.postAuth) {
     app.configure(options.middleware.postAuth)
   }
@@ -64,7 +60,7 @@ function initialize (options = {}) {
   // Resources
   //
   for (let resource of options.resources) {
-    app.configure(resource(options.persistence))
+    app.configure(resource(persistence.mongoose))
   }
   if (options.middleware.postResource) {
     app.configure(options.middleware.postResource)
@@ -88,5 +84,6 @@ export {
   initialize,
   app,
   hooks,
-  services
+  services,
+  persistence
 }

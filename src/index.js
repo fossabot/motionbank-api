@@ -3,19 +3,13 @@ import logger from 'winston'
 import { app, initialize } from './core'
 import * as pkg from '../package.json'
 
-import mongoose from './persistence/mongoose'
 import resources from './resources'
 import middleware from './middleware'
 
 //
 // See config/default.json for general config
 //
-
 initialize({
-  //
-  // Set persistence adapter
-  //
-  persistence: mongoose,
   //
   // Mounted resources
   //

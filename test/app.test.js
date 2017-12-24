@@ -3,7 +3,7 @@ const rp = require('request-promise')
 const url = require('url')
 
 const api = require('../src/core-api')
-const mongoose = require('../src/persistence').mongoose
+const mongoose = require('../src/core/persistence').mongoose
 const resources = require('../src/resources')
 const realTime = require('../src/core/sockets/provider-primus')
 
