@@ -3,7 +3,7 @@ import channels from './channels'
 
 export default {
   provider: {
-    primus: primus({ transformer: 'websockets' })
+    primus: primus({ transformer: 'uws' })
   },
   channels
 }
