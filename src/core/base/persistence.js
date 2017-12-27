@@ -1,9 +1,20 @@
-/* eslint-disable no-unused-vars, no-return-await */
+import assert from 'assert'
+
+/*
+ * Base persistence adapter
+ */
 class Persistence {
+  /*
+   * Instantiates persistence adapter and sets options
+   */
   constructor (options) {
-    this.options = options || {}
+    assert.equal(typeof options.name, 'string', 'persistence: options.name must be valid collection name')
+    this._options = options || {}
   }
 
+  /*
+   * Dummy find method
+   */
   async find (params) {
     console.log('WARNING: dummy persistence find')
     return [
@@ -12,6 +23,9 @@ class Persistence {
     ]
   }
 
+  /*
+   * Dummy get method
+   */
   async get (id, params) {
     console.log('WARNING: dummy persistence get')
     return {
@@ -19,6 +33,9 @@ class Persistence {
     }
   }
 
+  /*
+   * Dummy create method
+   */
   async create (data, params) {
     console.log('WARNING: dummy persistence create')
     if (Array.isArray(data)) {
@@ -27,23 +44,35 @@ class Persistence {
     return data
   }
 
+  /*
+   * Dummy update method
+   */
   async update (id, data, params) {
     console.log('WARNING: dummy persistence update')
     return Promise.resolve(data)
   }
 
+  /*
+   * Dummy patch method
+   */
   async patch (id, data, params) {
     console.log('WARNING: dummy persistence patch')
     return Promise.resolve(data)
   }
 
+  /*
+   * Dummy remove method
+   */
   async remove (id, params) {
     console.log('WARNING: dummy persistence remove')
     return Promise.resolve({ id })
   }
 
+  /*
+   * Get DB client instance
+   */
   get db () {
-    return this.options.db
+    return this._options.db
   }
 }
 

@@ -1,5 +1,6 @@
 import mongoose from './mongoose'
 import NeDBPersistence from './nedb'
+import MongoDB from './mongodb'
 
 // TODO: https://github.com/feathersjs-ecosystem/feathers-localstorage
 // TODO: https://github.com/feathersjs-ecosystem/feathers-memory
@@ -8,5 +9,6 @@ import NeDBPersistence from './nedb'
 
 export default {
   mongoose,
-  NeDBPersistence
+  NeDBPersistence,
+  MongoDB
 }
