@@ -16,6 +16,8 @@ import services from './services'
 import sockets from './sockets'
 import persistence from './persistence'
 
+import createService from './base/create-service'
+
 const app = express(feathers())
 
 function initialize (options = {}) {
@@ -62,6 +64,35 @@ function initialize (options = {}) {
   for (let resource of options.resources) {
     app.configure(resource(persistence.mongoose))
   }
+
+  app.configure(createService({
+    path: '/peters',
+    name: 'peters',
+    // Adds memory based store
+    persistence: new persistence.NeDBPersistence(),
+    paginate: app.get('paginate'),
+    schema: {
+      id: String,
+      text: String
+    },
+    hooks: {}
+  }))
+
+  app.configure(createService({
+    path: '/meters',
+    name: 'meters',
+    // Adds file based store
+    persistence: new persistence.NeDBPersistence({
+      filename: path.join(__dirname, '..', '..', 'meters.db')
+    }),
+    paginate: app.get('paginate'),
+    schema: {
+      id: String,
+      text: String
+    },
+    hooks: {}
+  }))
+
   if (options.middleware.postResource) {
     app.configure(options.middleware.postResource)
   }

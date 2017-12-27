@@ -1,4 +1,5 @@
 import mongoose from './mongoose'
+import NeDBPersistence from './nedb'
 
 // TODO: https://github.com/feathersjs-ecosystem/feathers-localstorage
 // TODO: https://github.com/feathersjs-ecosystem/feathers-memory
@@ -6,5 +7,6 @@ import mongoose from './mongoose'
 // TODO: leveldb checken, lmdb abgleichen
 
 export default {
-  mongoose
+  mongoose,
+  NeDBPersistence
 }
