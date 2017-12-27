@@ -13,6 +13,7 @@ import express from '@feathersjs/express'
 import authentication from './services/authentication'
 import hooks from './hooks'
 import services from './services'
+import users from './services/authentication/users'
 import sockets from './sockets'
 import persistence from './persistence'
 
@@ -47,52 +48,48 @@ function initialize (options = {}) {
   //
   app.configure(express.rest())
   app.configure(sockets.provider.primus)
-  app.configure(persistence.mongoose.client)
   //
   // Middleware
   //
   if (options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
-  app.configure(authentication(persistence.mongoose))
+  app.configure(authentication())
+  app.configure(createService({
+    name: 'users',
+    paginate: app.get('paginate'),
+    schema: users.schema,
+    hooks: users.hooks
+  }, {
+    // Creates MongoDB-backed service
+    Constructor: persistence.MongoDB,
+    options: {
+      url: 'mongodb://localhost:27017',
+      dbName: 'libmb_fapi_test'
+    }
+  }))
   if (options.middleware.postAuth) {
     app.configure(options.middleware.postAuth)
   }
   //
   // Resources
   //
-  for (let resource of options.resources) {
-    app.configure(resource(persistence.mongoose))
+  for (let [key, value] of Object.entries(options.resources)) {
+    app.configure(createService({
+      name: key,
+      paginate: app.get('paginate'),
+      schema: value.schema,
+      schemaOptions: value.schemaOptions,
+      hooks: hooks.resource
+    }, {
+      // Creates NeDB-backed service
+      Constructor: persistence.NeDBPersistence,
+      options: {
+        // Default in-memory only, can persist to file
+        // filename: path.join(__dirname, '..', '..', 'meters.db')
+      }
+    }))
   }
-
-  app.configure(createService({
-    path: '/peters',
-    name: 'peters',
-    // Adds memory based store
-    persistence: new persistence.NeDBPersistence(),
-    paginate: app.get('paginate'),
-    schema: {
-      id: String,
-      text: String
-    },
-    hooks: {}
-  }))
-
-  app.configure(createService({
-    path: '/meters',
-    name: 'meters',
-    // Adds file based store
-    persistence: new persistence.NeDBPersistence({
-      filename: path.join(__dirname, '..', '..', 'meters.db')
-    }),
-    paginate: app.get('paginate'),
-    schema: {
-      id: String,
-      text: String
-    },
-    hooks: {}
-  }))
-
   if (options.middleware.postResource) {
     app.configure(options.middleware.postResource)
   }

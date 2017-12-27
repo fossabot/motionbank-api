@@ -13,10 +13,10 @@ initialize({
   //
   // Mounted resources
   //
-  resources: [
-    resources.annotations,
-    resources.maps
-  ],
+  resources: {
+    annotations: resources.annotations,
+    maps: resources.maps
+  },
   //
   // Adding middleware (entry points pre-auth,
   // post-auth and post-resource)

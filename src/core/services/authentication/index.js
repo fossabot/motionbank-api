@@ -4,12 +4,7 @@ import local from '@feathersjs/authentication-local'
 import oauth2 from '@feathersjs/authentication-oauth2'
 import Auth0Strategy from 'passport-auth0'
 
-import users from './users'
-
-// TODO: https://docs.feathersjs.com/api/client.html
-// TODO: https://docs.feathersjs.com/api/authentication/client.html
-
-export default function (persistence) {
+export default function () {
   return function (app) {
     const config = app.get('authentication')
 
@@ -36,7 +31,5 @@ export default function (persistence) {
         ]
       }
     })
-
-    app.configure(users(persistence))
   }
 }
