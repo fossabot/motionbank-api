@@ -12,6 +12,13 @@
     "url": "https://github.com/motionbank/libmb-feathers-api/issues"
   },
   "main": "dist",
+  "scripts": {
+    "docs": "npm run docs:prepare && npm run docs:init && npm run docs:api && gitbook build",
+    "docs:api": "npm run docs:init; jsdoc2md -c .jsdocrc.json --separators --files src/**/*.js >> .readme/api.md",
+    "docs:clean": "rimraf _book",
+    "docs:init": "mkdirp .readme && echo \"# API Documentation\" > .readme/api.md",
+    "docs:prepare": "rimraf _book && gitbook install",
+  },
   "keywords": [
     "feathers"
   ],
@@ -35,7 +42,11 @@
   },
   "devDependencies": {
     "metapak": "^1.0.2",
-    "metapak-motionbank": "^1.4.5"
+    "metapak-motionbank": "^1.4.5",
+    "gitbook-cli": "^2.3.2",
+    "jsdoc": "^3.5.5",
+    "jsdoc-to-markdown": "^3.0.3",
+    "mkdirp": "^0.5.1"
   },
   "license": "MIT"
 }
