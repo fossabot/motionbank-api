@@ -63,7 +63,7 @@ class ACL extends Acl {
    * @returns {Promise<boolean>}
    */
   async isAllowed (args) {
-    return await ACL.isAllowed(args)
+    return await ACL._isAllowed(args)
   }
 
   /**
@@ -72,7 +72,7 @@ class ACL extends Acl {
    * @param args
    * @returns {Promise<boolean>}
    */
-  static isAllowed (args) {
+  static _isAllowed (args) {
     const { subject, object, predicates } = args
     ACL.validateParams(subject, object, predicates)
     return Promise.resolve(true)

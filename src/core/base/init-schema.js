@@ -7,7 +7,6 @@ import SchemaObject from 'schema-object'
 /**
  * Schema factory function
  * @param schema
- * @returns SchemaObjectInstance<any>
  */
 function initSchema (schema, options = {}) {
   assert.equal(typeof schema, 'object', 'initSchema: invalid schema type')
@@ -70,7 +69,6 @@ function initSchema (schema, options = {}) {
 
   /**
    * Return resource/schema config
-   * @type SchemaObject
    */
   return new SchemaObject(schema, schemaOptions)
 }

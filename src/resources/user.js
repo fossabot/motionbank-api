@@ -14,10 +14,10 @@ const { hashPassword, protect } = local.hooks
 const Schema = initSchema({
   name: {type: String, required: true},
   email: {type: String, required: true},
-  password: {type: String, required: true, minLength: 6},
+  password: {type: String, required: true, minLength: 6, invisible: true},
   location: {type: String},
   organisation: {type: String},
-  auth0Id: {type: String}
+  auth0Id: {type: String, invisible: true}
 })
 
 /**
