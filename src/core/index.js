@@ -32,7 +32,8 @@ function init (options = {}) {
   const app = express(feathers())
   app.configure(configuration())
   options = Object.assign({
-    resources: [],
+    systemResources: [],
+    serviceResources: [],
     middleware: {
       preAuth: Object.assign({}, options.middleware.preAuth),
       postAuth: Object.assign({}, options.middleware.postAuth),
@@ -69,13 +70,15 @@ function init (options = {}) {
    * Authentication & Users
    */
   const authConfig = app.get('authentication'),
-    parsed = Util.parseConfig(authConfig.persistence)
-  app.configure(services.authentication())
+    parsed = Util.parseConfig(authConfig.persistence),
+    { Schema, schemaOptions, hooks } = options.systemResources.users
+  app.configure(services.Authentication())
   app.configure(createService({
     name: 'users',
     paginate: app.get('paginate'),
-    schema: services.config.users.schema,
-    hooks: services.config.users.hooks
+    schema: Schema,
+    schemaOptions,
+    hooks
   }, parsed))
   /**
    * ACL (Access Control List)
@@ -98,8 +101,10 @@ function init (options = {}) {
    * Resources
    */
   const resConfig = app.get('resources')
-  for (let [key, value] of Object.entries(options.resources)) {
-    const persist = Util.parseConfig(resConfig.persistence)
+  for (let [key, value] of Object.entries(options.serviceResources)) {
+    const
+      { Schema, schemaOptions, hooks } = value,
+      persist = Util.parseConfig(resConfig.persistence)
     persist.options = Object.assign(persist.options || {}, {
       filename: path.join(options.basePath,
         persist.options.path, `${persist.options.prefix || ''}${key}.nedb`)
@@ -107,8 +112,8 @@ function init (options = {}) {
     app.configure(createService({
       name: key,
       paginate: app.get('paginate'),
-      schema: value.schema,
-      schemaOptions: value.schemaOptions,
+      schema: Schema,
+      schemaOptions,
       hooks: hooks.resource
     }, persist))
   }

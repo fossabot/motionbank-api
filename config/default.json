@@ -29,7 +29,7 @@
       "mongodb": {
         "prefix": "auth_",
         "url": "mongodb://localhost:27017",
-        "dbName": "libmb_feathers_api"
+        "dbName": "libmb_feathers_api_auth"
       }
     },
     "secret": "8edf92a2e688e63930bd3b696929c76cd2980415f964c5e0b28850b21063f374ba92ac8f0dbab25f1a7a527b569c892019ae594b4794ce2aa54a3cabaafb1d12e4608b29159cfb42b9e8fd743a4c32b43aa546ed3e22d3be909afe7aba2f52ca0243af6b6c62a664f307d16cc23807d7cf0068e73f568b4ce7ccd8f7782b21b87f9a4a0797c1a72e51bc3319fb9f6caac93cd030a4b3e064cc1ffb0f5dce051421f58ca9b4d0e642a3cdccbae6bfb38e2f7e86f41d04fe968c6b3ff72d5c89c68475d44dcc66b9b4f92ea8ffa5e00352ce79bb4a0b3d0eb81bad47b22bcb6594e30c2a9f9bb730f432451aa598d0cfb48de91e29b1598a7e82496e6ed993fc1b",
@@ -39,6 +39,7 @@
     ],
     "path": "/authentication",
     "service": "users",
+    "idField": "uuid",
     "jwt": {
       "header": {
         "typ": "access"

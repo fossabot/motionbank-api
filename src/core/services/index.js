@@ -1,9 +1,7 @@
-import authentication from './auth'
+import Authentication from './authentication'
 import ACL from './acl'
-import config from './config'
 
 export default {
-  authentication,
-  ACL,
-  config
+  Authentication,
+  ACL
 }

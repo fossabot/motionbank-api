@@ -9,8 +9,8 @@ import Persistence from './persistence'
  * @returns {Function}
  */
 function createService (options = {}, persistence = undefined) {
-  assert.equal(typeof options.schema, 'object',
-    'create-service: options.schema must be object')
+  assert.equal(typeof options.schema, 'function',
+    'create-service: options.schema must be function')
   assert.equal(typeof options.name, 'string',
     'create-service: options.name must be string')
 

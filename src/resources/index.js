@@ -1,7 +1,9 @@
-import annotations from './annotations'
-import maps from './maps'
+import * as annotation from './annotation'
+import * as map from './map'
+import * as user from './user'
 
-export default {
-  annotations,
-  maps
+export {
+  annotation,
+  map,
+  user
 }

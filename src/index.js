@@ -1,5 +1,14 @@
 import CoreAPI from './core'
-import resources from './resources'
+import * as resources from './resources'
+
+const serviceResources = {
+  annotations: resources.annotation,
+  maps: resources.map
+}
+
+const systemResources = {
+  users: resources.user
+}
 
 /**
  * libmb-feathers-api v1.0.0
@@ -11,6 +20,12 @@ import resources from './resources'
  * for general config variables
  **/
 const app = CoreAPI.init({
+  /**
+   * System related basic resources
+   *
+   * - resources/users -> /users
+   */
+  systemResources,
   /**
    * Build Variables (see: src/buildVars.js)
    **/
@@ -24,7 +39,7 @@ const app = CoreAPI.init({
    * - resources/annotations -> /annotations
    * - resources/maps        -> /maps
    **/
-  resources,
+  serviceResources,
   /**
    * Custom Middleware (Optional entry points)
    **/

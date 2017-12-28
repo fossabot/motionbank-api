@@ -1,24 +1,29 @@
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
 
-import baseHooks from '../../base/hooks'
-import buildVars from '../../../build-vars'
+import baseHooks from '../core/base/hooks'
+import initSchema from '../core/base/init-schema'
 
 const { authenticate } = authentication.hooks
 const { hashPassword, protect } = local.hooks
 
 /**
- * Set up the schema
+ * User Schema
+ * @type {SchemaObjectInstance<any>}
  */
-const schema = {
+const Schema = initSchema({
   name: {type: String, required: true},
+  email: {type: String, required: true},
+  password: {type: String, required: true, minLength: 6},
   location: {type: String},
   organisation: {type: String},
-  email: {type: String, unique: true},
-  password: {type: String},
   auth0Id: {type: String}
-}
-schema[buildVars().idField] = { type: String, required: true, unique: true }
+})
+
+/**
+ * Schema options
+ */
+const schemaOptions = {}
 
 /**
  * Add service hooks
@@ -45,4 +50,4 @@ hooks.after = Object.assign(hooks.after, {
 /**
  * Export Users Service configuration
  */
-export default { schema, hooks }
+export default { Schema, schemaOptions, hooks }

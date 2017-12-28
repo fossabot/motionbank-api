@@ -1,5 +1,4 @@
 import assert from 'assert'
-import initSchema from './init-schema'
 
 /**
  * Service base class
@@ -13,19 +12,14 @@ class Service {
   constructor (options, persistence) {
     assert(options && persistence,
       'service: invalid arguments')
-    assert.equal(typeof options.schema, 'object',
+    assert.equal(typeof options.schema, 'function',
       'service: invalid schema type')
-    assert.notEqual(Object.keys(options.schema).length, 0,
-      'service: empty schema')
     assert.equal(typeof persistence.Constructor, 'function',
       'service: invalid persistence constructor')
 
     this._options = options
     this._persistence = persistence
-    this._model = initSchema(
-      this.options.schema,
-      Object.assign(Service.defaultSchemaOptions, this.options.schemaOptions)
-    )
+    this._Model = this.options.schema
     this._client = new this.persistence.Constructor(this.persistence.options)
   }
 
@@ -146,7 +140,7 @@ class Service {
    * @constructor
    */
   get ModelConstructor () {
-    return this._model
+    return this._Model
   }
 
   /**
