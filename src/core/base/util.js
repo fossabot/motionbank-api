@@ -1,10 +1,9 @@
 import buildVars from '../../build-vars'
 
+/*
+ * Static helper methods
+ */
 class Util {
-  //
-  // Static helper methods
-  //
-
   /*
    * Create query for ID field
    */

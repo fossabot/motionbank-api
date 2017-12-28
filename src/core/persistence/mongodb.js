@@ -2,11 +2,11 @@
 import assert from 'assert'
 import mongodb from 'mongodb'
 import logging from '../base/logging'
+
 import Persistence from '../base/persistence'
 import Util from '../base/util'
 
 const logger = new logging.Logger(logging.levels.DEBUG)
-const MongoClient = mongodb.MongoClient
 
 /*
  * MongoDB persistence adapter
@@ -20,6 +20,7 @@ class MongoDB extends Persistence {
       'mongodb: options.url: invalid type')
     assert.equal(typeof options.dbName, 'string',
       'mongodb: options.dbName: invalid type')
+
     options = Object.assign({ name: options.name }, options)
     super(options, null)
   }
@@ -28,7 +29,8 @@ class MongoDB extends Persistence {
    * Establish connection to MongoDB server
    */
   async connect () {
-    const client = await MongoClient.connect(this.options.url),
+    const
+      client = await mongodb.MongoClient.connect(this.options.url),
       database = client.db(this.options.dbName)
     this._db = database.collection(this.options.name)
 

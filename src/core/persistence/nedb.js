@@ -1,6 +1,6 @@
 /* eslint no-return-await: off */
-
 import NeDB from 'nedb'
+
 import Persistence from '../base/persistence'
 import Util from '../base/util'
 
@@ -12,6 +12,7 @@ class NeDBPersistence extends Persistence {
    * Instantiate NeDB persistence adapter
    */
   constructor (options = {}) {
+    // TODO: add assertions
     options = Object.assign({
       autoload: true
     }, options)
