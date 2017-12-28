@@ -23,42 +23,48 @@ class NeDBPersistence extends Persistence {
    * Find records in DB
    */
   async find (query, params) {
-    return await Util.wrapAsync(this.db, 'find', Util.parseQuery(query))
+    return await Util.wrapAsync(this.db, 'find',
+      Util.parseQuery(query))
   }
 
   /*
    * Get DB record by ID
    */
   async get (id, params) {
-    return await Util.wrapAsync(this.db, 'findOne', Util.getIdQuery(id))
+    return await Util.wrapAsync(this.db, 'findOne',
+      Util.getIdQuery(id))
   }
 
   /*
    * Create new DB record
    */
   async create (data, params) {
-    return await Util.wrapAsync(this.db, 'insert', Util.getRawObject(data))
+    return await Util.wrapAsync(this.db, 'insert',
+      Util.getRawObject(data))
   }
 
   /*
    * Update (replace) DB record with data for ID
    */
   async update (id, data, params) {
-    return await Util.wrapAsync(this.db, 'update', Util.getIdQuery(id), Util.getRawObject(data))
+    return await Util.wrapAsync(this.db, 'update',
+      Util.getIdQuery(id), Util.getRawObject(data))
   }
 
   /*
    * Patch (merge) DB record with data for ID
    */
   async patch (id, data, params) {
-    return await Util.wrapAsync(this.db, 'update', Util.getIdQuery(id), Util.getRawObject(data))
+    return await Util.wrapAsync(this.db, 'update',
+      Util.getIdQuery(id), Util.getRawObject(data))
   }
 
   /*
    * Remove DB record with ID
    */
   async remove (id, params) {
-    return await Util.wrapAsync(this.db, 'remove', Util.getIdQuery(id))
+    return await Util.wrapAsync(this.db, 'remove',
+      Util.getIdQuery(id))
   }
 }
 

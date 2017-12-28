@@ -1,5 +1,4 @@
 /* eslint no-return-await: off */
-
 import assert from 'assert'
 import mongodb from 'mongodb'
 import logging from '../base/logging'
@@ -17,8 +16,10 @@ class MongoDB extends Persistence {
    * Instantiate MongoDB persistence adapter
    */
   constructor (options = {}) {
-    assert.equal(typeof options.url, 'string', 'mongodb: options.url: invalid type')
-    assert.equal(typeof options.dbName, 'string', 'mongodb: options.dbName: invalid type')
+    assert.equal(typeof options.url, 'string',
+      'mongodb: options.url: invalid type')
+    assert.equal(typeof options.dbName, 'string',
+      'mongodb: options.dbName: invalid type')
     options = Object.assign({ name: options.name }, options)
     super(options, null)
   }
@@ -32,7 +33,8 @@ class MongoDB extends Persistence {
     this._db = database.collection(this.options.name)
 
     logger.debug('MongoDB connected to ' +
-      `${this.options.url}/${this.options.dbName} with collection '${this.options.name}'`, 'connect')
+      `${this.options.url}/${this.options.dbName} with ` +
+      `collection '${this.options.name}'`, 'connect')
   }
 
   /*
@@ -52,7 +54,8 @@ class MongoDB extends Persistence {
    */
   async checkConnection () {
     if (!this.db) {
-      logger.debug(`MongoDB DB: ${JSON.stringify(this.db)}, reconnecting...`, 'checkConnection')
+      logger.debug(`MongoDB DB: ${JSON.stringify(this.db)}, ` +
+        `reconnecting...`, 'checkConnection')
       await this.connect()
     }
     return (this.db)
@@ -90,7 +93,8 @@ class MongoDB extends Persistence {
    */
   async update (id, data, params) {
     if (await this.checkConnection()) {
-      return await this.db.updateOne(Util.getIdQuery(id), Util.getRawObject(data))
+      return await this.db.updateOne(Util.getIdQuery(id),
+        Util.getRawObject(data))
     }
   }
 
@@ -99,7 +103,8 @@ class MongoDB extends Persistence {
    */
   async patch (id, data, params) {
     if (await this.checkConnection()) {
-      return await this.db.updateOne(Util.getIdQuery(id), Util.getRawObject(data))
+      return await this.db.updateOne(Util.getIdQuery(id),
+        Util.getRawObject(data))
     }
   }
 

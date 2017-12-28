@@ -8,7 +8,8 @@ class Persistence {
    * Instantiates persistence adapter and sets options
    */
   constructor (options, db = null) {
-    assert.equal(typeof options.name, 'string', 'persistence: options.name must be valid collection name')
+    assert.equal(typeof options.name, 'string',
+      'persistence: options.name must be valid collection name')
     this._options = options || {}
     this._db = db
   }

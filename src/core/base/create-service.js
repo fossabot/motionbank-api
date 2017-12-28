@@ -10,10 +10,14 @@ class Service {
    * Create a new Service instance
    */
   constructor (options, persistence) {
-    assert(options && persistence, 'service: invalid arguments')
-    assert.equal(typeof options.schema, 'object', 'service: invalid schema type')
-    assert.notEqual(Object.keys(options.schema).length, 0, 'service: empty schema')
-    assert.equal(typeof persistence.Constructor, 'function', 'service: invalid persistence constructor')
+    assert(options && persistence,
+      'service: invalid arguments')
+    assert.equal(typeof options.schema, 'object',
+      'service: invalid schema type')
+    assert.notEqual(Object.keys(options.schema).length, 0,
+      'service: empty schema')
+    assert.equal(typeof persistence.Constructor, 'function',
+      'service: invalid persistence constructor')
 
     this._options = options
     this._persistence = persistence
