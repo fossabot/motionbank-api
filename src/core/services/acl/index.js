@@ -3,18 +3,26 @@ import assert from 'assert'
 import uuidValidate from 'uuid-validate'
 import Acl from 'acl'
 
-//
-// Access Control List implementation
-//
+/**
+ * Access Control List implementation
+ */
 class ACL extends Acl {
+  /**
+   * Create new ACL
+   *
+   * @param options
+   */
   constructor (options) {
     super(options)
     this._options = options
   }
 
-  //
-  // Express middleware
-  //
+  /**
+   * Get Express middleware
+   *
+   * @param app
+   * @returns {Promise<void>}
+   */
   async middleware (app) {
     const acl = async (req, res, next) => {
       const
@@ -36,26 +44,47 @@ class ACL extends Acl {
     app.use(acl)
   }
 
-  //
-  // Query methods
-  //
+  /**
+   * Update ACL with allow statement
+   *
+   * @param args
+   * @returns {Promise<void>}
+   */
   async allow (args) {
     const { subject, object, predicates } = args
     ACL.validateParams(subject, object, predicates)
     await super.allow(subject, object, predicates)
   }
+
+  /**
+   * Checks if query is allowed
+   *
+   * @param args
+   * @returns {Promise<boolean>}
+   */
   async isAllowed (args) {
     return await ACL.isAllowed(args)
   }
 
-  //
-  // Statics
-  //
+  /**
+   * Checks if query is allowed
+   *
+   * @param args
+   * @returns {Promise<boolean>}
+   */
   static isAllowed (args) {
     const { subject, object, predicates } = args
     ACL.validateParams(subject, object, predicates)
     return Promise.resolve(true)
   }
+
+  /**
+   * Validates argument form
+   *
+   * @param subject
+   * @param object
+   * @param predicates
+   */
   static validateParams (subject, object, predicates) {
     assert(typeof subject === 'string',
       'ACL args: subject must be valid uuid')
@@ -72,11 +101,12 @@ class ACL extends Acl {
     }
   }
 
-  //
-  // Getters
-  //
+  /**
+   * Get default buildVars object
+   * @returns {*}
+   */
   static get buildVars () {
-    return require('../../build-vars')()
+    return require('../../../build-vars')()
   }
 }
 

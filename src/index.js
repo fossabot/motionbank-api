@@ -1,40 +1,39 @@
 import CoreAPI from './core'
 import resources from './resources'
 
-//
-// Initialize abstract API server with
-// custom configuration
-//
-// See config/default.json & production.json
-// for general config variables
-//
+/**
+ * libmb-feathers-api v1.0.0
+ *
+ * Initialize abstract API server with
+ * custom configuration
+ *
+ * See config/default.json & production.json
+ * for general config variables
+ **/
 const app = CoreAPI.init({
-  //
-  // Config
-  //
+  /**
+   * Build Variables (see: src/buildVars.js)
+   **/
   buildVars: {
-    // Custom config overrides
-    // (see: src/buildVars.js for defaults)
     myVar: true,
     test: 'asdf'
   },
-  //
-  // Mounted resources
-  //
-  // - resources/annotations
-  // - resources/maps
-  //
+  /**
+   * Services: Resources (mounted as endpoints)
+   *
+   * - resources/annotations -> /annotations
+   * - resources/maps        -> /maps
+   **/
   resources,
-  //
-  // Middleware entry points:
-  // preAuth, postAuth and postResource)
-  //
+  /**
+   * Custom Middleware (Optional entry points)
+   **/
   middleware: {
-    // Pre auth middleware (optional)
+    /** Pre auth middleware (optional) **/
     preAuth: null,
-    // Post auth middleware (optional)
+    /** Post auth middleware (optional) **/
     postAuth: null,
-    // Post resource middleware (optional)
+    /** Post resource middleware (optional) **/
     postResource: null
   }
 })

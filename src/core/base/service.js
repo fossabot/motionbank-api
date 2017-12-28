@@ -1,12 +1,14 @@
 import assert from 'assert'
 import initSchema from './init-schema'
 
-/*
- * Main base class for services
+/**
+ * Service base class
  */
 class Service {
-  /*
+  /**
    * Create a new Service instance
+   * @param options
+   * @param persistence
    */
   constructor (options, persistence) {
     assert(options && persistence,
@@ -27,8 +29,10 @@ class Service {
     this._client = new this.persistence.Constructor(this.persistence.options)
   }
 
-  /*
+  /**
    * Find resources
+   * @param params
+   * @returns {Promise<void>}
    */
   async find (params) {
     const ctx = this,
@@ -38,16 +42,22 @@ class Service {
     })
   }
 
-  /*
+  /**
    * Get resource by ID
+   * @param id
+   * @param params
+   * @returns {Promise<*>}
    */
   async get (id, params) {
     const result = await this.client.get(id, params)
     return result ? this.ModelConstructor.create(result) : undefined
   }
 
-  /*
+  /**
    * Create resource(s)
+   * @param data
+   * @param params
+   * @returns {Promise<*>}
    */
   async create (data, params) {
     const ctx = this
@@ -65,8 +75,12 @@ class Service {
     return obj
   }
 
-  /*
+  /**
    * Update (replace) resource by ID with data
+   * @param id
+   * @param data
+   * @param params
+   * @returns {Promise<undefined>}
    */
   async update (id, data, params) {
     const old = this.ModelConstructor.create(data)
@@ -74,8 +88,12 @@ class Service {
     return result ? data.update(result) : undefined
   }
 
-  /*
+  /**
    * Update (merge) resource by ID with data
+   * @param id
+   * @param data
+   * @param params
+   * @returns {Promise<*>}
    */
   async patch (id, data, params) {
     const instance = await this.get(id)
@@ -87,44 +105,53 @@ class Service {
     return result
   }
 
-  /*
+  /**
    * Remove resource by ID
+   * @param id
+   * @param params
+   * @returns {Promise<*>}
    */
   async remove (id, params) {
     const result = await this.client.remove({ id }, params)
     return result
   }
 
-  /*
+  /**
    * Get persistence configuration
+   * @returns {*}
    */
   get persistence () {
     return this._persistence
   }
 
-  /*
+  /**
    * Get persistence client instance
+   * @returns {*}
    */
   get client () {
     return this._client
   }
 
-  /*
+  /**
    * Get service options
+   * @returns {*}
    */
   get options () {
     return this._options
   }
 
-  /*
+  /**
    * Get Schema model constructor
+   * @returns {*}
+   * @constructor
    */
   get ModelConstructor () {
     return this._model
   }
 
-  /*
+  /**
    * Get default options for schema
+   * @returns {{dotNotation: boolean, strict: boolean}}
    */
   static get defaultSchemaOptions () {
     return {

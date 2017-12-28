@@ -1,10 +1,11 @@
 import buildVars from '../../build-vars'
+import persistence from '../persistence'
 
-/*
+/**
  * Static helper methods
  */
 class Util {
-  /*
+  /**
    * Create query for ID field
    */
   static getIdQuery (id) {
@@ -13,7 +14,7 @@ class Util {
     return query
   }
 
-  /*
+  /**
    * Make sure only vanilla objects get passed
    */
   static getRawObject (data) {
@@ -23,7 +24,7 @@ class Util {
     return data
   }
 
-  /*
+  /**
    * Parse query input
    *
    * TODO: how should this be abstracted?
@@ -35,7 +36,26 @@ class Util {
     return Util.getRawObject(query)
   }
 
-  /*
+  /**
+   * Parse DB configs
+   */
+  static parseConfig (pconfig = {}) {
+    const entries = Object.entries(pconfig) || {}
+    let [type, options] = entries.pop()
+    let Constructor
+    if (type === 'mongodb') {
+      Constructor = persistence.MongoDB
+    }
+    else if (type === 'nedb') {
+      Constructor = persistence.NeDB
+    }
+    return {
+      Constructor,
+      options
+    }
+  }
+
+  /**
    * Make sure only simple vanilla objects get passed to DB
    */
   static async wrapAsync (db, method, ...args) {

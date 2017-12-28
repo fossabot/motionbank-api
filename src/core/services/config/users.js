@@ -7,7 +7,7 @@ import buildVars from '../../../build-vars'
 const { authenticate } = authentication.hooks
 const { hashPassword, protect } = local.hooks
 
-/*
+/**
  * Set up the schema
  */
 const schema = {
@@ -20,7 +20,7 @@ const schema = {
 }
 schema[buildVars().idField] = { type: String, required: true, unique: true }
 
-/*
+/**
  * Add service hooks
  */
 const hooks = baseHooks()
@@ -34,13 +34,15 @@ hooks.before = Object.assign(hooks.before, {
 })
 hooks.after = Object.assign(hooks.after, {
   all: [
-    // Make sure the password field is never sent to the client
-    // Always must be the last hook
+    /**
+     * Make sure the password field is never sent to the client
+     * Always must be the last hook
+     */
     protect('password')
   ]
 })
 
-/*
+/**
  * Export Users Service configuration
  */
 export default { schema, hooks }

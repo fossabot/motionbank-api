@@ -3,6 +3,7 @@ import favicon from 'serve-favicon'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import logger from 'winston'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
@@ -14,9 +15,10 @@ import sockets from './sockets'
 import persistence from './persistence'
 
 import createService from './base/create-service'
+import Util from './base/util'
 import buildVars from '../build-vars'
 
-import logger from 'winston'
+/** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
   logger.level = 'debug'
 }
@@ -24,9 +26,9 @@ if (process.env.NODE_ENV !== 'production') {
 // TODO: this file needs to shrink!
 
 function init (options = {}) {
-  //
-  // Configuration (see config/default.json)
-  //
+  /**
+   * Configuration (see config/default.json)
+   */
   const app = express(feathers())
   app.configure(configuration())
   options = Object.assign({
@@ -39,10 +41,12 @@ function init (options = {}) {
     buildVars: Object.assign(buildVars(), options.buildVars),
     logger
   }, options)
+  options.basePath = options.basePath && options.basePath[0] === path.sep
+    ? path.resolve(options.basePath) : path.join(__dirname, '..', '..')
   app.set('appconf', options)
-  //
-  // Basics
-  //
+  /**
+   * Basics
+   */
   app.use(cors())
   app.use(helmet())
   app.use(compress())
@@ -50,104 +54,98 @@ function init (options = {}) {
   app.use(express.urlencoded({ extended: true }))
   app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
   app.use('/', express.static(app.get('public')))
-  //
-  // Transport Provider
-  //
+  /**
+   * Transport Provider
+   */
   app.configure(express.rest())
   app.configure(sockets.provider.primus)
-  //
-  //
-  // Pre auth middleware
+  /**
+   * Pre auth middleware
+   */
   if (options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
-  //
-  // Authentication & Users
-  //
+  /**
+   * Authentication & Users
+   */
+  const authConfig = app.get('authentication'),
+    parsed = Util.parseConfig(authConfig.persistence)
   app.configure(services.authentication())
   app.configure(createService({
     name: 'users',
     paginate: app.get('paginate'),
     schema: services.config.users.schema,
     hooks: services.config.users.hooks
-  }, {
-    // Creates MongoDB-backed service
-    Constructor: persistence.MongoDB,
-    options: {
-      url: 'mongodb://localhost:27017',
-      dbName: 'libmb-feathers-api'
-    }
-  }))
-  //
-  // ACL (Access Control List)
-  // with backends:
-  //
-  // - memoryBackend
-  // - redisBackend
-  // - mongoBackend
-  //
+  }, parsed))
+  /**
+   * ACL (Access Control List)
+   * with backends:
+   *
+   * - memoryBackend
+   * - redisBackend
+   * - mongoBackend
+   */
   const ACLBackend = services.ACL.memoryBackend
   app.set('acl', new services.ACL(new ACLBackend()))
   app.configure(app.get('acl').middleware)
-  //
-  // Post auth middleware
-  //
+  /**
+   * Post auth middleware
+   */
   if (options.middleware.postAuth) {
     app.configure(options.middleware.postAuth)
   }
-  //
-  // Resources
-  //
+  /**
+   * Resources
+   */
+  const resConfig = app.get('resources')
   for (let [key, value] of Object.entries(options.resources)) {
+    const persist = Util.parseConfig(resConfig.persistence)
+    persist.options = Object.assign(persist.options || {}, {
+      filename: path.join(options.basePath,
+        persist.options.path, `${persist.options.prefix || ''}${key}.nedb`)
+    })
     app.configure(createService({
       name: key,
       paginate: app.get('paginate'),
       schema: value.schema,
       schemaOptions: value.schemaOptions,
       hooks: hooks.resource
-    }, {
-      // Creates NeDB-backed service
-      Constructor: persistence.NeDB,
-      options: {
-        // Default in-memory only, can persist to file
-        // filename: path.join(__dirname, '..', '..', 'meters.db')
-      }
-    }))
+    }, persist))
   }
-  //
-  // Post resource middleware
-  //
+  /**
+   * Post resource middleware
+   */
   if (options.middleware.postResource) {
     app.configure(options.middleware.postResource)
   }
-  //
-  // Event Channels
-  //
+  /**
+   * Event Channels
+   */
   app.configure(sockets.channels)
-  //
-  // Error handler
-  //
+  /**
+   * Error handler
+   */
   app.use(express.notFound())
   app.use(express.errorHandler({ logger: options.logger || logger }))
-  //
-  // App Hooks
-  //
+  /**
+   * App Hooks
+   */
   app.hooks(hooks.app)
 
   return app
 }
 
 export default {
-  //
-  // API factory function
-  //
+  /**
+   * Core API Factory function
+   */
   init
 }
 
 export {
-  //
-  // API parts
-  //
+  /**
+   * API parts
+   */
   hooks,
   services,
   sockets,
