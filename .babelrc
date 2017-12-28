@@ -1,0 +1,18 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        },
+        "debug": false,
+        "modules": "commonjs"
+      }
+    ]
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-export-default"
+  ]
+}

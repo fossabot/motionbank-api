@@ -16,7 +16,7 @@ function createService (options = {}, persistence = undefined) {
 
   /**
    * Service configuration
-   * @type {{path: string, schemaOptions: {}} & {}}
+   * @type {{path: string, schemaOptions: {}} | {}}
    */
   options = Object.assign({
     path: options.path || `/${options.name}`,
@@ -26,7 +26,7 @@ function createService (options = {}, persistence = undefined) {
 
   /**
    * Persistence configuration
-   * @type {{Constructor: Persistence, options: {}} & any}
+   * @type {{Constructor: Persistence, options: {}} | any}
    */
   persistence = Object.assign({
     Constructor: Persistence,

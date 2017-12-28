@@ -58,7 +58,7 @@ class Util {
   /**
    * Make sure only simple vanilla objects get passed to DB
    */
-  static async wrapAsync (db, method, ...args) {
+  static wrapAsync (db, method, ...args) {
     return new Promise((resolve, reject) => {
       const cb = (err, result) => {
         if (err) return reject(err)

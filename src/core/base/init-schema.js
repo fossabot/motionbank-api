@@ -6,7 +6,7 @@ import buildVars from '../../build-vars'
 /**
  * Schema factory function
  * @param schema
- * @returns {{new(values?: any): (any & "schema-object".SchemaObjectInstance<any>)}}
+ * @returns SchemaObjectInstance<any>
  */
 function initSchema (schema) {
   assert.equal(typeof schema, 'object', 'Invalid schema object type')
@@ -14,7 +14,7 @@ function initSchema (schema) {
 
   /**
    * Create a new Schema Object Constructor from options
-   * @type {{new(values?: any): (any & "schema-object".SchemaObjectInstance<any>)}}
+   * @type SchemaObjectInstance<any>
    */
   const Schema = new SchemaObject(
     schema,

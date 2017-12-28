@@ -1,6 +1,8 @@
+/* eslint no-return-await: off */
 import assert from 'assert'
 
 /**
+ * @module Persistence
  * Base persistence adapter
  */
 class Persistence {
@@ -24,10 +26,10 @@ class Persistence {
    */
   async find (query, params) {
     console.log('WARNING: dummy persistence find')
-    return [
-      { id: 1, text: 'A new message with ID: 1!' },
-      { id: 2, text: 'A new message with ID: 2!' }
-    ]
+    return await Promise.resolve([
+      {id: 1, text: `A new message with ID: 1!`},
+      {id: 2, text: `A new message with ID: 1!`}
+    ])
   }
 
   /**
@@ -38,9 +40,9 @@ class Persistence {
    */
   async get (id, params) {
     console.log('WARNING: dummy persistence get')
-    return {
+    return await Promise.resolve({
       id, text: `A new message with ID: ${id}!`
-    }
+    })
   }
 
   /**
@@ -52,9 +54,9 @@ class Persistence {
   async create (data, params) {
     console.log('WARNING: dummy persistence create')
     if (Array.isArray(data)) {
-      await Promise.all(data.map(current => this.create(current)))
+      return await Promise.all(data.map(current => this.create(current)))
     }
-    return data
+    return await Promise.resolve(data)
   }
 
   /**
@@ -66,7 +68,7 @@ class Persistence {
    */
   async update (id, data, params) {
     console.log('WARNING: dummy persistence update')
-    return Promise.resolve(data)
+    return await Promise.resolve(data)
   }
 
   /**
@@ -78,7 +80,7 @@ class Persistence {
    */
   async patch (id, data, params) {
     console.log('WARNING: dummy persistence patch')
-    return Promise.resolve(data)
+    return await Promise.resolve(data)
   }
 
   /**
@@ -89,7 +91,7 @@ class Persistence {
    */
   async remove (id, params) {
     console.log('WARNING: dummy persistence remove')
-    return Promise.resolve({ id })
+    return await Promise.resolve({ id })
   }
 
   /**
