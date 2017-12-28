@@ -4,33 +4,37 @@ import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import logger from 'winston'
-import assert from 'assert'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import hooks from './hooks'
 import services from './services'
+import hooks from './hooks'
 import sockets from './sockets'
 import persistence from './persistence'
-
 import createService from './base/create-service'
+import buildVars from '../build-vars'
 
-const app = express(feathers())
+// TODO: this file needs to become smaller
 
-function initialize (options = {}) {
-  assert.ok(app instanceof Object, 'Fatal: Invalid app object.')
-
+function initializeAPI (options = {}) {
   //
   // Configuration (see config/default.json)
   //
+  const app = express(feathers())
   app.configure(configuration())
   options = Object.assign({
     resources: [],
-    middleware: {}
+    middleware: {
+      preAuth: Object.assign({}, options.middleware.preAuth),
+      postAuth: Object.assign({}, options.middleware.postAuth),
+      postResource: Object.assign({}, options.middleware.postResource)
+    },
+    buildVars: Object.assign(buildVars(), options.buildVars),
+    logger
   }, options)
-
+  app.set('appconf', options)
   //
   // Basics
   //
@@ -42,16 +46,19 @@ function initialize (options = {}) {
   app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
   app.use('/', express.static(app.get('public')))
   //
-  // Provider
+  // Transport Provider
   //
   app.configure(express.rest())
   app.configure(sockets.provider.primus)
   //
-  // Middleware
   //
+  // Pre auth middleware
   if (options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
+  //
+  // Authentication & Users
+  //
   app.configure(services.authentication())
   app.configure(createService({
     name: 'users',
@@ -63,9 +70,23 @@ function initialize (options = {}) {
     Constructor: persistence.MongoDB,
     options: {
       url: 'mongodb://localhost:27017',
-      dbName: 'libmb_fapi_test'
+      dbName: 'libmb-feathers-api'
     }
   }))
+  //
+  // ACL (Access Control List)
+  // with backends:
+  //
+  // - memoryBackend
+  // - redisBackend
+  // - mongoBackend
+  //
+  const ACLBackend = services.ACL.memoryBackend
+  app.set('acl', new services.ACL(new ACLBackend()))
+  app.configure(app.get('acl').middleware)
+  //
+  // Post auth middleware
+  //
   if (options.middleware.postAuth) {
     app.configure(options.middleware.postAuth)
   }
@@ -88,6 +109,9 @@ function initialize (options = {}) {
       }
     }))
   }
+  //
+  // Post resource middleware
+  //
   if (options.middleware.postResource) {
     app.configure(options.middleware.postResource)
   }
@@ -99,17 +123,25 @@ function initialize (options = {}) {
   // Error handler
   //
   app.use(express.notFound())
-  app.use(express.errorHandler({ logger }))
+  app.use(express.errorHandler({ logger: options.logger || logger }))
   //
   // App Hooks
   //
   app.hooks(hooks.app)
+
+  return app
 }
 
-export {
-  initialize,
-  app,
+export default {
+  //
+  // API factory function
+  //
+  initializeAPI,
+  //
+  // API parts
+  //
   hooks,
   services,
+  sockets,
   persistence
 }

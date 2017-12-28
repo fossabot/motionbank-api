@@ -1,44 +1,51 @@
-/* eslint-disable no-console */
-import logger from 'winston'
-import { app, initialize, services } from './core'
-import * as pkg from '../package.json'
-
+import core from './core'
 import resources from './resources'
-import middleware from './middleware'
 
 //
-// See config/default.json for general config
+// Initialize abstract API server with
+// custom configuration
 //
-initialize({
+// See config/default.json & production.json
+// for general config variables
+//
+const app = core.initializeAPI({
+  //
+  // Config
+  //
+  buildVars: {
+    // Custom config overrides
+    // (see: src/buildVars.js for defaults)
+    myVar: true,
+    test: 'asdf'
+  },
   //
   // Mounted resources
   //
-  resources: {
-    annotations: resources.annotations,
-    maps: resources.maps
-  },
+  // - resources/annotations
+  // - resources/maps
   //
-  // Adding middleware (entry points pre-auth,
-  // post-auth and post-resource)
+  resources,
+  //
+  // Middleware entry points:
+  // preAuth, postAuth and postResource)
   //
   middleware: {
-    preAuth: middleware,
+    // Pre auth middleware (optional)
+    preAuth: null,
+    // Post auth middleware (optional)
     postAuth: null,
+    // Post resource middleware (optional)
     postResource: null
   }
 })
 
-const port = app.get('port')
-const server = app.listen(port)
-
 process.on('unhandledRejection', (reason, p) =>
-  logger.error('Unhandled Rejection at: Promise ', p, reason))
+  process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`))
 
-server.on('listening', () =>
-  logger.info(`${pkg.productName || pkg.name} v${pkg.version} ` +
-    `started on http://%s:%d`, app.get('host'), port))
+app.listen(app.get('port')).on('listening', () => {
+  const pkg = require('../package.json')
+  process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` +
+    `started on http://${app.get('host')}:${app.get('port')}\n\n`)
+})
 
-export {
-  resources,
-  services
-}
+export default app

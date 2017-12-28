@@ -2,18 +2,17 @@ const assert = require('assert')
 const rp = require('request-promise')
 const url = require('url')
 
-const api = require('../src/core')
+const core = require('../src/core')
 const resources = require('../src/resources')
 const middleware = require('../src/middleware')
 
-api.initialize({
+const app = core.initializeAPI({
   resources: [
     resources.annotations,
     resources.maps
   ],
   middleware
 })
-const app = api.app
 
 const port = app.get('port') || 3030
 const getUrl = pathname => url.format({
