@@ -1,4 +1,4 @@
-import core from './core'
+import CoreAPI from './core'
 import resources from './resources'
 
 //
@@ -8,7 +8,7 @@ import resources from './resources'
 // See config/default.json & production.json
 // for general config variables
 //
-const app = core.initializeAPI({
+const app = CoreAPI.init({
   //
   // Config
   //
@@ -48,4 +48,6 @@ app.listen(app.get('port')).on('listening', () => {
     `started on http://${app.get('host')}:${app.get('port')}\n\n`)
 })
 
-export default app
+export {
+  app
+}

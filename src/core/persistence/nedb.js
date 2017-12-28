@@ -1,5 +1,5 @@
 /* eslint no-return-await: off */
-import NeDB from 'nedb'
+import Nedb from 'nedb'
 
 import Persistence from '../base/persistence'
 import Util from '../base/util'
@@ -7,7 +7,7 @@ import Util from '../base/util'
 /*
  * NeDB persistence adapter
  */
-class NeDBPersistence extends Persistence {
+class NeDB extends Persistence {
   /*
    * Instantiate NeDB persistence adapter
    */
@@ -17,7 +17,7 @@ class NeDBPersistence extends Persistence {
       autoload: true
     }, options)
     super({ name: options.name })
-    this._db = new NeDB(options)
+    this._db = new Nedb(options)
   }
 
   /*
@@ -69,4 +69,4 @@ class NeDBPersistence extends Persistence {
   }
 }
 
-export default NeDBPersistence
+export default NeDB

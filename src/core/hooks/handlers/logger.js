@@ -1,10 +1,4 @@
-// A hook that logs service method before, after and error
-// See https://github.com/winstonjs/winston for documentation
-// about the logger.
-import logger from 'winston'
-
-// To see more detailed messages, uncomment the following line
-logger.level = 'debug'
+import { logger } from '../../../core'
 
 export default function () {
   return context => {

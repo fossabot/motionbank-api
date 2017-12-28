@@ -18,7 +18,7 @@ const schema = {
   password: {type: String},
   auth0Id: {type: String}
 }
-schema[buildVars.idField] = { type: String, required: true, unique: true }
+schema[buildVars().idField] = { type: String, required: true, unique: true }
 
 /*
  * Add service hooks

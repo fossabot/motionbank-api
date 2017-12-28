@@ -3,7 +3,6 @@ import favicon from 'serve-favicon'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
-import logger from 'winston'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
@@ -13,12 +12,18 @@ import services from './services'
 import hooks from './hooks'
 import sockets from './sockets'
 import persistence from './persistence'
+
 import createService from './base/create-service'
 import buildVars from '../build-vars'
 
-// TODO: this file needs to become smaller
+import logger from 'winston'
+if (process.env.NODE_ENV !== 'production') {
+  logger.level = 'debug'
+}
 
-function initializeAPI (options = {}) {
+// TODO: this file needs to shrink!
+
+function init (options = {}) {
   //
   // Configuration (see config/default.json)
   //
@@ -102,7 +107,7 @@ function initializeAPI (options = {}) {
       hooks: hooks.resource
     }, {
       // Creates NeDB-backed service
-      Constructor: persistence.NeDBPersistence,
+      Constructor: persistence.NeDB,
       options: {
         // Default in-memory only, can persist to file
         // filename: path.join(__dirname, '..', '..', 'meters.db')
@@ -136,12 +141,16 @@ export default {
   //
   // API factory function
   //
-  initializeAPI,
+  init
+}
+
+export {
   //
   // API parts
   //
   hooks,
   services,
   sockets,
-  persistence
+  persistence,
+  logger
 }
