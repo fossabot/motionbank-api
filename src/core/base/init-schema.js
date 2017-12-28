@@ -1,5 +1,7 @@
 import assert from 'assert'
 import SchemaObject from 'schema-object'
+import uuid4 from 'uuid/v4'
+import buildVars from '../../build-vars'
 
 /*
  * Initialize new Schema
@@ -16,13 +18,16 @@ function initSchema (schema) {
       constructors: {
         create (data) {
           this.update(data)
+          this[buildVars.idField] = data[buildVars.idField] || uuid4()
         }
       },
       methods: {
         update (data = {}) {
           const ctx = this
           Object.keys(data).map(key => {
-            ctx[key] = data[key]
+            if (key !== buildVars.idField) {
+              ctx[key] = data[key]
+            }
           })
         }
       }

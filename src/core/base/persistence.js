@@ -7,15 +7,16 @@ class Persistence {
   /*
    * Instantiates persistence adapter and sets options
    */
-  constructor (options) {
+  constructor (options, db = null) {
     assert.equal(typeof options.name, 'string', 'persistence: options.name must be valid collection name')
     this._options = options || {}
+    this._db = db
   }
 
   /*
    * Dummy find method
    */
-  async find (params) {
+  async find (query, params) {
     console.log('WARNING: dummy persistence find')
     return [
       { id: 1, text: 'A new message with ID: 1!' },
@@ -72,7 +73,14 @@ class Persistence {
    * Get DB client instance
    */
   get db () {
-    return this._options.db
+    return this._db
+  }
+
+  /*
+   * Get DB client options
+   */
+  get options () {
+    return this._options
   }
 }
 

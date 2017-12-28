@@ -1,5 +1,8 @@
+/* eslint no-return-await: off */
+
 import NeDB from 'nedb'
 import Persistence from '../base/persistence'
+import Util from '../base/util'
 
 /*
  * NeDB persistence adapter
@@ -12,73 +15,51 @@ class NeDBPersistence extends Persistence {
     options = Object.assign({
       autoload: true
     }, options)
-    super({ db: new NeDB(options), name: options.name })
+    super({ name: options.name })
+    this._db = new NeDB(options)
   }
 
   /*
    * Find records in DB
    */
   async find (query, params) {
-    const results = await wrapAsync(this.db, 'find', query)
-    return results
+    return await Util.wrapAsync(this.db, 'find', Util.parseQuery(query))
   }
 
   /*
    * Get DB record by ID
    */
   async get (id, params) {
-    const result = await wrapAsync(this.db, 'findOne', { id })
-    return result
+    return await Util.wrapAsync(this.db, 'findOne', Util.getIdQuery(id))
   }
 
   /*
    * Create new DB record
    */
   async create (data, params) {
-    const result = await wrapAsync(this.db, 'create', data)
-    return result
+    return await Util.wrapAsync(this.db, 'insert', Util.getRawObject(data))
   }
 
   /*
    * Update (replace) DB record with data for ID
    */
   async update (id, data, params) {
-    const result = await wrapAsync(this.db, 'update', { id }, data)
-    return result
+    return await Util.wrapAsync(this.db, 'update', Util.getIdQuery(id), Util.getRawObject(data))
   }
 
   /*
    * Patch (merge) DB record with data for ID
    */
   async patch (id, data, params) {
-    const result = await wrapAsync(this.db, 'update', { id }, data)
-    return result
+    return await Util.wrapAsync(this.db, 'update', Util.getIdQuery(id), Util.getRawObject(data))
   }
 
   /*
    * Remove DB record with ID
    */
   async remove (id, params) {
-    const result = await wrapAsync(this.db, 'remove', { id })
-    return result
+    return await Util.wrapAsync(this.db, 'remove', Util.getIdQuery(id))
   }
-}
-
-function wrapAsync (db, method, query, params) {
-  return new Promise((resolve, reject) => {
-    const cb = (err, result) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve(result)
-    }
-    if (params) {
-      db[method](query, params, cb)
-    }
-    else {
-      db[method](query, cb)
-    }
-  })
 }
 
 export default NeDBPersistence

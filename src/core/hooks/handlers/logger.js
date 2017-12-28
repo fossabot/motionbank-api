@@ -4,7 +4,7 @@
 import logger from 'winston'
 
 // To see more detailed messages, uncomment the following line
-// logger.level = 'debug';
+logger.level = 'debug';
 
 export default function () {
   return context => {

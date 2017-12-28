@@ -10,10 +10,8 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import authentication from './services/authentication'
 import hooks from './hooks'
 import services from './services'
-import users from './services/authentication/users'
 import sockets from './sockets'
 import persistence from './persistence'
 
@@ -54,12 +52,12 @@ function initialize (options = {}) {
   if (options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
-  app.configure(authentication())
+  app.configure(services.authentication())
   app.configure(createService({
     name: 'users',
     paginate: app.get('paginate'),
-    schema: users.schema,
-    hooks: users.hooks
+    schema: services.config.users.schema,
+    hooks: services.config.users.hooks
   }, {
     // Creates MongoDB-backed service
     Constructor: persistence.MongoDB,

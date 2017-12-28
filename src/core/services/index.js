@@ -1,5 +1,7 @@
-import authentication from './authentication'
+import authentication from './auth'
+import config from './config'
 
 export default {
-  authentication
+  authentication,
+  config
 }

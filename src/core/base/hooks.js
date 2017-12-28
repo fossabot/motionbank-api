@@ -1,31 +1,35 @@
-export default {
-  before: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  },
+const before = {
+  all: [],
+  find: [],
+  get: [],
+  create: [],
+  update: [],
+  patch: [],
+  remove: []
+}
+const after = {
+  all: [],
+  find: [],
+  get: [],
+  create: [],
+  update: [],
+  patch: [],
+  remove: []
+}
+const error = {
+  all: [],
+  find: [],
+  get: [],
+  create: [],
+  update: [],
+  patch: [],
+  remove: []
+}
 
-  after: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  },
-
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  }
+export default function () {
+  return Object.assign({}, {
+    before: Object.assign({}, before),
+    after: Object.assign({}, after),
+    error: Object.assign({}, error)
+  })
 }

@@ -55,9 +55,9 @@ class Service {
       return results
     }
     const obj = this.ModelConstructor.create(data),
-      resource = await this.client.create(obj.toObject(), params)
-    Object.entries(resource).map((key, value) => {
-      if (obj[key] !== value) obj[key] = value
+      resource = await this.client.create(obj, params)
+    Object.entries(resource).map(entry => {
+      if (obj[entry.key] !== entry.value) obj[entry.key] = entry.value
     })
     return obj
   }
@@ -88,7 +88,7 @@ class Service {
    * Remove resource by ID
    */
   async remove (id, params) {
-    const result = await this.client.findOneAndRemove({ id }, params)
+    const result = await this.client.remove({ id }, params)
     return result
   }
 
