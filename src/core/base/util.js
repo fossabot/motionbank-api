@@ -1,5 +1,6 @@
 import buildVars from '../../build-vars'
 import persistence from '../persistence'
+import errors from '@feathersjs/errors/lib/index'
 
 /**
  * Static helper methods
@@ -22,6 +23,17 @@ class Util {
       return data.toObject()
     }
     return data
+  }
+
+  /**
+   * Try to find a proper Feathers error for the status code.
+   * @param err
+   */
+  static getErrorForStatus (err) {
+    if (err && err.status && errors[err.status.toString()]) {
+      return new errors[err.status](err.message)
+    }
+    return err
   }
 
   /**

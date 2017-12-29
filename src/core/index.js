@@ -68,11 +68,12 @@ function init (options = {}) {
   }
   /**
    * Authentication & Users
+   * TODO: needs a whole lotta fixin'
    */
   const authConfig = app.get('authentication'),
-    parsed = Util.parseConfig(authConfig.persistence),
-    { Schema, schemaOptions, hooks } = options.systemResources.users
-  app.configure(services.Authentication())
+    parsed = Util.parseConfig(authConfig.persistence)
+  let { Schema, schemaOptions, hooks } = options.systemResources.users
+  // app.configure(services.Authentication())
   app.configure(createService({
     name: 'users',
     paginate: app.get('paginate'),
@@ -131,12 +132,31 @@ function init (options = {}) {
    * Error handler
    */
   app.use(express.notFound())
+  /*
+  app.configure(errorHandler({
+    json: {
+      404: (err, req, res, next) => {
+        // make sure to strip off the stack trace in production
+        if (process.env.NODE_ENV === 'production') {
+          delete err.stack
+        }
+        res.json({ message: 'Not found' })
+      },
+      default: (err, req, res, next) => {
+        // handle all other errors
+        if (process.env.NODE_ENV === 'production') {
+          delete err.stack
+        }
+        res.json({ message: err.message })
+      }
+    }
+  }))
+  */
   app.use(express.errorHandler({ logger: options.logger || logger }))
   /**
    * App Hooks
    */
   app.hooks(hooks.app)
-
   return app
 }
 

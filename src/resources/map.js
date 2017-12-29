@@ -1,8 +1,5 @@
 import initSchema from '../core/base/init-schema'
-
-const
-  hooks = {},
-  schemaOptions = {}
+const hooks = {}, schemaOptions = {}
 
 /**
  * Map Schema
@@ -16,4 +13,16 @@ const Schema = initSchema({
   }
 })
 
-export default { Schema, schemaOptions, hooks }
+/**
+ * Route access matrix by HTTP verb and OAuth grants
+ */
+schemaOptions.accessMatrix = {
+  find: ['retrieve:maps'],
+  get: ['retrieve:maps'],
+  create: ['create:maps'],
+  update: ['update:maps'],
+  patch: ['update:maps'],
+  remove: ['remove:maps']
+}
+
+export { Schema, schemaOptions, hooks }

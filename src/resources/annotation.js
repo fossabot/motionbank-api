@@ -1,8 +1,5 @@
 import initSchema from '../core/base/init-schema'
-
-const
-  hooks = {},
-  schemaOptions = {}
+const hooks = {}, schemaOptions = {}
 
 /**
  * Annotation Schema
@@ -15,5 +12,17 @@ const Schema = initSchema({
   predicate: { type: String, required: true },
   context: { type: String, required: true }
 })
+
+/**
+ * Route access matrix by HTTP verb and OAuth grants
+ */
+schemaOptions.accessMatrix = {
+  find: ['retrieve:annotations'],
+  get: ['retrieve:annotations'],
+  create: ['create:annotations'],
+  update: ['update:annotations'],
+  patch: ['update:annotations'],
+  remove: ['remove:annotations']
+}
 
 export { Schema, schemaOptions, hooks }

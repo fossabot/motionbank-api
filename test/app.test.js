@@ -1,16 +1,20 @@
+import core from '../src/core/index'
+
 const assert = require('assert')
 const rp = require('request-promise')
 const url = require('url')
 
-const core = require('../src/core')
 const resources = require('../src/resources')
 const middleware = require('../src/middleware')
 
-const app = core.initializeAPI({
-  resources: [
-    resources.annotations,
-    resources.maps
-  ],
+const app = core.init({
+  serviceResources: {
+    annotations: resources.annotations,
+    maps: resources.maps
+  },
+  systemResources: {
+    users: resources.users
+  },
   middleware
 })
 

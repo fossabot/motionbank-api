@@ -48,6 +48,18 @@ hooks.after = Object.assign(hooks.after, {
 })
 
 /**
+ * Route access matrix by HTTP verb and OAuth grants
+ */
+schemaOptions.accessMatrix = {
+  find: ['retrieve:users'],
+  get: ['retrieve:users'],
+  create: ['create:users'],
+  update: ['update:users'],
+  patch: ['update:users'],
+  remove: ['remove:users']
+}
+
+/**
  * Export Users Service configuration
  */
-export default { Schema, schemaOptions, hooks }
+export { Schema, schemaOptions, hooks }
