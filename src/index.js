@@ -19,7 +19,7 @@ const systemResources = {
  * See config/default.json & production.json
  * for general config variables
  **/
-const app = CoreAPI.init({
+const app = CoreAPI.factory({
   /**
    * System related basic resources
    *

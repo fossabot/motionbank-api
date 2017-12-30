@@ -1,4 +1,4 @@
-import core from '../src/core/index'
+import CoreAPI from '../src/core'
 
 const assert = require('assert')
 const rp = require('request-promise')
@@ -7,7 +7,7 @@ const url = require('url')
 const resources = require('../src/resources')
 const middleware = require('../src/middleware')
 
-const app = core.init({
+const app = CoreAPI.factory({
   serviceResources: {
     annotations: resources.annotations,
     maps: resources.maps

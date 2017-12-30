@@ -3,8 +3,6 @@ import jwt from '@feathersjs/authentication-jwt'
 import local from '@feathersjs/authentication-local'
 import oauth2 from '@feathersjs/authentication-oauth2'
 import Auth0Strategy from 'passport-auth0'
-// import jwks from 'jwks-rsa'
-// import jwtAuthz from 'express-jwt-authz'
 
 /**
  * Authentication Service Factory
@@ -20,7 +18,6 @@ export default function Authentication () {
     app.configure(authentication(authConfig))
 
     /** JWT (JSON Web Token, see: https://jwt.io/) **/
-    // authConfig.jwt.secret = jwks.expressJwtSecret(authConfig.jwt.secret)
     app.configure(jwt())
 
     /** Local (Email & Password) **/
@@ -31,9 +28,6 @@ export default function Authentication () {
       name: 'auth0',
       Strategy: Auth0Strategy
     }, authConfig.auth0)))
-
-    // const checkScopes = jwtAuthz(['create:annotations', 'create:maps'])
-    // app.configure(checkScopes)
 
     /**
      * The `authentication` service is used to create a JWT.

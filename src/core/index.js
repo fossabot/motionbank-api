@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // TODO: this file needs to shrink!
 
-function init (options = {}) {
+function factory (options = {}) {
   /**
    * Configuration (see config/default.json)
    */
@@ -45,6 +45,7 @@ function init (options = {}) {
   options.basePath = options.basePath && options.basePath[0] === path.sep
     ? path.resolve(options.basePath) : path.join(__dirname, '..', '..')
   app.set('appconf', options)
+  const serviceOptions = app.get('services')
   /**
    * Basics
    */
@@ -56,7 +57,7 @@ function init (options = {}) {
   app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
   app.use('/', express.static(app.get('public')))
   /**
-   * Transport Provider
+   * Transport Providers
    */
   app.configure(express.rest())
   app.configure(sockets.provider.primus)
@@ -67,20 +68,26 @@ function init (options = {}) {
     app.configure(options.middleware.preAuth)
   }
   /**
-   * Authentication & Users
+   * Authentication
    * TODO: needs a whole lotta fixin'
    */
-  const authConfig = app.get('authentication'),
-    parsed = Util.parseConfig(authConfig.persistence)
-  let { Schema, schemaOptions, hooks } = options.systemResources.users
-  // app.configure(services.Authentication())
-  app.configure(createService({
-    name: 'users',
-    paginate: app.get('paginate'),
-    schema: Schema,
-    schemaOptions,
-    hooks
-  }, parsed))
+  app.configure(services.Authentication())
+  /**
+   * System Resources
+   * used for basic API services
+   */
+  for (let [key, value] of Object.entries(options.systemResources)) {
+    const
+      { Schema, schemaOptions, hooks } = value,
+      persist = Util.parseConfig(serviceOptions.system.persistence)
+    app.configure(createService({
+      name: key,
+      paginate: app.get('paginate'),
+      schema: Schema,
+      schemaOptions,
+      hooks: hooks.resource
+    }, persist))
+  }
   /**
    * ACL (Access Control List)
    * with backends:
@@ -101,15 +108,10 @@ function init (options = {}) {
   /**
    * Resources
    */
-  const resConfig = app.get('resources')
   for (let [key, value] of Object.entries(options.serviceResources)) {
     const
       { Schema, schemaOptions, hooks } = value,
-      persist = Util.parseConfig(resConfig.persistence)
-    persist.options = Object.assign(persist.options || {}, {
-      filename: path.join(options.basePath,
-        persist.options.path, `${persist.options.prefix || ''}${key}.nedb`)
-    })
+      persist = Util.parseConfig(serviceOptions.resources.persistence)
     app.configure(createService({
       name: key,
       paginate: app.get('paginate'),
@@ -129,29 +131,9 @@ function init (options = {}) {
    */
   app.configure(sockets.channels)
   /**
-   * Error handler
+   * Error handlers
    */
   app.use(express.notFound())
-  /*
-  app.configure(errorHandler({
-    json: {
-      404: (err, req, res, next) => {
-        // make sure to strip off the stack trace in production
-        if (process.env.NODE_ENV === 'production') {
-          delete err.stack
-        }
-        res.json({ message: 'Not found' })
-      },
-      default: (err, req, res, next) => {
-        // handle all other errors
-        if (process.env.NODE_ENV === 'production') {
-          delete err.stack
-        }
-        res.json({ message: err.message })
-      }
-    }
-  }))
-  */
   app.use(express.errorHandler({ logger: options.logger || logger }))
   /**
    * App Hooks
@@ -164,7 +146,7 @@ export default {
   /**
    * Core API Factory function
    */
-  init
+  factory
 }
 
 export {
