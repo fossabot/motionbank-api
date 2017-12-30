@@ -1,4 +1,9 @@
+/* eslint no-return-await: off */
 import assert from 'assert'
+import Util from './util'
+import buildVars from '../../build-vars'
+
+const idField = buildVars().idField
 
 /**
  * Service base class
@@ -12,14 +17,14 @@ class Service {
   constructor (options, persistence) {
     assert(options && persistence,
       'service: invalid arguments')
-    assert.equal(typeof options.schema, 'function',
+    assert.equal(typeof options.Schema, 'function',
       'service: invalid schema type')
     assert.equal(typeof persistence.Constructor, 'function',
       'service: invalid persistence constructor')
 
     this._options = options
     this._persistence = persistence
-    this._Model = this.options.schema
+    this._Model = this.options.Schema
     this._client = new this.persistence.Constructor(this.persistence.options)
   }
 
@@ -29,11 +34,8 @@ class Service {
    * @returns {Promise<void>}
    */
   async find (params) {
-    const ctx = this,
-      results = await this.client.find(params.query, params)
-    return results.map(result => {
-      return ctx.ModelConstructor.create(result)
-    })
+    const results = await this.client.find(params.query, params)
+    return results
   }
 
   /**
@@ -44,7 +46,7 @@ class Service {
    */
   async get (id, params) {
     const result = await this.client.get(id, params)
-    return result ? this.ModelConstructor.create(result) : undefined
+    return Util.formatServiceResult(result, false)
   }
 
   /**
@@ -61,12 +63,11 @@ class Service {
       }))
       return results
     }
-    const obj = this.ModelConstructor.create(data),
-      resource = await this.client.create(obj, params)
-    Object.entries(resource).map(entry => {
-      if (obj[entry.key] !== entry.value) obj[entry.key] = entry.value
-    })
-    return obj
+    // TODO: allow for full array inserts instead just single requests
+    const instance = new this.ModelConstructor(data),
+      result = await this.client.create(instance, params)
+    instance.update(result)
+    return Util.formatServiceResult(instance)
   }
 
   /**
@@ -77,9 +78,15 @@ class Service {
    * @returns {Promise<undefined>}
    */
   async update (id, data, params) {
-    const old = this.ModelConstructor.create(data)
-    const result = await this.client.update({ id }, old, params)
-    return result ? data.update(result) : undefined
+    const instance = await this.get(id)
+    if (instance) {
+      // TODO: transactions anyone?!
+      const instance = await this.get(id)
+      instance.update(data)
+      const result = await this.client.update(id, instance, params)
+      instance.update(result)
+      return Util.formatServiceResult(instance)
+    }
   }
 
   /**
@@ -91,12 +98,12 @@ class Service {
    */
   async patch (id, data, params) {
     const instance = await this.get(id)
-    let result
     if (instance) {
-      await instance.update(data)
-      result = await this.client.update({ id }, instance, params)
+      instance.update(data)
+      const result = await this.client.update(id, instance, params)
+      instance.update(result)
+      return Util.formatServiceResult(instance)
     }
-    return result
   }
 
   /**
@@ -106,8 +113,7 @@ class Service {
    * @returns {Promise<*>}
    */
   async remove (id, params) {
-    const result = await this.client.remove({ id }, params)
-    return result
+    return await { data: this.client.remove(id, params) }
   }
 
   /**
@@ -134,6 +140,10 @@ class Service {
     return this._options
   }
 
+  get id () {
+    return idField
+  }
+
   /**
    * Get Schema model constructor
    * @returns {*}
@@ -141,17 +151,6 @@ class Service {
    */
   get ModelConstructor () {
     return this._Model
-  }
-
-  /**
-   * Get default options for schema
-   * @returns {{dotNotation: boolean, strict: boolean}}
-   */
-  static get defaultSchemaOptions () {
-    return {
-      dotNotation: false,
-      strict: false
-    }
   }
 }
 

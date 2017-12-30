@@ -33,12 +33,13 @@ class MongoDB extends Persistence {
   async connect () {
     const
       client = await mongodb.MongoClient.connect(this.options.url),
-      database = client.db(this.options.dbName)
-    this._db = database.collection((this.options.prefix || '') + this.options.name)
+      database = client.db(this.options.dbName),
+      collectionName = (this.options.prefix || '') + this.options.name
+    this._db = database.collection(collectionName)
 
     logger.debug('MongoDB connected to ' +
       `${this.options.url}/${this.options.dbName} with ` +
-      `collection '${this.db.name}'`, 'connect')
+      `collection '${collectionName}'`, 'connect')
   }
 
   /**
@@ -74,7 +75,9 @@ class MongoDB extends Persistence {
    */
   async find (query, params) {
     if (await this.checkConnection()) {
-      return await this.db.find(Util.parseQuery(query))
+      const { q, opts } = Util.parseQuery(query)
+      const res = await this.db.find(q).limit(opts.$limit).toArray()
+      return res
     }
   }
 
@@ -86,7 +89,9 @@ class MongoDB extends Persistence {
    */
   async get (id, params) {
     if (await this.checkConnection()) {
-      return await this.db.findOne(Util.getIdQuery(id))
+      const { q } = Util.parseQuery(Util.getIdQuery(id))
+      const result = await this.db.findOne(q)
+      return result
     }
   }
 
@@ -98,7 +103,13 @@ class MongoDB extends Persistence {
    */
   async create (data, params) {
     if (await this.checkConnection()) {
-      return await this.db.insertOne(Util.getRawObject(data))
+      const result = await this.db.insertOne(Util.getRawObject(data))
+      if (result && Array.isArray(result.ops)) {
+        if (result.ops.length === 1) {
+          return result.ops[0]
+        }
+        return result.ops
+      }
     }
   }
 

@@ -49,10 +49,10 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://api.motionbank.org",
-      "subject": "piecemaker",
-      "issuer": "motionbank",
-      "algorithm": "RS256",
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
       "expiresIn": "1d"
     },
     "local": {
@@ -67,8 +67,8 @@
       "domain": "mydomain.auth0.com"
     },
     "cookie": {
-      "enabled": false,
-      "name": "motionbank-jwt",
+      "enabled": true,
+      "name": "feathers-jwt",
       "httpOnly": false,
       "secure": false
     }

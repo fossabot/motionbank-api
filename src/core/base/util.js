@@ -11,7 +11,7 @@ class Util {
    */
   static getIdQuery (id) {
     const query = {}
-    query[buildVars.idField] = id
+    query[buildVars().idField] = id
     return query
   }
 
@@ -45,7 +45,27 @@ class Util {
    * and: https://medium.com/fuzz/the-electric-feathersjs-and-apollo-server-the-start-f338a744b34b
    */
   static parseQuery (query) {
-    return Util.getRawObject(query)
+    const qObj = Util.getRawObject(query)
+    const q = {}, opts = {}
+    Object.entries(qObj).map(entry => {
+      const [k, v] = entry
+      if (k[0] === '$') {
+        opts[k] = v
+      }
+      else {
+        q[k] = v
+      }
+    })
+    return { q, opts }
+  }
+
+  static formatServiceResult (result, arrayWrap = true) {
+    // TODO: add pagination
+    if (arrayWrap) {
+      result = Array.isArray(result) ? result : [result]
+      return { data: result }
+    }
+    return result
   }
 
   /**

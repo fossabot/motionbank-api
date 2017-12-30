@@ -14,7 +14,7 @@ const { hashPassword, protect } = local.hooks
 const Schema = initSchema({
   name: {type: String, required: true},
   email: {type: String, required: true},
-  password: {type: String, required: true, minLength: 6, invisible: true},
+  password: {type: String, required: true, minLength: 6},
   location: {type: String},
   organisation: {type: String},
   auth0Id: {type: String, invisible: true}

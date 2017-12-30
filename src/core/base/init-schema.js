@@ -1,8 +1,10 @@
 import assert from 'assert'
-import uuid4 from 'uuid/v4'
+import uuid from 'uuid'
 import uuidValidate from 'uuid-validate'
 import buildVars from '../../build-vars'
 import SchemaObject from 'schema-object'
+
+const idField = buildVars().idField
 
 /**
  * Schema factory function
@@ -17,27 +19,21 @@ function initSchema (schema, options = {}) {
    */
   const schemaHandlers = Object.assign({
     onBeforeValueSet: function (value, key) {
-      if (key === buildVars.idField) {
-        if (uuidValidate.version(this[key])) {
-          return false
-        }
-        this[key] = uuid4()
-        return false
+      if (key === idField) {
+        return !this[idField] && uuidValidate(value)
       }
+      return true
     }
   }, options.handlers || {})
 
   /**
-   * Default Options to be set on the Schema
+   * Default Options and methods to be set on the Schema
    */
   const schemaOptions = Object.assign({
     setUndefined: false,
     preserveNull: true,
     dotNotation: true,
-    strict: true
-  }, Object.assign(options.schemaOptions || {}, schemaHandlers))
-
-  schema = Object.assign(schema, {
+    strict: true,
     constructors: {
       /**
        * Default Constructor
@@ -45,7 +41,10 @@ function initSchema (schema, options = {}) {
        * @param data
        */
       default (data) {
-        this.super(data)
+        this.populate(data)
+        if (!this[idField]) {
+          this[idField] = uuid.v4()
+        }
       }
     },
     methods: {
@@ -54,18 +53,19 @@ function initSchema (schema, options = {}) {
        * @param data
        */
       update (data = {}) {
+        if (data[idField] !== this[idField]) {
+          data[idField] = undefined
+        }
         this.populate(data)
-      },
-      /**
-       * Clear instance
-       * @param data
-       */
-      clear () {
-        this.clear()
+        return this
       }
     }
+  }, Object.assign(options.schemaOptions || {}, schemaHandlers))
+
+  schema = Object.assign(schema, {
+    _id: { type: String }
   })
-  schema[buildVars.idField] = {type: String, required: true, readOnly: true}
+  schema[buildVars().idField] = {type: String, required: true}
 
   /**
    * Return resource/schema config

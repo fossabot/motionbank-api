@@ -76,16 +76,16 @@ function factory (options = {}) {
    * System Resources
    * used for basic API services
    */
-  for (let [key, value] of Object.entries(options.systemResources)) {
+  for (let [name, value] of Object.entries(options.systemResources)) {
     const
       { Schema, schemaOptions, hooks } = value,
       persist = Util.parseConfig(serviceOptions.system.persistence)
     app.configure(createService({
-      name: key,
       paginate: app.get('paginate'),
-      schema: Schema,
+      name,
+      Schema,
       schemaOptions,
-      hooks: hooks.resource
+      hooks
     }, persist))
   }
   /**
@@ -108,16 +108,16 @@ function factory (options = {}) {
   /**
    * Resources
    */
-  for (let [key, value] of Object.entries(options.serviceResources)) {
+  for (let [name, value] of Object.entries(options.serviceResources)) {
     const
       { Schema, schemaOptions, hooks } = value,
       persist = Util.parseConfig(serviceOptions.resources.persistence)
     app.configure(createService({
-      name: key,
       paginate: app.get('paginate'),
-      schema: Schema,
+      name,
+      Schema,
       schemaOptions,
-      hooks: hooks.resource
+      hooks
     }, persist))
   }
   /**
