@@ -67,7 +67,7 @@ class Service {
     const instance = new this.ModelConstructor(data),
       result = await this.client.create(instance, params)
     instance.update(result)
-    return Util.formatServiceResult(instance)
+    return Util.formatServiceResult(instance, false)
   }
 
   /**
@@ -85,7 +85,7 @@ class Service {
       instance.update(data)
       const result = await this.client.update(id, instance, params)
       instance.update(result)
-      return Util.formatServiceResult(instance)
+      return Util.formatServiceResult(instance, false)
     }
   }
 
@@ -97,12 +97,13 @@ class Service {
    * @returns {Promise<*>}
    */
   async patch (id, data, params) {
-    const instance = await this.get(id)
+    const instance = new this.ModelConstructor(await this.get(id))
+    data._id = undefined
     if (instance) {
       instance.update(data)
       const result = await this.client.update(id, instance, params)
       instance.update(result)
-      return Util.formatServiceResult(instance)
+      return Util.formatServiceResult(instance, false)
     }
   }
 
@@ -113,7 +114,7 @@ class Service {
    * @returns {Promise<*>}
    */
   async remove (id, params) {
-    return await { data: this.client.remove(id, params) }
+    return Util.formatServiceResult(await this.client.remove(id, params), false)
   }
 
   /**

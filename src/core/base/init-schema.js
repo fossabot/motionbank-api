@@ -63,7 +63,7 @@ function initSchema (schema, options = {}) {
   }, Object.assign(options.schemaOptions || {}, schemaHandlers))
 
   schema = Object.assign(schema, {
-    _id: { type: String }
+    // _id: { type: String }
   })
   schema[buildVars().idField] = {type: String, required: true}
 

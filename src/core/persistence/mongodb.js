@@ -122,7 +122,7 @@ class MongoDB extends Persistence {
    */
   async update (id, data, params) {
     if (await this.checkConnection()) {
-      return await this.db.updateOne(Util.getIdQuery(id),
+      return await this.db.replaceOne(Util.getIdQuery(id),
         Util.getRawObject(data))
     }
   }
