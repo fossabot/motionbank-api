@@ -1,5 +1,6 @@
 /* eslint no-return-await: off */
 import Nedb from 'nedb'
+import path from 'path'
 
 import Persistence from '../base/persistence'
 import Util from '../base/util'
@@ -17,6 +18,9 @@ class NeDB extends Persistence {
     options = Object.assign({
       autoload: true
     }, options)
+    if (options.filename) {
+      options.filename = path.resolve(path.join(__dirname, '..', '..', '..', `${options.filename}-${options.name}.nedb`))
+    }
     super({ name: options.name })
     this._db = new Nedb(options)
   }
@@ -28,8 +32,8 @@ class NeDB extends Persistence {
    * @returns {Promise<*>}
    */
   async find (query, params) {
-    return await Util.wrapAsync(this.db, 'find',
-      Util.parseQuery(query))
+    const { q, opts } = Util.parseQuery(query)
+    return await Util.wrapAsync(this.db, 'find', q, opts)
   }
 
   /**
@@ -50,8 +54,8 @@ class NeDB extends Persistence {
    * @returns {Promise<*>}
    */
   async create (data, params) {
-    return await Util.wrapAsync(this.db, 'insert',
-      Util.getRawObject(data))
+    const result = await Util.wrapAsync(this.db, 'insert', Util.getRawObject(data))
+    return result
   }
 
   /**

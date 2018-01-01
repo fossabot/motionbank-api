@@ -10,22 +10,28 @@
   "services": {
     "acl": {
       "persistence": {
-        "nedb": {
-          "filename": "data/acl"
+        "mongodb": {
+          "prefix": "acl_",
+          "url": "mongodb://localhost:27017",
+          "dbName": "motionbank-api"
         }
       }
     },
     "resources": {
       "persistence": {
-        "nedb": {
-          "filename": "data/res"
+        "mongodb": {
+          "prefix": "res_",
+          "url": "mongodb://localhost:27017",
+          "dbName": "motionbank-api"
         }
       }
     },
     "system": {
       "persistence": {
-        "nedb": {
-          "filename": "data/sys"
+        "mongodb": {
+          "prefix": "sys_",
+          "url": "mongodb://localhost:27017",
+          "dbName": "motionbank-api"
         }
       }
     }

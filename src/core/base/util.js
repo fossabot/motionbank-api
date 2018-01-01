@@ -97,7 +97,10 @@ class Util {
         resolve(result)
       }
       let [a1, a2] = args
-      if (a1 && a2) {
+      if (method === 'find' && a1 && a2) {
+        db[method](a1).limit(a2.$limit || 0).exec(cb)
+      }
+      else if (a1 && a2) {
         db[method](a1, a2, cb)
       }
       else if (a1) {
