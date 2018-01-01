@@ -4,16 +4,20 @@ const assert = require('assert')
 const rp = require('request-promise')
 const url = require('url')
 
-const resources = require('../src/resources')
+const {
+  annotation,
+  map,
+  user
+} = require('../src/resources')
 const middleware = require('../src/middleware')
 
 const app = CoreAPI.factory({
   serviceResources: {
-    annotations: resources.annotations,
-    maps: resources.maps
+    annotations: annotation,
+    maps: map
   },
   systemResources: {
-    users: resources.users
+    users: user
   },
   middleware
 })
