@@ -76,7 +76,7 @@ class MongoDB extends Persistence {
   async find (query, params) {
     if (await this.checkConnection()) {
       const { q, opts } = Util.parseQuery(query)
-      const res = await this.db.find(q).limit(opts.$limit).toArray()
+      const res = await this.db.find(q).limit(opts.$limit || 0).toArray()
       return res
     }
   }

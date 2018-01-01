@@ -6,11 +6,8 @@ const hooks = {}, schemaOptions = {}
  * @type {SchemaObjectInstance<any>}
  */
 const Schema = initSchema({
-  schema: {
-    owner: { type: String, required: true },
-    group: { type: String, required: true },
-    title: { type: String, required: true }
-  }
+  owner: { type: String, required: true },
+  title: { type: String, required: true }
 })
 
 /**

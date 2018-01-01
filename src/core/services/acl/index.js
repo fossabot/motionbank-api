@@ -1,6 +1,7 @@
 /* eslint no-return-await: off */
 import assert from 'assert'
 import uuidValidate from 'uuid-validate'
+import errors from '@feathersjs/errors'
 import Acl from 'acl'
 
 /**
@@ -39,7 +40,7 @@ class ACL extends Acl {
         return next()
       }
       // TODO: add correct error
-      throw new Error('forbidden')
+      throw new errors.UnauthorizedError()
     }
     app.use(acl)
   }
@@ -62,7 +63,7 @@ class ACL extends Acl {
    * @param args
    * @returns {Promise<boolean>}
    */
-  async isAllowed (args) {
+  static async isAllowed (args) {
     return await ACL._isAllowed(args)
   }
 
@@ -70,12 +71,12 @@ class ACL extends Acl {
    * Checks if query is allowed
    *
    * @param args
-   * @returns {Promise<boolean>}
+   * @returns boolean
    */
   static _isAllowed (args) {
     const { subject, object, predicates } = args
     ACL.validateParams(subject, object, predicates)
-    return Promise.resolve(true)
+    return true
   }
 
   /**
