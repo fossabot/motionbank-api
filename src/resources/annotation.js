@@ -9,8 +9,9 @@ const Schema = initSchema({
   author: { type: String, required: true },
   subject: { type: String, required: true },
   object: { type: String, required: true },
-  predicate: { type: String, required: true },
-  context: { type: String, required: true }
+  predicate: { type: String },
+  context: { type: String },
+  body: { type: String, required: true }
 })
 
 /**
