@@ -9,6 +9,7 @@ const idField = buildVars().idField
 /**
  * Schema factory function
  * @param schema
+ * @param options
  */
 function initSchema (schema, options = {}) {
   assert.equal(typeof schema, 'object', 'initSchema: invalid schema type')
@@ -39,6 +40,7 @@ function initSchema (schema, options = {}) {
        * Default Constructor
        * @constructor
        * @param data
+       * @param id
        */
       default (data) {
         this.populate(data)
@@ -53,19 +55,19 @@ function initSchema (schema, options = {}) {
        * @param data
        */
       update (data = {}) {
-        if (data[idField] !== this[idField]) {
-          data[idField] = undefined
-        }
+        data[idField] = undefined
         this.populate(data)
         return this
       }
     }
   }, Object.assign(options.schemaOptions || {}, schemaHandlers))
 
-  schema = Object.assign(schema, {
-    // _id: { type: String }
-  })
-  schema[buildVars().idField] = {type: String, required: true}
+  /**
+   * Add the ID field to the Schema
+   * @type {{type: StringConstructor, required: boolean}}
+   */
+  schema[buildVars().idField] = { type: String, required: true }
+  schema.id = { type: String, readOnly: true, alias: buildVars().idField }
 
   /**
    * Return resource/schema config

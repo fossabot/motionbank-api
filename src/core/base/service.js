@@ -46,7 +46,10 @@ class Service {
    */
   async get (id, params) {
     const result = await this.client.get(id, params)
-    return Util.formatServiceResult(result, false)
+    if (result) {
+      const instance = new this.ModelConstructor(result, `${id}`)
+      return Util.formatServiceResult(instance, false)
+    }
   }
 
   /**
@@ -78,13 +81,12 @@ class Service {
    * @returns {Promise<undefined>}
    */
   async update (id, data, params) {
-    const instance = await this.get(id)
-    if (instance) {
+    let result = await this.get(id)
+    if (result) {
       // TODO: transactions anyone?!
-      const instance = await this.get(id)
-      instance.update(data)
-      const result = await this.client.update(id, instance, params)
-      instance.update(result)
+      let instance = new this.ModelConstructor(data, id)
+      result = await this.client.update(id, instance, params)
+      instance = new this.ModelConstructor(result, id)
       return Util.formatServiceResult(instance, false)
     }
   }
@@ -97,12 +99,10 @@ class Service {
    * @returns {Promise<*>}
    */
   async patch (id, data, params) {
-    const instance = new this.ModelConstructor(await this.get(id))
-    data._id = undefined
+    let instance = await this.get(id)
     if (instance) {
       instance.update(data)
-      const result = await this.client.update(id, instance, params)
-      instance.update(result)
+      await this.client.update(id, instance, params)
       return Util.formatServiceResult(instance, false)
     }
   }
@@ -135,12 +135,16 @@ class Service {
 
   /**
    * Get service options
-   * @returns {*}
+   * @returns {*}z7
    */
   get options () {
     return this._options
   }
 
+  /**
+   * Get name of the ID field
+   * @returns {*}
+   */
   get id () {
     return idField
   }
