@@ -35,9 +35,9 @@ function factory (options = {}) {
     systemResources: [],
     serviceResources: [],
     middleware: {
-      preAuth: Object.assign({}, options.middleware.preAuth),
-      postAuth: Object.assign({}, options.middleware.postAuth),
-      postResource: Object.assign({}, options.middleware.postResource)
+      preAuth: options.middleware ? Object.assign({}, options.middleware.preAuth) : undefined,
+      postAuth: options.middleware ? Object.assign({}, options.middleware.postAuth) : undefined,
+      postResource: options.middleware ? Object.assign({}, options.middleware.postResource) : undefined
     },
     buildVars: Object.assign(buildVars(), options.buildVars),
     logger
@@ -64,7 +64,7 @@ function factory (options = {}) {
   /**
    * Pre auth middleware
    */
-  if (options.middleware.preAuth) {
+  if (options.middleware && options.middleware.preAuth) {
     app.configure(options.middleware.preAuth)
   }
   /**
@@ -102,7 +102,7 @@ function factory (options = {}) {
   /**
    * Post auth middleware
    */
-  if (options.middleware.postAuth) {
+  if (options.middleware && options.middleware.postAuth) {
     app.configure(options.middleware.postAuth)
   }
   /**
@@ -123,7 +123,7 @@ function factory (options = {}) {
   /**
    * Post resource middleware
    */
-  if (options.middleware.postResource) {
+  if (options.middleware && options.middleware.postResource) {
     app.configure(options.middleware.postResource)
   }
   /**
