@@ -1,47 +1,26 @@
-import CoreAPI from '../src/core'
+import TestHelper from './helper'
 
 const assert = require('assert')
 const rp = require('request-promise')
-const url = require('url')
 
-const {
-  annotation,
-  map,
-  user
-} = require('../src/resources')
-const middleware = require('../src/middleware')
+const app = TestHelper.getApp()
 
-const app = CoreAPI.factory({
-  serviceResources: {
-    annotations: annotation,
-    maps: map
-  },
-  systemResources: {
-    users: user
-  },
-  middleware
-})
-
-const port = app.get('port') || 3030
-const getUrl = pathname => url.format({
-  hostname: app.get('host') || 'localhost',
-  protocol: 'http',
-  port,
-  pathname
-})
+let listener
 
 describe('Feathers application tests', () => {
   before(function (done) {
-    this.server = app.listen(port)
-    this.server.once('listening', () => done())
+    TestHelper.startServer(app, result => {
+      listener = result
+      done()
+    })
   })
 
   after(function (done) {
-    this.server.close(done)
+    listener.close(done)
   })
 
   it('starts and shows the index page', () => {
-    return rp(getUrl()).then(body =>
+    return rp(TestHelper.getUrl(app)).then(body =>
       assert.ok(body.indexOf('<html>') !== -1)
     )
   })
@@ -49,7 +28,7 @@ describe('Feathers application tests', () => {
   describe('404', function () {
     it('shows a 404 HTML page', () => {
       return rp({
-        url: getUrl('path/to/nowhere'),
+        url: TestHelper.getUrl(app, 'path/to/nowhere'),
         headers: {
           'Accept': 'text/html'
         }
@@ -61,7 +40,7 @@ describe('Feathers application tests', () => {
 
     it('shows a 404 JSON error without stack trace', () => {
       return rp({
-        url: getUrl('path/to/nowhere'),
+        url: TestHelper.getUrl(app, 'path/to/nowhere'),
         json: true
       }).catch(res => {
         assert.equal(res.statusCode, 404)

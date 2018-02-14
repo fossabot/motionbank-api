@@ -1,0 +1,25 @@
+{
+  "services": {
+    "acl": {
+      "persistence": {
+        "nedb": {
+          "filename": null
+        }
+      }
+    },
+    "resources": {
+      "persistence": {
+        "nedb": {
+          "filename": null
+        }
+      }
+    },
+    "system": {
+      "persistence": {
+        "nedb": {
+          "filename": null
+        }
+      }
+    }
+  }
+}
