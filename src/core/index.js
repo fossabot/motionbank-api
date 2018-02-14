@@ -14,9 +14,8 @@ import hooks from './hooks'
 import sockets from './sockets'
 import persistence from './persistence'
 
-import createService from './base/create-service'
-import Util from './base/util'
-import buildVars from '../build-vars'
+import createService from 'libmb-base/create-service'
+import Util from 'libmb-base/util'
 
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
@@ -25,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // TODO: this file needs to shrink!
 
-function factory (options = {}) {
+function factory (options = {}, buildVars) {
   /**
    * Configuration (see config/default.json)
    */
@@ -39,7 +38,7 @@ function factory (options = {}) {
       postAuth: options.middleware ? Object.assign({}, options.middleware.postAuth) : undefined,
       postResource: options.middleware ? Object.assign({}, options.middleware.postResource) : undefined
     },
-    buildVars: Object.assign(buildVars(), options.buildVars),
+    buildVars: Object.assign(buildVars, options.buildVars),
     logger
   }, options)
   options.basePath = options.basePath && options.basePath[0] === path.sep
@@ -79,14 +78,14 @@ function factory (options = {}) {
   for (let [name, value] of Object.entries(options.systemResources)) {
     const
       { Schema, schemaOptions, hooks } = value,
-      persist = Util.parseConfig(serviceOptions.system.persistence)
+      persist = Util.parseConfig(persistence, serviceOptions.system.persistence)
     app.configure(createService({
       paginate: app.get('paginate'),
       name,
       Schema,
       schemaOptions,
       hooks
-    }, persist))
+    }, persist, buildVars.idField))
   }
   /**
    * ACL (Access Control List)
@@ -111,14 +110,14 @@ function factory (options = {}) {
   for (let [name, value] of Object.entries(options.serviceResources)) {
     const
       { Schema, schemaOptions, hooks } = value,
-      persist = Util.parseConfig(serviceOptions.resources.persistence)
+      persist = Util.parseConfig(persistence, serviceOptions.resources.persistence)
     app.configure(createService({
       paginate: app.get('paginate'),
       name,
       Schema,
       schemaOptions,
       hooks
-    }, persist))
+    }, persist, buildVars.idField))
   }
   /**
    * Post resource middleware
