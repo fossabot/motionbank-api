@@ -1,6 +1,8 @@
 import CoreAPI from '../src/core'
 import url from 'url'
 
+import buildVars from '../src/build-vars'
+
 class TestHelper {
   static getUrl (app, pathname) {
     const port = app.get('port') || 3030
@@ -33,7 +35,7 @@ class TestHelper {
         users: user
       },
       middleware
-    })
+    }, buildVars())
   }
 }
 

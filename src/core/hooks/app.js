@@ -1,4 +1,4 @@
-import baseHooks from '../base/hooks'
+import baseHooks from 'libmb-base/hooks'
 import logger from './handlers/logger'
 
 export default Object.assign(baseHooks(), {

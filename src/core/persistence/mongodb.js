@@ -1,10 +1,10 @@
 /* eslint no-return-await: off */
 import assert from 'assert'
 import mongodb from 'mongodb'
-import logging from '../base/logging'
+import logging from 'libmb-base/logging'
 
-import Persistence from '../base/persistence'
-import Util from '../base/util'
+import Persistence from 'libmb-base/persistence'
+import Util from 'libmb-base/util'
 
 const logger = new logging.Logger(logging.levels.DEBUG)
 
@@ -16,7 +16,7 @@ class MongoDB extends Persistence {
    * Instantiate MongoDB persistence adapter
    * @param options
    */
-  constructor (options = {}) {
+  constructor (options = {}, idField) {
     assert.equal(typeof options.url, 'string',
       'mongodb: options.url: invalid type')
     assert.equal(typeof options.dbName, 'string',
@@ -24,6 +24,7 @@ class MongoDB extends Persistence {
 
     options = Object.assign({ name: options.name }, options)
     super(options, null)
+    this.idField = idField
   }
 
   /**
@@ -89,7 +90,7 @@ class MongoDB extends Persistence {
    */
   async get (id, params) {
     if (await this.checkConnection()) {
-      const { q } = Util.parseQuery(Util.getIdQuery(id))
+      const { q } = Util.parseQuery(Util.getIdQuery(id, this.idField))
       const result = await this.db.findOne(q)
       return result
     }
@@ -122,7 +123,7 @@ class MongoDB extends Persistence {
    */
   async update (id, data, params) {
     if (await this.checkConnection()) {
-      return await this.db.replaceOne(Util.getIdQuery(id),
+      return await this.db.replaceOne(Util.getIdQuery(id, this.idField),
         Util.getRawObject(data))
     }
   }
@@ -136,7 +137,7 @@ class MongoDB extends Persistence {
    */
   async patch (id, data, params) {
     if (await this.checkConnection()) {
-      return await this.db.updateOne(Util.getIdQuery(id),
+      return await this.db.updateOne(Util.getIdQuery(id, this.idField),
         Util.getRawObject(data))
     }
   }
@@ -149,7 +150,7 @@ class MongoDB extends Persistence {
    */
   async remove (id, params) {
     if (await this.checkConnection()) {
-      return await this.db.removeOne(Util.getIdQuery(id))
+      return await this.db.removeOne(Util.getIdQuery(id, this.idField))
     }
   }
 }

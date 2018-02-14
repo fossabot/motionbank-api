@@ -1,4 +1,4 @@
-import initSchema from '../core/base/init-schema'
+import initSchema from 'libmb-base/init-schema'
 const hooks = {}, schemaOptions = {}
 
 /**

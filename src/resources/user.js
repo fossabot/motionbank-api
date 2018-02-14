@@ -1,8 +1,8 @@
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
 
-import baseHooks from '../core/base/hooks'
-import initSchema from '../core/base/init-schema'
+import baseHooks from 'libmb-base/hooks'
+import initSchema from 'libmb-base/init-schema'
 
 const { authenticate } = authentication.hooks
 const { hashPassword, protect } = local.hooks

@@ -10,8 +10,8 @@ class DBAdapter extends Backend {
    * @param Constructor
    * @param options
    */
-  setPersistence (Constructor, options) {
-    this._db = new Constructor(options)
+  setPersistence (Constructor, options, idField) {
+    this._db = new Constructor(options, idField)
     this._options = options
   }
 

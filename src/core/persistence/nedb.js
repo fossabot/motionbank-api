@@ -2,8 +2,8 @@
 import Nedb from 'nedb'
 import path from 'path'
 
-import Persistence from '../base/persistence'
-import Util from '../base/util'
+import Persistence from 'libmb-base/persistence'
+import Util from 'libmb-base/util'
 
 /**
  * NeDB persistence adapter
@@ -13,7 +13,7 @@ class NeDB extends Persistence {
    * Instantiate NeDB persistence adapter
    * @param options
    */
-  constructor (options = {}) {
+  constructor (options = {}, idField) {
     // TODO: add assertions
     options = Object.assign({
       autoload: true
@@ -23,6 +23,7 @@ class NeDB extends Persistence {
     }
     super({ name: options.name })
     this._db = new Nedb(options)
+    this.idField = idField
   }
 
   /**
@@ -44,7 +45,7 @@ class NeDB extends Persistence {
    */
   async get (id, params) {
     return await Util.wrapAsync(this.db, 'findOne',
-      Util.getIdQuery(id))
+      Util.getIdQuery(id, this.idField))
   }
 
   /**
@@ -67,7 +68,7 @@ class NeDB extends Persistence {
    */
   async update (id, data, params) {
     return await Util.wrapAsync(this.db, 'update',
-      Util.getIdQuery(id), Util.getRawObject(data))
+      Util.getIdQuery(id, this.idField), Util.getRawObject(data))
   }
 
   /**
@@ -79,7 +80,7 @@ class NeDB extends Persistence {
    */
   async patch (id, data, params) {
     return await Util.wrapAsync(this.db, 'update',
-      Util.getIdQuery(id), Util.getRawObject(data))
+      Util.getIdQuery(id, this.idField), Util.getRawObject(data))
   }
 
   /**
@@ -90,7 +91,7 @@ class NeDB extends Persistence {
    */
   async remove (id, params) {
     return await Util.wrapAsync(this.db, 'remove',
-      Util.getIdQuery(id))
+      Util.getIdQuery(id, this.idField))
   }
 }
 

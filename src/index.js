@@ -1,6 +1,8 @@
 import CoreAPI from './core'
 import * as resources from './resources'
 
+import buildVars from './build-vars'
+
 const serviceResources = {
   annotations: resources.annotation,
   maps: resources.map
@@ -51,7 +53,7 @@ const app = CoreAPI.factory({
     /** Post resource middleware (optional) **/
     postResource: null
   }
-})
+}, buildVars())
 
 process.on('unhandledRejection', (reason, p) =>
   process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`))
