@@ -1,4 +1,4 @@
-import CoreAPI from './core'
+import CoreAPI from './core-api'
 import * as resources from './resources'
 
 import buildVars from './build-vars'

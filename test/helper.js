@@ -1,7 +1,11 @@
-import CoreAPI from '../src/core'
+import CoreAPI from '../src/core-api'
 import url from 'url'
 
 import buildVars from '../src/build-vars'
+
+import logging from 'libmb-feathers-hooks/handlers/logger'
+
+const logger = new logging.Logger(logging.levels.DEBUG)
 
 class TestHelper {
   static getUrl (app, pathname) {
@@ -34,7 +38,8 @@ class TestHelper {
       systemResources: {
         users: user
       },
-      middleware
+      middleware,
+      logger
     }, buildVars())
   }
 }

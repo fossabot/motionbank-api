@@ -3,19 +3,17 @@ import favicon from 'serve-favicon'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
-import logger from 'winston'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
+import hooks, { logger } from 'libmb-feathers-hooks'
 import services from 'libmb-services'
-import hooks from './hooks'
-import sockets from './sockets'
+import sockets from 'libmb-feathers-sockets'
 import persistence from 'libmb-persistence'
 
-import createService from 'libmb-base/create-service'
-import Util from 'libmb-base/util'
+import { createService, Util } from 'libmb-base'
 
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
