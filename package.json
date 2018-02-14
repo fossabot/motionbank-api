@@ -3,13 +3,13 @@
   "productName": "Motion Bank API",
   "description": "A barebones Feathers API server",
   "version": "1.0.0",
-  "homepage": "https://github.com/motionbank/libmb-feathers-api",
+  "homepage": "https://github.com/motionbank-js/motionbank-api",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/motionbank/libmb-feathers-api.git"
+    "url": "git+https://github.com/motionbank-js/motionbank-api.git"
   },
   "bugs": {
-    "url": "https://github.com/motionbank/libmb-feathers-api/issues"
+    "url": "https://github.com/motionbank-js/motionbank-api/issues"
   },
   "main": "dist",
   "scripts": {
