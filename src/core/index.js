@@ -9,10 +9,10 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import services from './services'
+import services from 'libmb-services'
 import hooks from './hooks'
 import sockets from './sockets'
-import persistence from './persistence'
+import persistence from 'libmb-persistence'
 
 import createService from 'libmb-base/create-service'
 import Util from 'libmb-base/util'
@@ -96,7 +96,7 @@ function factory (options = {}, buildVars) {
    * - mongoBackend
    */
   const ACLBackend = services.ACL.memoryBackend
-  app.set('acl', new services.ACL(new ACLBackend()))
+  app.set('acl', new services.ACL(new ACLBackend(), buildVars))
   app.configure(app.get('acl').middleware)
   /**
    * Post auth middleware
