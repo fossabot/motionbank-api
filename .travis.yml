@@ -1,9 +1,19 @@
 language: node_js
-os: linux
-dist: trusty
-node_js: "9.3.0"
-script:
-  - npm install
-  - npm run lint
-  - npm run babel
-  - npm test
+matrix:
+  include:
+    # Ubuntu 14.04
+    - os: linux
+      dist: trusty
+      node_js:
+        - "9.3.0"
+      script:
+        - npm run lint
+        - npm test
+    # macOS 10.12
+    - os: osx
+      osx_image: xcode8.3
+      node_js:
+        - "9.3.0"
+      script:
+        - npm run lint
+        - npm test

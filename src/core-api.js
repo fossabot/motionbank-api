@@ -8,12 +8,12 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import hooks, { logger } from 'libmb-feathers-hooks'
-import services from 'libmb-services'
-import sockets from 'libmb-feathers-sockets'
-import persistence from 'libmb-persistence'
+import hooks, { logger } from '@motionbank-js/feathers-hooks'
+import services from '@motionbank-js/feathers-services'
+import sockets from '@motionbank-js/feathers-sockets'
+import persistence from '@motionbank-js/persistence'
 
-import { createService, Util } from 'libmb-base'
+import { createService, Util } from '@motionbank-js/base'
 
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
