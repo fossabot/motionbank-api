@@ -1,5 +1,5 @@
 {
-  "name": "libmb-feathers-api",
+  "name": "@motionbank-js/feathers-api",
   "productName": "libMB Feathers API",
   "description": "A barebones Feathers API server",
   "version": "1.0.0",
