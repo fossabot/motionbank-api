@@ -1,11 +1,16 @@
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
 
-import baseHooks from 'libmb-base/hooks'
-import initSchema from 'libmb-base/init-schema'
+import { hooks } from '@motionbank-js/feathers-hooks'
+import { initSchema } from '@motionbank-js/base'
 
 const { authenticate } = authentication.hooks
 const { hashPassword, protect } = local.hooks
+
+/**
+ * Schema options
+ */
+const schemaOptions = { idField: 'uuid' }
 
 /**
  * User Schema
@@ -18,18 +23,13 @@ const Schema = initSchema({
   location: {type: String},
   organisation: {type: String},
   auth0Id: {type: String, invisible: true}
-})
+}, schemaOptions)
 
 /**
- * Schema options
+ * Add service userHooks
  */
-const schemaOptions = {}
-
-/**
- * Add service hooks
- */
-const hooks = baseHooks()
-hooks.before = Object.assign(hooks.before, {
+const userHooks = hooks()
+userHooks.before = Object.assign(userHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt')],
   create: [hashPassword()],
@@ -37,7 +37,7 @@ hooks.before = Object.assign(hooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 })
-hooks.after = Object.assign(hooks.after, {
+userHooks.after = Object.assign(userHooks.after, {
   all: [
     /**
      * Make sure the password field is never sent to the client
@@ -62,4 +62,4 @@ schemaOptions.accessMatrix = {
 /**
  * Export Users Service configuration
  */
-export { Schema, schemaOptions, hooks }
+export { Schema, schemaOptions, userHooks }

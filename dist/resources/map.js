@@ -5,23 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.hooks = exports.schemaOptions = exports.Schema = undefined;
 
-var _initSchema = require('libmb-base/init-schema');
-
-var _initSchema2 = _interopRequireDefault(_initSchema);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _base = require('@motionbank-js/base');
 
 const hooks = {},
-      schemaOptions = {};
+      schemaOptions = { idField: 'uuid'
 
-/**
- * Map Schema
- * @type {SchemaObjectInstance<any>}
- */
-const Schema = (0, _initSchema2.default)({
+  /**
+   * Map Schema
+   * @type {SchemaObjectInstance<any>}
+   */
+};const Schema = (0, _base.initSchema)({
   owner: { type: String, required: true },
   title: { type: String, required: true }
-});
+}, schemaOptions);
 
 /**
  * Route access matrix by HTTP verb and OAuth grants

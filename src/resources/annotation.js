@@ -1,5 +1,5 @@
-import initSchema from 'libmb-base/init-schema'
-const hooks = {}, schemaOptions = {}
+import { initSchema } from '@motionbank-js/base'
+const hooks = {}, schemaOptions = { idField: 'uuid' }
 
 /**
  * Annotation Schema
@@ -12,7 +12,7 @@ const Schema = initSchema({
   predicate: { type: String },
   context: { type: String },
   body: { type: String, required: true }
-})
+}, schemaOptions)
 
 /**
  * Route access matrix by HTTP verb and OAuth grants

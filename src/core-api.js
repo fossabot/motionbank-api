@@ -83,7 +83,7 @@ function factory (options = {}, buildVars) {
       Schema,
       schemaOptions,
       hooks
-    }, persist, buildVars.idField))
+    }, persist))
   }
   /**
    * ACL (Access Control List)
@@ -114,8 +114,9 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks
-    }, persist, buildVars.idField))
+      hooks,
+      idField: schemaOptions.idField
+    }, persist))
   }
   /**
    * Post resource middleware

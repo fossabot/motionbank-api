@@ -3,7 +3,7 @@ import url from 'url'
 
 import buildVars from '../src/build-vars'
 
-import logging from 'libmb-feathers-hooks/handlers/logger'
+import { logging } from '@motionbank-js/base'
 
 const logger = new logging.Logger(logging.levels.DEBUG)
 

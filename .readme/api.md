@@ -1,102 +1,92 @@
 # API Documentation
-## Members
-
-<dl>
-<dt><a href="#buildVars">buildVars</a></dt>
-<dd><p>Build Variables (see: src/buildVars.js)</p></dd>
-<dt><a href="#resources">resources</a></dt>
-<dd><p><p>Services: Resources (mounted as endpoints)</p></p>
-<ul>
-<li>resources/annotations -&gt; /annotations</li>
-<li>resources/maps        -&gt; /maps</li>
-</ul></dd>
-<dt><a href="#middleware">middleware</a></dt>
-<dd><p>Custom Middleware (Optional entry points)</p></dd>
-</dl>
-
 ## Constants
 
 <dl>
-<dt><a href="#app">app</a></dt>
-<dd><p>libmb-feathers-api v1.0.0</p>
-<p>Initialize abstract API server with
-custom configuration</p>
-<p>See config/default.json &amp; production.json
-for general config variables</p></dd>
+<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
+<dd><p>Annotation Schema</p></dd>
+<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
+<dd><p>Map Schema</p></dd>
+<dt><a href="#schemaOptions">schemaOptions</a></dt>
+<dd><p>Schema options</p></dd>
+<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
+<dd><p>User Schema</p></dd>
+<dt><a href="#userHooks">userHooks</a></dt>
+<dd><p>Add service userHooks</p></dd>
 </dl>
 
-<a name="buildVars"></a>
+<a name="Schema"></a>
 
-## buildVars
-<p>Build Variables (see: src/buildVars.js)</p>
+## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
+<p>Annotation Schema</p>
 
-**Kind**: global variable  
-
-* * *
-
-<a name="resources"></a>
-
-## resources
-<p>Services: Resources (mounted as endpoints)</p>
-<ul>
-<li>resources/annotations -&gt; /annotations</li>
-<li>resources/maps        -&gt; /maps</li>
-</ul>
-
-**Kind**: global variable  
+**Kind**: global constant  
 
 * * *
 
-<a name="middleware"></a>
+<a name="Schema"></a>
 
-## middleware
-<p>Custom Middleware (Optional entry points)</p>
+## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
+<p>Map Schema</p>
 
-**Kind**: global variable  
+**Kind**: global constant  
 
-* [middleware](#middleware)
-    * [.preAuth](#middleware.preAuth)
-    * [.postAuth](#middleware.postAuth)
-    * [.postResource](#middleware.postResource)
+* * *
+
+<a name="schemaOptions"></a>
+
+## schemaOptions
+<p>Schema options</p>
+
+**Kind**: global constant  
+
+* [schemaOptions](#schemaOptions)
+    * [.accessMatrix](#schemaOptions.accessMatrix)
+    * [.accessMatrix](#schemaOptions.accessMatrix)
+    * [.accessMatrix](#schemaOptions.accessMatrix)
 
 
 * * *
 
-<a name="middleware.preAuth"></a>
+<a name="schemaOptions.accessMatrix"></a>
 
-### middleware.preAuth
-<p>Pre auth middleware (optional)</p>
+### schemaOptions.accessMatrix
+<p>Route access matrix by HTTP verb and OAuth grants</p>
 
-**Kind**: static property of [<code>middleware</code>](#middleware)  
-
-* * *
-
-<a name="middleware.postAuth"></a>
-
-### middleware.postAuth
-<p>Post auth middleware (optional)</p>
-
-**Kind**: static property of [<code>middleware</code>](#middleware)  
+**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
 
 * * *
 
-<a name="middleware.postResource"></a>
+<a name="schemaOptions.accessMatrix"></a>
 
-### middleware.postResource
-<p>Post resource middleware (optional)</p>
+### schemaOptions.accessMatrix
+<p>Route access matrix by HTTP verb and OAuth grants</p>
 
-**Kind**: static property of [<code>middleware</code>](#middleware)  
+**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
 
 * * *
 
-<a name="app"></a>
+<a name="schemaOptions.accessMatrix"></a>
 
-## app
-<p>libmb-feathers-api v1.0.0</p>
-<p>Initialize abstract API server with
-custom configuration</p>
-<p>See config/default.json &amp; production.json
-for general config variables</p>
+### schemaOptions.accessMatrix
+<p>Route access matrix by HTTP verb and OAuth grants</p>
+
+**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
+
+* * *
+
+<a name="Schema"></a>
+
+## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
+<p>User Schema</p>
+
+**Kind**: global constant  
+
+* * *
+
+<a name="userHooks"></a>
+
+## userHooks
+<p>Add service userHooks</p>
 
 **Kind**: global constant  
 

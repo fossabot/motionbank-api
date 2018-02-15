@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hooks = exports.schemaOptions = exports.Schema = undefined;
+exports.userHooks = exports.schemaOptions = exports.Schema = undefined;
 
 var _authentication = require('@feathersjs/authentication');
 
@@ -13,13 +13,9 @@ var _authenticationLocal = require('@feathersjs/authentication-local');
 
 var _authenticationLocal2 = _interopRequireDefault(_authenticationLocal);
 
-var _hooks = require('libmb-base/hooks');
+var _feathersHooks = require('@motionbank-js/feathers-hooks');
 
-var _hooks2 = _interopRequireDefault(_hooks);
-
-var _initSchema = require('libmb-base/init-schema');
-
-var _initSchema2 = _interopRequireDefault(_initSchema);
+var _base = require('@motionbank-js/base');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27,28 +23,28 @@ const { authenticate } = _authentication2.default.hooks;
 const { hashPassword, protect } = _authenticationLocal2.default.hooks;
 
 /**
- * User Schema
- * @type {SchemaObjectInstance<any>}
+ * Schema options
  */
-const Schema = (0, _initSchema2.default)({
+const schemaOptions = { idField: 'uuid'
+
+  /**
+   * User Schema
+   * @type {SchemaObjectInstance<any>}
+   */
+};const Schema = (0, _base.initSchema)({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, minLength: 6 },
   location: { type: String },
   organisation: { type: String },
   auth0Id: { type: String, invisible: true }
-});
+}, schemaOptions);
 
 /**
- * Schema options
+ * Add service userHooks
  */
-const schemaOptions = {};
-
-/**
- * Add service hooks
- */
-const hooks = (0, _hooks2.default)();
-hooks.before = Object.assign(hooks.before, {
+const userHooks = (0, _feathersHooks.hooks)();
+userHooks.before = Object.assign(userHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt')],
   create: [hashPassword()],
@@ -56,7 +52,7 @@ hooks.before = Object.assign(hooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 });
-hooks.after = Object.assign(hooks.after, {
+userHooks.after = Object.assign(userHooks.after, {
   all: [
   /**
    * Make sure the password field is never sent to the client
@@ -81,4 +77,4 @@ schemaOptions.accessMatrix = {
    */
 };exports.Schema = Schema;
 exports.schemaOptions = schemaOptions;
-exports.hooks = hooks;
+exports.userHooks = userHooks;
