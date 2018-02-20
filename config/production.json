@@ -7,5 +7,31 @@
       "clientID": "AUTH0_CLIENT_ID",
       "clientSecret": "AUTH0_CLIENT_SECRET"
     }
+  },
+  "services": {
+    "acl": {
+      "persistence": {
+        "mongodb": {
+          "prefix": "acl_",
+          "url": "MONGOHQ_URL"
+        }
+      }
+    },
+    "resources": {
+      "persistence": {
+        "mongodb": {
+          "prefix": "res_",
+          "url": "MONGOHQ_URL"
+        }
+      }
+    },
+    "system": {
+      "persistence": {
+        "mongodb": {
+          "prefix": "sys_",
+          "url": "MONGOHQ_URL"
+        }
+      }
+    }
   }
 }
