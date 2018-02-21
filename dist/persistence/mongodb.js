@@ -48,7 +48,7 @@ class MongoDB extends _persistence2.default {
    * @returns {Promise<void>}
    */
   async connect() {
-    const client = await _mongodb2.default.MongoClient.connect(this.options.url),
+    const client = await _mongodb2.default.MongoClient.connect(this.options.url + this.options.replicaSet ? `?replicaSet=${this.options.replicaSet}` : ''),
           database = this.options.dbName ? client.db(this.options.dbName) : client,
           collectionName = (this.options.prefix || '') + this.options.name;
     this._db = database.collection(collectionName);
