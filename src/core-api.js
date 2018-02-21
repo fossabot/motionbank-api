@@ -8,12 +8,12 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import hooks, { logger } from '@motionbank-js/feathers-hooks'
-import services from '@motionbank-js/feathers-services'
-import sockets from '@motionbank-js/feathers-sockets'
-import persistence from '@motionbank-js/persistence'
+import hooks, { logger } from './hooks'
+import services from './services'
+import sockets from './sockets'
+import persistence from './persistence'
 
-import { createService, Util } from '@motionbank-js/base'
+import { createService, Util } from './base'
 
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
@@ -75,7 +75,7 @@ function factory (options = {}, buildVars) {
    */
   for (let [name, value] of Object.entries(options.systemResources)) {
     const
-      { Schema, schemaOptions, hooks } = value,
+      { Schema, schemaOptions, resourceHooks } = value,
       persist = Util.parseConfig(persistence, serviceOptions.system.persistence)
     persist.options.logger = logger
     app.configure(createService({
@@ -84,7 +84,7 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks
+      hooks: resourceHooks
     }, persist))
   }
   /**
@@ -109,7 +109,7 @@ function factory (options = {}, buildVars) {
    */
   for (let [name, value] of Object.entries(options.serviceResources)) {
     const
-      { Schema, schemaOptions, hooks } = value,
+      { Schema, schemaOptions, resourceHooks } = value,
       persist = Util.parseConfig(persistence, serviceOptions.resources.persistence)
     persist.options.logger = logger
     app.configure(createService({
@@ -118,7 +118,7 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks,
+      hooks: resourceHooks,
       idField: schemaOptions.idField
     }, persist))
   }

@@ -28,8 +28,8 @@ const Schema = initSchema({
 /**
  * Add service userHooks
  */
-const userHooks = hooks()
-userHooks.before = Object.assign(userHooks.before, {
+const resourceHooks = hooks()
+resourceHooks.before = Object.assign(resourceHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt')],
   create: [hashPassword()],
@@ -37,7 +37,7 @@ userHooks.before = Object.assign(userHooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 })
-userHooks.after = Object.assign(userHooks.after, {
+resourceHooks.after = Object.assign(resourceHooks.after, {
   all: [
     /**
      * Make sure the password field is never sent to the client
@@ -62,4 +62,4 @@ schemaOptions.accessMatrix = {
 /**
  * Export Users Service configuration
  */
-export { Schema, schemaOptions, userHooks }
+export { Schema, schemaOptions, resourceHooks }

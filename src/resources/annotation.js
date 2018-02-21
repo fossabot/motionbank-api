@@ -1,5 +1,5 @@
 import { initSchema } from '@motionbank-js/base'
-const hooks = {}, schemaOptions = { idField: 'uuid' }
+const resourceHooks = {}, schemaOptions = { idField: 'uuid' }
 
 /**
  * Annotation Schema
@@ -26,4 +26,4 @@ schemaOptions.accessMatrix = {
   remove: ['remove:annotations']
 }
 
-export { Schema, schemaOptions, hooks }
+export { Schema, schemaOptions, resourceHooks }
