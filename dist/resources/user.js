@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.userHooks = exports.schemaOptions = exports.Schema = undefined;
+exports.resourceHooks = exports.schemaOptions = exports.Schema = undefined;
 
 var _authentication = require('@feathersjs/authentication');
 
@@ -43,8 +43,8 @@ const schemaOptions = { idField: 'uuid'
 /**
  * Add service userHooks
  */
-const userHooks = (0, _feathersHooks.hooks)();
-userHooks.before = Object.assign(userHooks.before, {
+const resourceHooks = (0, _feathersHooks.hooks)();
+resourceHooks.before = Object.assign(resourceHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt')],
   create: [hashPassword()],
@@ -52,7 +52,7 @@ userHooks.before = Object.assign(userHooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 });
-userHooks.after = Object.assign(userHooks.after, {
+resourceHooks.after = Object.assign(resourceHooks.after, {
   all: [
   /**
    * Make sure the password field is never sent to the client
@@ -77,4 +77,4 @@ schemaOptions.accessMatrix = {
    */
 };exports.Schema = Schema;
 exports.schemaOptions = schemaOptions;
-exports.userHooks = userHooks;
+exports.resourceHooks = resourceHooks;

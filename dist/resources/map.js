@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hooks = exports.schemaOptions = exports.Schema = undefined;
+exports.resourceHooks = exports.schemaOptions = exports.Schema = undefined;
 
 var _base = require('@motionbank-js/base');
 
-const hooks = {},
+const resourceHooks = {},
       schemaOptions = { idField: 'uuid'
 
   /**
@@ -33,4 +33,4 @@ schemaOptions.accessMatrix = {
 
 exports.Schema = Schema;
 exports.schemaOptions = schemaOptions;
-exports.hooks = hooks;
+exports.resourceHooks = resourceHooks;

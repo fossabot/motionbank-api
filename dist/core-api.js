@@ -37,29 +37,29 @@ var _express = require('@feathersjs/express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _feathersHooks = require('@motionbank-js/feathers-hooks');
+var _hooks = require('./hooks');
 
-var _feathersHooks2 = _interopRequireDefault(_feathersHooks);
+var _hooks2 = _interopRequireDefault(_hooks);
 
-var _feathersServices = require('@motionbank-js/feathers-services');
+var _services = require('./services');
 
-var _feathersServices2 = _interopRequireDefault(_feathersServices);
+var _services2 = _interopRequireDefault(_services);
 
-var _feathersSockets = require('@motionbank-js/feathers-sockets');
+var _sockets = require('./sockets');
 
-var _feathersSockets2 = _interopRequireDefault(_feathersSockets);
+var _sockets2 = _interopRequireDefault(_sockets);
 
-var _persistence = require('@motionbank-js/persistence');
+var _persistence = require('./persistence');
 
 var _persistence2 = _interopRequireDefault(_persistence);
 
-var _base = require('@motionbank-js/base');
+var _base = require('./base');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
-  _feathersHooks.logger.level = 'debug';
+  _hooks.logger.level = 'debug';
 }
 
 // TODO: this file needs to shrink!
@@ -79,7 +79,7 @@ function factory(options = {}, buildVars) {
       postResource: options.middleware ? Object.assign({}, options.middleware.postResource) : undefined
     },
     buildVars: Object.assign(buildVars, options.buildVars),
-    logger: _feathersHooks.logger
+    logger: _hooks.logger
   }, options);
   options.basePath = options.basePath && options.basePath[0] === _path2.default.sep ? _path2.default.resolve(options.basePath) : _path2.default.join(__dirname, '..', '..');
   app.set('appconf', options);
@@ -98,7 +98,7 @@ function factory(options = {}, buildVars) {
    * Transport Providers
    */
   app.configure(_express2.default.rest());
-  app.configure(_feathersSockets2.default.provider.primus);
+  app.configure(_sockets2.default.provider.primus);
   /**
    * Pre auth middleware
    */
@@ -109,22 +109,22 @@ function factory(options = {}, buildVars) {
    * Authentication
    * TODO: needs a whole lotta fixin'
    */
-  app.configure(_feathersServices2.default.Authentication());
+  app.configure(_services2.default.Authentication());
   /**
    * System Resources
    * used for basic API services
    */
   for (let [name, value] of Object.entries(options.systemResources)) {
-    const { Schema, schemaOptions, hooks } = value,
+    const { Schema, schemaOptions, resourceHooks } = value,
           persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.system.persistence);
-    persist.options.logger = _feathersHooks.logger;
+    persist.options.logger = _hooks.logger;
     app.configure((0, _base.createService)({
-      logger: _feathersHooks.logger,
+      logger: _hooks.logger,
       paginate: app.get('paginate'),
       name,
       Schema,
       schemaOptions,
-      hooks
+      hooks: resourceHooks
     }, persist));
   }
   /**
@@ -135,8 +135,8 @@ function factory(options = {}, buildVars) {
    * - redisBackend
    * - mongoBackend
    */
-  const ACLBackend = _feathersServices2.default.ACL.memoryBackend;
-  app.set('acl', new _feathersServices2.default.ACL(new ACLBackend(), buildVars));
+  const ACLBackend = _services2.default.ACL.memoryBackend;
+  app.set('acl', new _services2.default.ACL(new ACLBackend(), buildVars));
   app.configure(app.get('acl').middleware);
   /**
    * Post auth middleware
@@ -148,16 +148,16 @@ function factory(options = {}, buildVars) {
    * Resources
    */
   for (let [name, value] of Object.entries(options.serviceResources)) {
-    const { Schema, schemaOptions, hooks } = value,
+    const { Schema, schemaOptions, resourceHooks } = value,
           persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.resources.persistence);
-    persist.options.logger = _feathersHooks.logger;
+    persist.options.logger = _hooks.logger;
     app.configure((0, _base.createService)({
-      logger: _feathersHooks.logger,
+      logger: _hooks.logger,
       paginate: app.get('paginate'),
       name,
       Schema,
       schemaOptions,
-      hooks,
+      hooks: resourceHooks,
       idField: schemaOptions.idField
     }, persist));
   }
@@ -170,16 +170,16 @@ function factory(options = {}, buildVars) {
   /**
    * Event Channels
    */
-  app.configure(_feathersSockets2.default.channels);
+  app.configure(_sockets2.default.channels);
   /**
    * Error handlers
    */
   app.use(_express2.default.notFound());
-  app.use(_express2.default.errorHandler({ logger: options.logger || _feathersHooks.logger }));
+  app.use(_express2.default.errorHandler({ logger: options.logger || _hooks.logger }));
   /**
    * App Hooks
    */
-  app.hooks(_feathersHooks2.default.app);
+  app.hooks(_hooks2.default.app);
   return app;
 }
 
@@ -189,8 +189,8 @@ exports.default = {
    */
   factory
 };
-exports.hooks = _feathersHooks2.default;
-exports.services = _feathersServices2.default;
-exports.sockets = _feathersSockets2.default;
+exports.hooks = _hooks2.default;
+exports.services = _services2.default;
+exports.sockets = _sockets2.default;
 exports.persistence = _persistence2.default;
-exports.logger = _feathersHooks.logger;
+exports.logger = _hooks.logger;
