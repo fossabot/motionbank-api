@@ -1,7 +1,6 @@
 /* eslint no-return-await: off */
 import assert from 'assert'
 import mongodb from 'mongodb'
-import { URL } from 'url'
 
 import Persistence from './persistence'
 import Util from './util'
@@ -34,9 +33,8 @@ class MongoDB extends Persistence {
    */
   async connect () {
     const
-      dbUrl = new URL(this.options.url),
       client = await mongodb.MongoClient.connect(this.options.url),
-      database = client.db(this.options.dbName || dbUrl.pathname.substr(1)),
+      database = this.options.dbName ? client.db(this.options.dbName) : client,
       collectionName = (this.options.prefix || '') + this.options.name
     this._db = database.collection(collectionName)
 

@@ -12,8 +12,6 @@ var _mongodb = require('mongodb');
 
 var _mongodb2 = _interopRequireDefault(_mongodb);
 
-var _url = require('url');
-
 var _persistence = require('./persistence');
 
 var _persistence2 = _interopRequireDefault(_persistence);
@@ -27,6 +25,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * MongoDB persistence adapter
  */
+/* eslint no-return-await: off */
 class MongoDB extends _persistence2.default {
   /**
    * Instantiate MongoDB persistence adapter
@@ -49,9 +48,8 @@ class MongoDB extends _persistence2.default {
    * @returns {Promise<void>}
    */
   async connect() {
-    const dbUrl = new _url.URL(this.options.url),
-          client = await _mongodb2.default.MongoClient.connect(this.options.url),
-          database = client.db(this.options.dbName || dbUrl.pathname.substr(1)),
+    const client = await _mongodb2.default.MongoClient.connect(this.options.url),
+          database = this.options.dbName ? client.db(this.options.dbName) : client,
           collectionName = (this.options.prefix || '') + this.options.name;
     this._db = database.collection(collectionName);
 
@@ -165,6 +163,7 @@ class MongoDB extends _persistence2.default {
       return await this.db.removeOne(_util2.default.getIdQuery(id, this.idField));
     }
   }
-} /* eslint no-return-await: off */
+}
+
 exports.default = MongoDB;
 module.exports = exports['default'];
