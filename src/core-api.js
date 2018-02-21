@@ -77,7 +77,9 @@ function factory (options = {}, buildVars) {
     const
       { Schema, schemaOptions, hooks } = value,
       persist = Util.parseConfig(persistence, serviceOptions.system.persistence)
+    persist.options.logger = logger
     app.configure(createService({
+      logger: logger,
       paginate: app.get('paginate'),
       name,
       Schema,
@@ -109,7 +111,9 @@ function factory (options = {}, buildVars) {
     const
       { Schema, schemaOptions, hooks } = value,
       persist = Util.parseConfig(persistence, serviceOptions.resources.persistence)
+    persist.options.logger = logger
     app.configure(createService({
+      logger: logger,
       paginate: app.get('paginate'),
       name,
       Schema,

@@ -117,7 +117,9 @@ function factory(options = {}, buildVars) {
   for (let [name, value] of Object.entries(options.systemResources)) {
     const { Schema, schemaOptions, hooks } = value,
           persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.system.persistence);
+    persist.options.logger = _feathersHooks.logger;
     app.configure((0, _base.createService)({
+      logger: _feathersHooks.logger,
       paginate: app.get('paginate'),
       name,
       Schema,
@@ -148,7 +150,9 @@ function factory(options = {}, buildVars) {
   for (let [name, value] of Object.entries(options.serviceResources)) {
     const { Schema, schemaOptions, hooks } = value,
           persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.resources.persistence);
+    persist.options.logger = _feathersHooks.logger;
     app.configure((0, _base.createService)({
+      logger: _feathersHooks.logger,
       paginate: app.get('paginate'),
       name,
       Schema,
