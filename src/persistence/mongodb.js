@@ -34,7 +34,7 @@ class MongoDB extends Persistence {
   async connect () {
     const
       client = await mongodb.MongoClient.connect(this.options.url +
-        this.options.replicaSet ? `?replicaSet=${this.options.replicaSet}` : ''),
+        (this.options.replicaSet ? `?replicaSet=${this.options.replicaSet}` : '')),
       database = this.options.dbName ? client.db(this.options.dbName) : client,
       collectionName = (this.options.prefix || '') + this.options.name
     this._db = database.collection(collectionName)
