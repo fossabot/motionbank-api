@@ -14,7 +14,7 @@
         "mongodb": {
           "prefix": "acl_",
           "url": "MONGOHQ_URL",
-          "replicaSet": "set-9999999999999"
+          "replicaSet": "MONGO_REPLICA_SET"
         }
       }
     },
@@ -23,7 +23,7 @@
         "mongodb": {
           "prefix": "res_",
           "url": "MONGOHQ_URL",
-          "replicaSet": "set-9999999999999"
+          "replicaSet": "MONGO_REPLICA_SET"
         }
       }
     },
@@ -32,7 +32,7 @@
         "mongodb": {
           "prefix": "sys_",
           "url": "MONGOHQ_URL",
-          "replicaSet": "set-9999999999999"
+          "replicaSet": "MONGO_REPLICA_SET"
         }
       }
     }
