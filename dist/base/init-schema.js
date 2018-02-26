@@ -8,9 +8,9 @@ var _assert = require('assert');
 
 var _assert2 = _interopRequireDefault(_assert);
 
-var _uuid = require('uuid');
+var _v = require('uuid/v4');
 
-var _uuid2 = _interopRequireDefault(_uuid);
+var _v2 = _interopRequireDefault(_v);
 
 var _uuidValidate = require('uuid-validate');
 
@@ -31,7 +31,7 @@ function initSchema(schema, options = {}) {
   _assert2.default.equal(typeof schema, 'object', 'initSchema: invalid schema type');
   (0, _assert2.default)(Object.keys(schema).length > 0, 'initSchema: invalid schema format');
 
-  options.schemaOptions = Object.assign({ idField: 'id' }, options.schemaOptions);
+  options.schemaOptions = Object.assign({ idField: 'uuid' }, options.schemaOptions);
 
   /**
    * Default Schema Handlers
@@ -63,7 +63,7 @@ function initSchema(schema, options = {}) {
       default(data) {
         this.populate(data);
         if (!this[options.schemaOptions.idField]) {
-          this[options.schemaOptions.idField] = _uuid2.default.v4();
+          this[options.schemaOptions.idField] = (0, _v2.default)();
         }
       }
     },

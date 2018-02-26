@@ -1,5 +1,5 @@
 import assert from 'assert'
-import uuid from 'uuid'
+import uuidv4 from 'uuid/v4'
 import uuidValidate from 'uuid-validate'
 import SchemaObject from 'schema-object'
 
@@ -14,7 +14,7 @@ function initSchema (schema, options = {}) {
   assert(Object.keys(schema).length > 0,
     'initSchema: invalid schema format')
 
-  options.schemaOptions = Object.assign({ idField: 'id' }, options.schemaOptions)
+  options.schemaOptions = Object.assign({ idField: 'uuid' }, options.schemaOptions)
 
   /**
    * Default Schema Handlers
@@ -46,7 +46,7 @@ function initSchema (schema, options = {}) {
       default (data) {
         this.populate(data)
         if (!this[options.schemaOptions.idField]) {
-          this[options.schemaOptions.idField] = uuid.v4()
+          this[options.schemaOptions.idField] = uuidv4()
         }
       }
     },

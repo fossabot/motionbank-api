@@ -13,9 +13,9 @@ var _authenticationLocal = require('@feathersjs/authentication-local');
 
 var _authenticationLocal2 = _interopRequireDefault(_authenticationLocal);
 
-var _feathersHooks = require('@motionbank-js/feathers-hooks');
+var _hooks = require('../hooks');
 
-var _base = require('@motionbank-js/base');
+var _base = require('../base');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,7 +43,7 @@ const schemaOptions = { idField: 'uuid'
 /**
  * Add service userHooks
  */
-const resourceHooks = (0, _feathersHooks.hooks)();
+const resourceHooks = (0, _hooks.hooks)();
 resourceHooks.before = Object.assign(resourceHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt')],

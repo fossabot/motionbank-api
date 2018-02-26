@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.resourceHooks = exports.schemaOptions = exports.Schema = undefined;
 
-var _base = require('@motionbank-js/base');
+var _base = require('../base');
 
 const resourceHooks = {},
       schemaOptions = { idField: 'uuid'

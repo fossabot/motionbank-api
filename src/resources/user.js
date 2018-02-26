@@ -1,8 +1,8 @@
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
 
-import { hooks } from '@motionbank-js/feathers-hooks'
-import { initSchema } from '@motionbank-js/base'
+import { hooks } from '../hooks'
+import { initSchema } from '../base'
 
 const { authenticate } = authentication.hooks
 const { hashPassword, protect } = local.hooks

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.checkScopes = exports.checkJwt = undefined;
 exports.default = AuthExpress;
 
-var _util = require('libmb-base/util');
+var _util = require('../base/util');
 
 var _util2 = _interopRequireDefault(_util);
 

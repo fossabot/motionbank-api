@@ -1,4 +1,4 @@
-import { initSchema } from '@motionbank-js/base'
+import { initSchema } from '../base'
 const resourceHooks = {}, schemaOptions = { idField: 'uuid' }
 
 /**

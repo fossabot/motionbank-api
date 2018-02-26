@@ -12,7 +12,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "acl_",
-          "url": "mongodb://localhost:27017/motionbank-api"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     },
@@ -20,7 +21,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "res_",
-          "url": "mongodb://localhost:27017/motionbank-api"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     },
@@ -28,7 +30,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "sys_",
-          "url": "mongodb://localhost:27017/motionbank-api"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     }

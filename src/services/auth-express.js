@@ -2,7 +2,7 @@ const jwt = require('express-jwt')
 const jwksRsa = require('jwks-rsa')
 const jwtAuthz = require('express-jwt-authz')
 
-import Util from 'libmb-base/util'
+import Util from '../base/util'
 
 // Authentication middleware. When used, the
 // access token must exist and be verified against
