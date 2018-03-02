@@ -6,7 +6,7 @@ const resourceHooks = {}, schemaOptions = { idField: 'uuid' }
  * @type {SchemaObjectInstance<any>}
  */
 const Schema = initSchema({
-  class: { type: String, required: true },
+  type: { type: String, required: true },
   author: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String }
