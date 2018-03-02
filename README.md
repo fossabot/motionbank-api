@@ -2,11 +2,11 @@
 [comment]: # (To edit its contents please refer to the project dir '.readme')
 
 # Motion Bank API
-> A barebones Feathers API server
+> Combined API server for Motion Bank web services
 
 [![NPM version](https://badge.fury.io/js/@motionbank-js/motionbank-api.svg)](https://npmjs.org/package/@motionbank-js/motionbank-api)
-[![Build status](https://secure.travis-ci.org/motionbank/@motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank/@motionbank-js/motionbank-api)
-[![Code Climate](https://codeclimate.com/github/motionbank/@motionbank-js/motionbank-api.svg)](https://codeclimate.com/github/motionbank/@motionbank-js/motionbank-api)
+[![Build status](https://secure.travis-ci.org/motionbank-js/@motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank-js/@motionbank-js/motionbank-api)
+[![Code Climate](https://codeclimate.com/github/motionbank-js/@motionbank-js/motionbank-api.svg)](https://codeclimate.com/github/motionbank-js/@motionbank-js/motionbank-api)
 
 
 ## About
@@ -52,103 +52,10 @@ $ feathers help                           # Show all commands
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
 # API Documentation
-## Constants
-
-<dl>
-<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
-<dd><p>Annotation Schema</p></dd>
-<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
-<dd><p>Map Schema</p></dd>
-<dt><a href="#schemaOptions">schemaOptions</a></dt>
-<dd><p>Schema options</p></dd>
-<dt><a href="#Schema">Schema</a> : <code>SchemaObjectInstance.&lt;any&gt;</code></dt>
-<dd><p>User Schema</p></dd>
-<dt><a href="#userHooks">userHooks</a></dt>
-<dd><p>Add service userHooks</p></dd>
-</dl>
-
-<a name="Schema"></a>
-
-## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
-<p>Annotation Schema</p>
-
-**Kind**: global constant  
-
-* * *
-
-<a name="Schema"></a>
-
-## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
-<p>Map Schema</p>
-
-**Kind**: global constant  
-
-* * *
-
-<a name="schemaOptions"></a>
-
-## schemaOptions
-<p>Schema options</p>
-
-**Kind**: global constant  
-
-* [schemaOptions](#schemaOptions)
-    * [.accessMatrix](#schemaOptions.accessMatrix)
-    * [.accessMatrix](#schemaOptions.accessMatrix)
-    * [.accessMatrix](#schemaOptions.accessMatrix)
-
-
-* * *
-
-<a name="schemaOptions.accessMatrix"></a>
-
-### schemaOptions.accessMatrix
-<p>Route access matrix by HTTP verb and OAuth grants</p>
-
-**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
-
-* * *
-
-<a name="schemaOptions.accessMatrix"></a>
-
-### schemaOptions.accessMatrix
-<p>Route access matrix by HTTP verb and OAuth grants</p>
-
-**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
-
-* * *
-
-<a name="schemaOptions.accessMatrix"></a>
-
-### schemaOptions.accessMatrix
-<p>Route access matrix by HTTP verb and OAuth grants</p>
-
-**Kind**: static property of [<code>schemaOptions</code>](#schemaOptions)  
-
-* * *
-
-<a name="Schema"></a>
-
-## Schema : <code>SchemaObjectInstance.&lt;any&gt;</code>
-<p>User Schema</p>
-
-**Kind**: global constant  
-
-* * *
-
-<a name="userHooks"></a>
-
-## userHooks
-<p>Add service userHooks</p>
-
-**Kind**: global constant  
-
-* * *
-
 
 
 ## License
 
-:copyright: 2018 Motion Bank / Mainz University of Applied Sciences – 
-Released under the [MIT](https://github.com/motionbank/@motionbank-js/motionbank-api/blob/master/LICENSE) license
+:copyright: 2018 Mainz University of Applied Sciences (Motion Bank Project) – 
+Released under the [MIT](https://github.com/motionbank-js/@motionbank-js/motionbank-api/blob/master/LICENSE) license
 
