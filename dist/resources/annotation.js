@@ -16,11 +16,10 @@ const resourceHooks = {},
    */
 };const Schema = (0, _base.initSchema)({
   author: { type: String, required: true },
-  subject: { type: String, required: true },
-  object: { type: String, required: true },
-  predicate: { type: String },
-  context: { type: String },
-  body: { type: String, required: true }
+  target: { type: String, required: true },
+  body: { type: String, required: true },
+  type: { type: String, required: true },
+  context: { type: String }
 }, schemaOptions);
 
 /**
