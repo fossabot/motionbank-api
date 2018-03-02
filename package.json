@@ -29,7 +29,7 @@
   "keywords": [
     "feathers"
   ],
-  "author": "Copyright © 2018 Mainz University of Applied Sciences (Motion Bank Project)",
+  "author": "Mainz University of Applied Sciences (Motion Bank Project)",
   "directories": {
     "lib": "src",
     "test": "test/"
