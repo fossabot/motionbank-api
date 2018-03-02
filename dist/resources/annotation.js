@@ -18,7 +18,7 @@ const resourceHooks = {},
   author: { type: String, required: true },
   target: { type: String, required: true },
   body: { type: String, required: true },
-  type: { type: String, required: true },
+  motivation: { type: String },
   context: { type: String }
 }, schemaOptions);
 

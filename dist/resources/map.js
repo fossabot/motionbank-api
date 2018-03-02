@@ -18,8 +18,7 @@ const resourceHooks = {},
   class: { type: String, required: true },
   author: { type: String, required: true },
   title: { type: String, required: true },
-  description: { type: String },
-  tags: { type: String }
+  description: { type: String }
 }, schemaOptions);
 
 /**
