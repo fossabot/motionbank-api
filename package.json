@@ -1,7 +1,7 @@
 {
   "name": "@motionbank-js/motionbank-api",
   "productName": "Motion Bank API",
-  "description": "A barebones Feathers API server",
+  "description": "Combined API server for Motion Bank web services",
   "version": "0.1.1",
   "homepage": "https://github.com/motionbank-js/motionbank-api",
   "repository": {
