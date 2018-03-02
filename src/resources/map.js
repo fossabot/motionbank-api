@@ -7,7 +7,9 @@ const resourceHooks = {}, schemaOptions = { idField: 'uuid' }
  */
 const Schema = initSchema({
   owner: { type: String, required: true },
-  title: { type: String, required: true }
+  title: { type: String, required: true },
+  description: { type: String },
+  tags: { type: String }
 }, schemaOptions)
 
 /**
