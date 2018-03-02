@@ -34,7 +34,7 @@ function initSchema (schema, options = {}) {
   const schemaOptions = Object.assign({
     setUndefined: false,
     preserveNull: true,
-    dotNotation: true,
+    dotNotation: false,
     strict: true,
     constructors: {
       /**
@@ -68,7 +68,7 @@ function initSchema (schema, options = {}) {
    * @type {{type: StringConstructor, required: boolean}}
    */
   schema[options.schemaOptions.idField] = { type: String, required: true }
-  schema.id = { type: String, readOnly: true, alias: options.schemaOptions.idField }
+  schema.id = { type: 'alias', readOnly: true, alias: options.schemaOptions.idField }
 
   /**
    * Return resource/schema config
