@@ -15,7 +15,7 @@
   "scripts": {
     "babel": "babel src --out-dir dist",
     "dev": "node -r babel-core/register src",
-    "docs": "npm run docs:prepare && npm run docs:init && npm run docs:api && gitbook build",
+    "docs": "npm run docs:prepare && npm run docs:init && gitbook build",
     "docs:api": "npm run docs:init; jsdoc2md -c .jsdocrc.json --separators --files src/**/*.js >> .readme/api.md",
     "docs:clean": "rimraf _book",
     "docs:init": "mkdirp .readme && echo \"# API Documentation\" > .readme/api.md",
@@ -45,7 +45,6 @@
       "babel",
       "eslint",
       "readme",
-      "jsdoc",
       "codeclimate"
     ]
   },
