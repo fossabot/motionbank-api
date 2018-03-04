@@ -1,5 +1,7 @@
 import { initSchema } from '../base'
-const resourceHooks = {}, schemaOptions = { idField: 'uuid' }
+const
+  resourceHooks = {},
+  schemaOptions = { idField: 'uuid', created: true, updated: true }
 
 /**
  * Selector Schema

@@ -102,6 +102,7 @@
     "express-jwt-authz": "^1.0.0",
     "helmet": "^3.9.0",
     "jwks-rsa": "^1.2.1",
+    "luxon": "^0.5.3",
     "mongodb": "^3.0.2",
     "nedb": "^1.8.0",
     "passport-auth0": "^0.6.0",

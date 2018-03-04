@@ -12,6 +12,8 @@ var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
 
+var _luxon = require('luxon');
+
 var _uuidValidate = require('uuid-validate');
 
 var _uuidValidate2 = _interopRequireDefault(_uuidValidate);
@@ -61,10 +63,14 @@ function initSchema(schema, options = {}) {
        * @param id
        */
       default(data) {
+        if (options.schemaOptions.created && !data.created) {
+          data.created = _luxon.DateTime.local().toString();
+        }
         this.populate(data);
         if (!this[options.schemaOptions.idField]) {
           this[options.schemaOptions.idField] = (0, _v2.default)();
         }
+        if (data.created) {}
       }
     },
     methods: {
@@ -74,11 +80,25 @@ function initSchema(schema, options = {}) {
        */
       update(data = {}) {
         data[options.schemaOptions.idField] = undefined;
+        if (options.schemaOptions.updated) {
+          data.updated = _luxon.DateTime.local().toString();
+        }
         this.populate(data);
         return this;
       }
     }
   }, Object.assign(options.schemaOptions || {}, schemaHandlers));
+
+  /**
+   * Add optional created and update fields to the Schema
+   * @type {{type: StringConstructor, required: boolean}}
+   */
+  if (options.schemaOptions.created) {
+    schema.created = { type: String, required: true };
+  }
+  if (options.schemaOptions.updated) {
+    schema.updated = { type: String };
+  }
 
   /**
    * Add the ID field to the Schema

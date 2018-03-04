@@ -1,5 +1,6 @@
 import assert from 'assert'
 import uuidv4 from 'uuid/v4'
+import { DateTime } from 'luxon'
 import uuidValidate from 'uuid-validate'
 import SchemaObject from 'schema-object'
 
@@ -14,6 +15,7 @@ function initSchema (schema, options = {}) {
   assert(Object.keys(schema).length > 0,
     'initSchema: invalid schema format')
 
+  // FIXME: uuid default is f'cked, refactor
   options.schemaOptions = Object.assign({ idField: 'uuid' }, options.schemaOptions)
 
   /**
@@ -44,10 +46,14 @@ function initSchema (schema, options = {}) {
        * @param id
        */
       default (data) {
+        if (options.created && !data.created) {
+          data.created = DateTime.local().toString()
+        }
         this.populate(data)
         if (!this[options.schemaOptions.idField]) {
           this[options.schemaOptions.idField] = uuidv4()
         }
+        if (data.created) {}
       }
     },
     methods: {
@@ -57,11 +63,25 @@ function initSchema (schema, options = {}) {
        */
       update (data = {}) {
         data[options.schemaOptions.idField] = undefined
+        if (options.updated) {
+          data.updated = DateTime.local().toString()
+        }
         this.populate(data)
         return this
       }
     }
   }, Object.assign(options.schemaOptions || {}, schemaHandlers))
+
+  /**
+   * Add optional created and update fields to the Schema
+   * @type {{type: StringConstructor, required: boolean}}
+   */
+  if (options.created) {
+    schema.created = { type: String , required: true }
+  }
+  if (options.updated) {
+    schema.updated = { type: String }
+  }
 
   /**
    * Add the ID field to the Schema

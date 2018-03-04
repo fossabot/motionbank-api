@@ -8,7 +8,7 @@ exports.resourceHooks = exports.schemaOptions = exports.Schema = undefined;
 var _base = require('../base');
 
 const resourceHooks = {},
-      schemaOptions = { idField: 'uuid'
+      schemaOptions = { idField: 'uuid', created: true, updated: true
 
   /**
    * Map Schema

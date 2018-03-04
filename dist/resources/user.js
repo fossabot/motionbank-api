@@ -25,7 +25,7 @@ const { hashPassword, protect } = _authenticationLocal2.default.hooks;
 /**
  * Schema options
  */
-const schemaOptions = { idField: 'uuid'
+const schemaOptions = { idField: 'uuid', created: true, updated: true
 
   /**
    * User Schema
