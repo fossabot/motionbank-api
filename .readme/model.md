@@ -53,7 +53,7 @@ Annotations can have different motivations, expressed as english natural languag
 
 ## Map
 
-Maps are [virtual uncharted territory](http://m.memegen.com/ik27zf.jpg) that represent a 1-n dimensional continuum.
+A map is a [virtual uncharted territory](http://m.memegen.com/ik27zf.jpg) that represents a 1-n dimensional continuum.
 
 The descriptors used to identify its various dimensional properties are used to choose appropriate selectors to connect annotations and resources to the continuum.
 
