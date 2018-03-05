@@ -33,6 +33,7 @@ function initSchema(schema, options = {}) {
   _assert2.default.equal(typeof schema, 'object', 'initSchema: invalid schema type');
   (0, _assert2.default)(Object.keys(schema).length > 0, 'initSchema: invalid schema format');
 
+  // FIXME: uuid default is f'cked, refactor
   options.schemaOptions = Object.assign({ idField: 'uuid' }, options.schemaOptions);
 
   /**
@@ -63,7 +64,7 @@ function initSchema(schema, options = {}) {
        * @param id
        */
       default(data) {
-        if (options.schemaOptions.created && !data.created) {
+        if (options.created && !data.created) {
           data.created = _luxon.DateTime.local().toString();
         }
         this.populate(data);
@@ -80,7 +81,7 @@ function initSchema(schema, options = {}) {
        */
       update(data = {}) {
         data[options.schemaOptions.idField] = undefined;
-        if (options.schemaOptions.updated) {
+        if (options.updated) {
           data.updated = _luxon.DateTime.local().toString();
         }
         this.populate(data);
@@ -93,10 +94,10 @@ function initSchema(schema, options = {}) {
    * Add optional created and update fields to the Schema
    * @type {{type: StringConstructor, required: boolean}}
    */
-  if (options.schemaOptions.created) {
+  if (options.created) {
     schema.created = { type: String, required: true };
   }
-  if (options.schemaOptions.updated) {
+  if (options.updated) {
     schema.updated = { type: String };
   }
 

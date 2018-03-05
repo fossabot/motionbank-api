@@ -8,10 +8,9 @@ const
  * @type {SchemaObjectInstance<any>}
  */
 const Schema = initSchema({
-  type: { type: String, required: true },
+  type: { type: [String], required: true },
   author: { type: String, required: true },
-  title: { type: String, required: true },
-  description: { type: String }
+  title: { type: String, required: true }
 }, schemaOptions)
 
 /**

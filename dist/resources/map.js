@@ -15,10 +15,9 @@ const resourceHooks = {},
    * @type {SchemaObjectInstance<any>}
    */
 };const Schema = (0, _base.initSchema)({
-  type: { type: String, required: true },
+  type: { type: [String], required: true },
   author: { type: String, required: true },
-  title: { type: String, required: true },
-  description: { type: String }
+  title: { type: String, required: true }
 }, schemaOptions);
 
 /**

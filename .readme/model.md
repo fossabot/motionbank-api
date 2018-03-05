@@ -64,6 +64,7 @@ At present, maps have two modes of representation:
 
 ```javascript
 const map = {
+  author: String,    // author's UUID
   title: String,
   type: [String],    // one or more types from above
 }
