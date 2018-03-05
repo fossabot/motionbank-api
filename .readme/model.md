@@ -2,6 +2,10 @@
 
 These are the data types available in the API. All resources are found in the API by using the `uuid` (UUID v4) property added to each resource automatically.
 
+### Date formats
+
+Wherever dates are used, we resort to ISO formatting. Date handling should generally be done using [Luxon](https://moment.github.io/luxon/index.html), which is already included in the module dependencies in both the API and the frontend.
+
 ### Annotation
 
 The annotation model aims to eventually arrive at the official spec, but it still takes a few dirty shortcuts here and there.
