@@ -87,8 +87,10 @@ function initSchema (schema, options = {}) {
    * Add the ID field to the Schema
    * @type {{type: StringConstructor, required: boolean}}
    */
-  schema[options.schemaOptions.idField] = { type: String, required: true }
-  schema.id = { type: 'alias', readOnly: true, alias: options.schemaOptions.idField }
+  if (!options.skipId) {
+    schema[options.schemaOptions.idField] = {type: String, required: true}
+    schema.id = {type: 'alias', readOnly: true, alias: options.schemaOptions.idField}
+  }
 
   /**
    * Return resource/schema config

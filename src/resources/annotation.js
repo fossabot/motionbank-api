@@ -11,7 +11,7 @@ const Selector = initSchema({
   type: { type: String, required: true },
   value: { type: String, required: true },
   conformsTo: { type: String }
-})
+}, {skipId: true})
 
 /**
  * Body Schema
@@ -23,7 +23,7 @@ const Body = initSchema({
   source: { type: String },
   purpose: { type: String },
   selector: { type: Selector }
-})
+}, {skipId: true})
 
 /**
  * Target Schema
@@ -33,7 +33,7 @@ const Target = initSchema({
   type: { type: String, required: true },
   id: { type: String, required: true },
   selector: { type: Selector }
-})
+}, {skipId: true})
 
 /**
  * Annotation Schema
