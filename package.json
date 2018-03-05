@@ -110,6 +110,7 @@
     "schema-object": "^4.0.11",
     "serve-favicon": "^2.4.5",
     "superagent": "^3.8.2",
+    "uuid": "^3.2.1",
     "uuid-validate": "0.0.2",
     "uws": "^9.14.0",
     "winston": "^3.0.0-rc1"
