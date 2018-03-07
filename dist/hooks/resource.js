@@ -16,9 +16,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const { authenticate } = _authentication2.default.hooks;
 
-exports.default = Object.assign(_hooks2.default, {
+const resourceHooks = Object.assign((0, _hooks2.default)(), {
   before: {
     all: [authenticate('jwt')]
   }
 });
+
+exports.default = resourceHooks;
 module.exports = exports['default'];

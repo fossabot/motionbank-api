@@ -111,6 +111,27 @@ function factory(options = {}, buildVars) {
    */
   app.configure(_services2.default.Authentication());
   /**
+   * ACL (Access Control List)
+   * with backends:
+   *
+   * - memoryBackend
+   * - redisBackend
+   * - mongoBackend
+   */
+  const ACLBackend = _services2.default.ACL.memoryBackend;
+  app.set('acl', new _services2.default.ACL(new ACLBackend(), buildVars));
+  // app.configure(app.get('acl').middleware)
+  /**
+   * Post auth middleware
+   */
+  if (options.middleware && options.middleware.postAuth) {
+    app.configure(options.middleware.postAuth);
+  }
+  /**
+   * GET Request proxy
+   */
+  app.configure(_services2.default.Proxy());
+  /**
    * System Resources
    * used for basic API services
    */
@@ -124,25 +145,8 @@ function factory(options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: resourceHooks
+      hooks: Object.assign(_hooks2.default.resource, resourceHooks)
     }, persist));
-  }
-  /**
-   * ACL (Access Control List)
-   * with backends:
-   *
-   * - memoryBackend
-   * - redisBackend
-   * - mongoBackend
-   */
-  const ACLBackend = _services2.default.ACL.memoryBackend;
-  app.set('acl', new _services2.default.ACL(new ACLBackend(), buildVars));
-  app.configure(app.get('acl').middleware);
-  /**
-   * Post auth middleware
-   */
-  if (options.middleware && options.middleware.postAuth) {
-    app.configure(options.middleware.postAuth);
   }
   /**
    * Resources
@@ -157,7 +161,7 @@ function factory(options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: resourceHooks,
+      hooks: Object.assign(_hooks2.default.resource, resourceHooks),
       idField: schemaOptions.idField
     }, persist));
   }

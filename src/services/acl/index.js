@@ -28,23 +28,27 @@ class ACL extends Acl {
    * @param app
    * @returns {Promise<void>}
    */
-  async middleware (app) {
-    const acl = async (req, res, next) => {
-      const uuid = req.user && uuidValidate(req.user[_buildVars.idField])
-          ? req.user[_buildVars.idField] : _buildVars.uuidUnknown,
-        query = {
-          subject: uuid,
-          // TODO: href? path?
-          object: req.uri.href,
-          predicates: req.method
+  middleware (app) {
+    const acl = (req, res, next) => {
+      app.passport.verifyJWT(req.headers.authorization, {
+        secret: app.get('authentication').secret,
+      }).then(jwt => {
+        const uuid = jwt && uuidValidate(jwt.userId)
+          ? jwt.userId : _buildVars.uuidUnknown,
+          query = {
+            subject: uuid,
+            // TODO: href? path?
+            object: req.uri.href,
+            predicates: req.method
+          }
+        return ACL.isAllowed(query)
+      }).then(allowed => {
+        if (allowed) {
+          next()
         }
-
-      const allowed = await ACL.isAllowed(query)
-      if (allowed) {
-        return Promise.resolve(next())
-      }
-      // TODO: add correct error
-      throw new errors.UnauthorizedError()
+        // TODO: add correct error
+        next(new errors.Forbidden())
+      })
     }
     app.use(acl)
   }

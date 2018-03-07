@@ -7,7 +7,13 @@ exports.resourceHooks = exports.schemaOptions = exports.Schema = undefined;
 
 var _base = require('../base');
 
-const resourceHooks = {},
+var _hooks = require('../hooks');
+
+var _hooks2 = _interopRequireDefault(_hooks);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const resourceHooks = _hooks2.default.resource,
       schemaOptions = { idField: 'uuid', created: true, updated: true
 
   /**

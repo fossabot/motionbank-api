@@ -16,7 +16,9 @@ export {
   hooks
 }
 
-export default {
+const defaultHooks = {
   app,
   resource
 }
+
+export default defaultHooks

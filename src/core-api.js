@@ -70,6 +70,27 @@ function factory (options = {}, buildVars) {
    */
   app.configure(services.Authentication())
   /**
+   * ACL (Access Control List)
+   * with backends:
+   *
+   * - memoryBackend
+   * - redisBackend
+   * - mongoBackend
+   */
+  const ACLBackend = services.ACL.memoryBackend
+  app.set('acl', new services.ACL(new ACLBackend(), buildVars))
+  // app.configure(app.get('acl').middleware)
+  /**
+   * Post auth middleware
+   */
+  if (options.middleware && options.middleware.postAuth) {
+    app.configure(options.middleware.postAuth)
+  }
+  /**
+   * GET Request proxy
+   */
+  app.configure(services.Proxy())
+  /**
    * System Resources
    * used for basic API services
    */
@@ -84,25 +105,8 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: resourceHooks
+      hooks: Object.assign(hooks.resource, resourceHooks)
     }, persist))
-  }
-  /**
-   * ACL (Access Control List)
-   * with backends:
-   *
-   * - memoryBackend
-   * - redisBackend
-   * - mongoBackend
-   */
-  const ACLBackend = services.ACL.memoryBackend
-  app.set('acl', new services.ACL(new ACLBackend(), buildVars))
-  app.configure(app.get('acl').middleware)
-  /**
-   * Post auth middleware
-   */
-  if (options.middleware && options.middleware.postAuth) {
-    app.configure(options.middleware.postAuth)
   }
   /**
    * Resources
@@ -118,7 +122,7 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: resourceHooks,
+      hooks: Object.assign(hooks.resource, resourceHooks),
       idField: schemaOptions.idField
     }, persist))
   }

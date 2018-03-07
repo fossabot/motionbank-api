@@ -1,6 +1,7 @@
 import { initSchema } from '../base'
+import hooks from '../hooks'
 const
-  resourceHooks = {},
+  resourceHooks = hooks.resource,
   schemaOptions = { idField: 'uuid', created: true, updated: true }
 
 /**

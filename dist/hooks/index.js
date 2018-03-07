@@ -31,7 +31,11 @@ const logger = _winston2.default.createLogger({
 
 exports.logger = logger;
 exports.hooks = _hooks2.default;
-exports.default = {
+
+
+const defaultHooks = {
   app: _app2.default,
   resource: _resource2.default
 };
+
+exports.default = defaultHooks;
