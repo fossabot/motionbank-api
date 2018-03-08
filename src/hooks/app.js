@@ -1,7 +1,8 @@
 import baseHooks from './hooks'
 import logger from './handlers/logger'
+import merge from 'merge-deep'
 
-export default Object.assign(baseHooks(), {
+export default merge(baseHooks(), {
   before: {
     all: [ logger() ]
   },

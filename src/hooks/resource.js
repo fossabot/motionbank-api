@@ -1,10 +1,12 @@
 import baseHooks from './hooks'
+import ACL from './handlers/acl'
 import authentication from '@feathersjs/authentication'
+import merge from 'merge-deep'
 const { authenticate } = authentication.hooks
 
-const resourceHooks = Object.assign(baseHooks(), {
+const resourceHooks = merge(baseHooks(), {
   before: {
-    all: [authenticate('jwt')]
+    all: [authenticate('jwt'), ACL.hook]
   }
 })
 

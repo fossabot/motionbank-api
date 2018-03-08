@@ -3,6 +3,7 @@ import assert from 'assert'
 import uuidValidate from 'uuid-validate'
 import errors from '@feathersjs/errors'
 import Acl from 'acl'
+import buildVars from '../../../build-vars'
 
 // TODO: remove this!
 let _buildVars
@@ -54,6 +55,23 @@ class ACL extends Acl {
   }
 
   /**
+   * ACL hook function
+   * @returns {Object}
+   */
+  static async hook (context) {
+    const { params } = context
+    const query = {
+      subject: params.userId || buildVars().uuidUnknown,
+      // TODO: href? path?
+      object: context.id || context.path,
+      predicates: context.method
+    }
+    const allowed = await context.app.get('acl').isAllowed(query)
+    return context
+  }
+
+
+  /**
    * Update ACL with allow statement
    *
    * @param args
@@ -71,8 +89,8 @@ class ACL extends Acl {
    * @param args
    * @returns {Promise<boolean>}
    */
-  static async isAllowed (args) {
-    return await ACL._isAllowed(args)
+  async isAllowed (args) {
+    return await this._isAllowed(args)
   }
 
   /**
@@ -81,7 +99,7 @@ class ACL extends Acl {
    * @param args
    * @returns boolean
    */
-  static _isAllowed (args) {
+  _isAllowed (args) {
     const { subject, object, predicates } = args
     ACL.validateParams(subject, object, predicates)
     return true

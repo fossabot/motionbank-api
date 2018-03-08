@@ -8,7 +8,7 @@ import Service from './service'
  * @returns {Function}
  */
 function createService (options = {}, persistence = undefined) {
-  assert.notEqual(typeof options.Schema, 'undefined',
+  assert.equal(typeof options.Schema, 'function',
     'create-service: options.Schema must be function')
   assert.equal(typeof options.name, 'string',
     'create-service: options.name must be string')

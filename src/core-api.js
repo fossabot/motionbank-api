@@ -8,6 +8,8 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
+import merge from 'merge-deep'
+
 import hooks, { logger } from './hooks'
 import services from './services'
 import sockets from './sockets'
@@ -28,7 +30,7 @@ function factory (options = {}, buildVars) {
    */
   const app = express(feathers())
   app.configure(configuration())
-  options = Object.assign({
+  options = merge({
     systemResources: [],
     serviceResources: [],
     middleware: {
@@ -36,7 +38,7 @@ function factory (options = {}, buildVars) {
       postAuth: options.middleware ? Object.assign({}, options.middleware.postAuth) : undefined,
       postResource: options.middleware ? Object.assign({}, options.middleware.postResource) : undefined
     },
-    buildVars: Object.assign(buildVars, options.buildVars),
+    buildVars: merge(buildVars, options.buildVars),
     logger
   }, options)
   options.basePath = options.basePath && options.basePath[0] === path.sep
@@ -105,7 +107,7 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: Object.assign(hooks.resource, resourceHooks)
+      hooks: merge(hooks.resource, resourceHooks)
     }, persist))
   }
   /**
@@ -122,7 +124,7 @@ function factory (options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: Object.assign(hooks.resource, resourceHooks),
+      hooks: merge(hooks.resource, resourceHooks),
       idField: schemaOptions.idField
     }, persist))
   }
