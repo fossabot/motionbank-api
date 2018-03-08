@@ -95,6 +95,7 @@
     "@feathersjs/feathers": "^3.0.2",
     "@feathersjs/primus": "^3.0.1",
     "acl": "^0.4.11",
+    "binary-search-tree": "git+https://github.com/dasantonym/node-binary-search-tree.git",
     "bluebird": "^3.5.1",
     "compression": "^1.7.1",
     "cors": "^2.8.4",
