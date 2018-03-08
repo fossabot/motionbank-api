@@ -37,6 +37,10 @@ var _express = require('@feathersjs/express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _mergeDeep = require('merge-deep');
+
+var _mergeDeep2 = _interopRequireDefault(_mergeDeep);
+
 var _hooks = require('./hooks');
 
 var _hooks2 = _interopRequireDefault(_hooks);
@@ -70,7 +74,7 @@ function factory(options = {}, buildVars) {
    */
   const app = (0, _express2.default)((0, _feathers2.default)());
   app.configure((0, _configuration2.default)());
-  options = Object.assign({
+  options = (0, _mergeDeep2.default)({
     systemResources: [],
     serviceResources: [],
     middleware: {
@@ -78,7 +82,7 @@ function factory(options = {}, buildVars) {
       postAuth: options.middleware ? Object.assign({}, options.middleware.postAuth) : undefined,
       postResource: options.middleware ? Object.assign({}, options.middleware.postResource) : undefined
     },
-    buildVars: Object.assign(buildVars, options.buildVars),
+    buildVars: (0, _mergeDeep2.default)(buildVars, options.buildVars),
     logger: _hooks.logger
   }, options);
   options.basePath = options.basePath && options.basePath[0] === _path2.default.sep ? _path2.default.resolve(options.basePath) : _path2.default.join(__dirname, '..', '..');
@@ -145,7 +149,7 @@ function factory(options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: Object.assign(_hooks2.default.resource, resourceHooks)
+      hooks: (0, _mergeDeep2.default)(_hooks2.default.resource, resourceHooks)
     }, persist));
   }
   /**
@@ -161,7 +165,7 @@ function factory(options = {}, buildVars) {
       name,
       Schema,
       schemaOptions,
-      hooks: Object.assign(_hooks2.default.resource, resourceHooks),
+      hooks: (0, _mergeDeep2.default)(_hooks2.default.resource, resourceHooks),
       idField: schemaOptions.idField
     }, persist));
   }

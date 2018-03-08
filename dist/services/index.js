@@ -8,7 +8,7 @@ var _authentication = require('./authentication');
 
 var _authentication2 = _interopRequireDefault(_authentication);
 
-var _acl = require('./acl');
+var _acl = require('../hooks/handlers/acl');
 
 var _acl2 = _interopRequireDefault(_acl);
 

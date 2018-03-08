@@ -21,7 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @returns {Function}
  */
 function createService(options = {}, persistence = undefined) {
-  _assert2.default.notEqual(typeof options.Schema, 'undefined', 'create-service: options.Schema must be function');
+  _assert2.default.equal(typeof options.Schema, 'function', 'create-service: options.Schema must be function');
   _assert2.default.equal(typeof options.name, 'string', 'create-service: options.name must be string');
   _assert2.default.equal(typeof options.schemaOptions.idField, 'string', 'create-service: options.schemaOptions.idField must be string');
 
