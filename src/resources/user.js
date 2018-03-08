@@ -31,7 +31,14 @@ const Schema = initSchema({
 const resourceHooks = hooks()
 resourceHooks.before = Object.assign(resourceHooks.before, {
   find: [authenticate('jwt')],
-  get: [authenticate('jwt')],
+  get: [
+    authenticate('jwt'),
+    function (context) {
+      if (context.id === 'me') {
+        context.id = context.params.payload.userId
+      }
+    }
+  ],
   create: [hashPassword()],
   update: [hashPassword(), authenticate('jwt')],
   patch: [hashPassword(), authenticate('jwt')],
