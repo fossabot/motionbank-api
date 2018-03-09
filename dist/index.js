@@ -37,10 +37,6 @@ var _express = require('@feathersjs/express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _mergeDeep = require('merge-deep');
-
-var _mergeDeep2 = _interopRequireDefault(_mergeDeep);
-
 var _hooks = require('./hooks');
 
 var _hooks2 = _interopRequireDefault(_hooks);

@@ -8,8 +8,6 @@ import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
 
-import merge from 'merge-deep'
-
 import hooks, { logger } from './hooks'
 import services from './services'
 import sockets from './sockets'
