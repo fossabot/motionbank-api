@@ -32,10 +32,10 @@ class ACL extends Acl {
   middleware (app) {
     const acl = (req, res, next) => {
       app.passport.verifyJWT(req.headers.authorization, {
-        secret: app.get('authentication').secret,
+        secret: app.get('authentication').secret
       }).then(jwt => {
         const uuid = jwt && uuidValidate(jwt.userId)
-          ? jwt.userId : _buildVars.uuidUnknown,
+            ? jwt.userId : _buildVars.uuidUnknown,
           query = {
             subject: uuid,
             // TODO: href? path?
@@ -66,10 +66,9 @@ class ACL extends Acl {
       object: context.id || context.path,
       predicates: context.method
     }
-    const allowed = await context.app.get('acl').isAllowed(query)
+    await context.app.get('acl').isAllowed(query)
     return context
   }
-
 
   /**
    * Update ACL with allow statement

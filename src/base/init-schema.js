@@ -45,7 +45,6 @@ function initSchema (schema, options = {}) {
        * Default Constructor
        * @constructor
        * @param data
-       * @param id
        */
       default (data) {
         if (options.created && !data.created) {
@@ -79,7 +78,7 @@ function initSchema (schema, options = {}) {
    * @type {{type: StringConstructor, required: boolean}}
    */
   if (options.created) {
-    schema.created = { type: String , required: true }
+    schema.created = { type: String, required: true }
   }
   if (options.updated) {
     schema.updated = { type: String }

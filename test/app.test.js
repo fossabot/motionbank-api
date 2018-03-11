@@ -5,20 +5,7 @@ const rp = require('request-promise')
 
 const app = TestHelper.getApp()
 
-let listener
-
 describe('Feathers application tests', () => {
-  before(function (done) {
-    TestHelper.startServer(app, result => {
-      listener = result
-      done()
-    })
-  })
-
-  after(function (done) {
-    listener.close(done)
-  })
-
   it('starts and shows the index page', () => {
     return rp(TestHelper.getUrl(app)).then(body =>
       assert.ok(body.indexOf('<html>') !== -1)
