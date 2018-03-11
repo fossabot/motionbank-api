@@ -1,8 +1,10 @@
 import assert from 'assert'
 import uuidv4 from 'uuid/v4'
-import { DateTime } from 'luxon'
+import { DateTime, Settings } from 'luxon'
 import uuidValidate from 'uuid-validate'
 import SchemaObject from 'schema-object'
+
+Settings.defaultLocale = DateTime.local().resolvedLocaleOpts().locale
 
 /**
  * Schema factory function

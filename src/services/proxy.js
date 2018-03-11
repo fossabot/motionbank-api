@@ -9,7 +9,7 @@ export default function Proxy () {
           res.end(result.text)
         })
         .catch(() => {
-          res.statusCode(404)
+          res.status(404)
           res.end()
         })
     })
