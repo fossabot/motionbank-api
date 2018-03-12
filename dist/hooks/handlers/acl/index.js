@@ -87,7 +87,7 @@ class ACL extends _acl2.default {
       object: context.id || context.path,
       predicates: context.method
     };
-    const allowed = await context.app.get('acl').isAllowed(query);
+    await context.app.get('acl').isAllowed(query);
     return context;
   }
 

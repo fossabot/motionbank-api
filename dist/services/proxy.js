@@ -18,7 +18,7 @@ function Proxy() {
         res.setHeader('Content-Type', result.type);
         res.end(result.text);
       }).catch(() => {
-        res.statusCode(404);
+        res.status(404);
         res.end();
       });
     });

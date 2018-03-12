@@ -24,6 +24,8 @@ var _schemaObject2 = _interopRequireDefault(_schemaObject);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+_luxon.Settings.defaultLocale = _luxon.DateTime.local().resolvedLocaleOpts().locale;
+
 /**
  * Schema factory function
  * @param schema
@@ -61,7 +63,6 @@ function initSchema(schema, options = {}) {
        * Default Constructor
        * @constructor
        * @param data
-       * @param id
        */
       default(data) {
         if (options.created && !data.created) {
