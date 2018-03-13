@@ -3,6 +3,7 @@ import favicon from 'serve-favicon'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import proxy from 'http-proxy-middleware'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
@@ -29,8 +30,8 @@ app.configure(configuration())
 
 const options = {
   buildVars: buildVars(),
-  logger,
-  basePath: path.join(__dirname, '..', '..')
+  basePath: path.join(__dirname, '..', '..'),
+  logger
 }
 app.set('appconf', options)
 const serviceOptions = app.get('services')
@@ -73,6 +74,16 @@ app.set('acl', new services.ACL(new ACLBackend(), buildVars()))
  * GET Request proxy
  */
 app.configure(services.Proxy())
+app.use('/ingest/youtube', proxy('/', {
+  target: 'https://www.youtube.com',
+  pathRewrite: { '^/ingest/youtube': '' },
+  changeOrigin: true
+}))
+app.use('/ingest/vimeo', proxy('/', {
+  target: 'https://vimeo.com',
+  pathRewrite: { '^/ingest/vimeo': '' },
+  changeOrigin: true
+}))
 
 /**
  * System Resources

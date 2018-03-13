@@ -103,6 +103,7 @@
     "express-jwt": "^5.3.0",
     "express-jwt-authz": "^1.0.0",
     "helmet": "^3.9.0",
+    "http-proxy-middleware": "^0.17.4",
     "jwks-rsa": "^1.2.1",
     "luxon": "^0.5.3",
     "merge-deep": "^3.0.1",
