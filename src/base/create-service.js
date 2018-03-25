@@ -1,5 +1,7 @@
 import assert from 'assert'
 import Service from './service'
+import errors from '@feathersjs/errors'
+import hooks from 'feathers-hooks-common'
 
 /**
  * Service factory function
@@ -44,7 +46,12 @@ function createService (options = {}, persistence = undefined) {
     let service = new Service(options, persistence, options.schemaOptions.idField)
     app.use(options.path, service)
     service = app.service(options.name)
-    service.hooks(options.hooks || {})
+    if (options.private) {
+      service.hooks({ before: { all: [hooks.disallow('external')] } })
+    }
+    else {
+      service.hooks(options.hooks || {})
+    }
   }
 }
 

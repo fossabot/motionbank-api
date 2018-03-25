@@ -89,6 +89,7 @@ app.configure(createService({
   logger,
   paginate,
   name: 'acls',
+  private: true,
   Schema: resources.acl.Schema,
   schemaOptions: resources.acl.schemaOptions
 }, persist))

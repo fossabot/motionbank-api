@@ -3,7 +3,7 @@ import winston from 'winston'
 import hooks from '../base/hooks'
 
 import app from './app'
-import method from './method'
+import method from './handlers/method'
 import resource from './resource'
 
 const logger = winston.createLogger({

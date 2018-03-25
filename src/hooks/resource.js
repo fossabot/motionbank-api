@@ -1,5 +1,5 @@
 import baseHooks from '../base/hooks'
-import checkMethod from './method'
+import checkMethod from './handlers/method'
 import ACLHooks from './handlers/acl/hooks'
 import authentication from '@feathersjs/authentication'
 import merge from 'merge-deep'

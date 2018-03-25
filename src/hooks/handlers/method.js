@@ -1,4 +1,4 @@
-import buildVars from '../build-vars'
+import buildVars from '../../build-vars'
 import errors from '@feathersjs/errors'
 
 const checkMethod = function () {
