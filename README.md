@@ -4,9 +4,9 @@
 # Motion Bank API
 > Combined API server for Motion Bank web services
 
-[![NPM version](https://badge.fury.io/js/@motionbank-js/motionbank-api.svg)](https://npmjs.org/package/@motionbank-js/motionbank-api)
-[![Build status](https://secure.travis-ci.org/motionbank-js/@motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank-js/@motionbank-js/motionbank-api)
-[![Code Climate](https://codeclimate.com/github/motionbank-js/@motionbank-js/motionbank-api.svg)](https://codeclimate.com/github/motionbank-js/@motionbank-js/motionbank-api)
+[![NPM version](https://badge.fury.io/js/motionbank-api.svg)](https://npmjs.org/package/motionbank-api)
+[![Build status](https://secure.travis-ci.org/motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank-js/motionbank-api)
+[![Code Climate](https://codeclimate.com/github/motionbank-js/motionbank-api.svg)](https://codeclimate.com/github/motionbank-js/motionbank-api)
 
 
 ## About
@@ -57,5 +57,5 @@ For more information on all the things you can do with Feathers visit [docs.feat
 ## License
 
 :copyright: 2018 Mainz University of Applied Sciences (Motion Bank Project) – 
-Released under the [MIT](https://github.com/motionbank-js/@motionbank-js/motionbank-api/blob/master/LICENSE) license
+Released under the [MIT](https://github.com/motionbank-js/motionbank-api/blob/master/LICENSE) license
 

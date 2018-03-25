@@ -1,5 +1,5 @@
 {
-  "name": "@motionbank-js/motionbank-api",
+  "name": "motionbank-api",
   "productName": "Motion Bank API",
   "description": "Combined API server for Motion Bank web services",
   "version": "0.1.1",
