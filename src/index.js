@@ -59,18 +59,6 @@ app.configure(sockets.provider.primus)
 app.configure(services.Authentication())
 
 /**
- * ACL (Access Control List)
- * with backends:
- *
- * - memoryBackend
- * - redisBackend
- * - mongoBackend
- */
-const ACLBackend = services.ACL.memoryBackend
-app.set('acl', new services.ACL(new ACLBackend(), buildVars()))
-// app.configure(app.get('acl').middleware)
-
-/**
  * GET Request proxy
  */
 app.configure(services.Proxy())
@@ -93,6 +81,17 @@ let
   paginate = app.get('paginate'),
   persist = Util.parseConfig(persistence, serviceOptions.system.persistence)
 persist.options.logger = logger
+
+/**
+ * ACL resource
+ */
+app.configure(createService({
+  logger,
+  paginate,
+  name: 'acls',
+  Schema: resources.acl.Schema,
+  schemaOptions: resources.acl.schemaOptions
+}, persist))
 
 /**
  * User resource

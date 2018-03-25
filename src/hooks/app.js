@@ -1,4 +1,4 @@
-import baseHooks from './hooks'
+import baseHooks from '../base/hooks'
 import logger from './handlers/logger'
 import merge from 'merge-deep'
 

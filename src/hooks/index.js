@@ -1,8 +1,9 @@
 import winston from 'winston'
 
-import hooks from './hooks'
+import hooks from '../base/hooks'
 
 import app from './app'
+import method from './method'
 import resource from './resource'
 
 const logger = winston.createLogger({
@@ -18,6 +19,7 @@ export {
 
 const defaultHooks = {
   app,
+  method,
   resource
 }
 
