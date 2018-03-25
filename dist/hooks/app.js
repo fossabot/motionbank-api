@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _hooks = require('./hooks');
+var _hooks = require('../base/hooks');
 
 var _hooks2 = _interopRequireDefault(_hooks);
 

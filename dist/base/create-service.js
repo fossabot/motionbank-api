@@ -12,6 +12,14 @@ var _service = require('./service');
 
 var _service2 = _interopRequireDefault(_service);
 
+var _errors = require('@feathersjs/errors');
+
+var _errors2 = _interopRequireDefault(_errors);
+
+var _feathersHooksCommon = require('feathers-hooks-common');
+
+var _feathersHooksCommon2 = _interopRequireDefault(_feathersHooksCommon);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -54,7 +62,11 @@ function createService(options = {}, persistence = undefined) {
     let service = new _service2.default(options, persistence, options.schemaOptions.idField);
     app.use(options.path, service);
     service = app.service(options.name);
-    service.hooks(options.hooks || {});
+    if (options.private) {
+      service.hooks({ before: { all: [_feathersHooksCommon2.default.disallow('external')] } });
+    } else {
+      service.hooks(options.hooks || {});
+    }
   };
 }
 

@@ -25,6 +25,10 @@ var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
 
+var _httpProxyMiddleware = require('http-proxy-middleware');
+
+var _httpProxyMiddleware2 = _interopRequireDefault(_httpProxyMiddleware);
+
 var _feathers = require('@feathersjs/feathers');
 
 var _feathers2 = _interopRequireDefault(_feathers);
@@ -77,8 +81,8 @@ app.configure((0, _configuration2.default)());
 
 const options = {
   buildVars: (0, _buildVars2.default)(),
-  logger: _hooks.logger,
-  basePath: _path2.default.join(__dirname, '..', '..')
+  basePath: _path2.default.join(__dirname, '..', '..'),
+  logger: _hooks.logger
 };
 app.set('appconf', options);
 const serviceOptions = app.get('services');
@@ -106,21 +110,19 @@ app.configure(_sockets2.default.provider.primus);
 app.configure(_services2.default.Authentication());
 
 /**
- * ACL (Access Control List)
- * with backends:
- *
- * - memoryBackend
- * - redisBackend
- * - mongoBackend
- */
-const ACLBackend = _services2.default.ACL.memoryBackend;
-app.set('acl', new _services2.default.ACL(new ACLBackend(), (0, _buildVars2.default)()));
-// app.configure(app.get('acl').middleware)
-
-/**
  * GET Request proxy
  */
 app.configure(_services2.default.Proxy());
+app.use('/ingest/youtube', (0, _httpProxyMiddleware2.default)('/', {
+  target: 'https://www.youtube.com',
+  pathRewrite: { '^/ingest/youtube': '' },
+  changeOrigin: true
+}));
+app.use('/ingest/vimeo', (0, _httpProxyMiddleware2.default)('/', {
+  target: 'https://vimeo.com',
+  pathRewrite: { '^/ingest/vimeo': '' },
+  changeOrigin: true
+}));
 
 /**
  * System Resources
@@ -129,6 +131,18 @@ app.configure(_services2.default.Proxy());
 let paginate = app.get('paginate'),
     persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.system.persistence);
 persist.options.logger = _hooks.logger;
+
+/**
+ * ACL resource
+ */
+app.configure((0, _base.createService)({
+  logger: _hooks.logger,
+  paginate,
+  name: 'acls',
+  private: true,
+  Schema: resources.acl.Schema,
+  schemaOptions: resources.acl.schemaOptions
+}, persist));
 
 /**
  * User resource

@@ -9,13 +9,17 @@ var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _hooks = require('./hooks');
+var _hooks = require('../base/hooks');
 
 var _hooks2 = _interopRequireDefault(_hooks);
 
 var _app = require('./app');
 
 var _app2 = _interopRequireDefault(_app);
+
+var _method = require('./handlers/method');
+
+var _method2 = _interopRequireDefault(_method);
 
 var _resource = require('./resource');
 
@@ -35,6 +39,7 @@ exports.hooks = _hooks2.default;
 
 const defaultHooks = {
   app: _app2.default,
+  method: _method2.default,
   resource: _resource2.default
 };
 
