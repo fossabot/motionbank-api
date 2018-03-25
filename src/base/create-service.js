@@ -1,6 +1,5 @@
 import assert from 'assert'
 import Service from './service'
-import errors from '@feathersjs/errors'
 import hooks from 'feathers-hooks-common'
 
 /**
