@@ -1,13 +1,21 @@
+/**
+ * Motion Bank API
+ * Main Entry File
+ */
+
 import path from 'path'
 import favicon from 'serve-favicon'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import proxy from 'http-proxy-middleware'
+import Debug from 'debug'
 
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
+import opbeat from 'opbeat'
+import AirbrakeClient from 'airbrake-js'
 
 import hooks, { logger } from './hooks'
 import services from './services'
@@ -18,10 +26,25 @@ import { createService, Util } from './base'
 
 import * as resources from './resources'
 
-/** Debug logging when not in production **/
-if (process.env.NODE_ENV !== 'production') {
-  logger.level = 'debug'
+const debug = Debug('mbapi')
+
+/** Opbeat for measuring app performance **/
+if (process.env.USE_OPBEAT) {
+  opbeat.start()
+  debug('Opbeat has started.')
 }
+
+/** Airbrake for detecting exceptions and errors **/
+if (process.env.USE_AIRBRAKE) {
+  const airbrake = new AirbrakeClient({
+    projectId: process.env.AIRBRAKE_PROJECT_ID,
+    projectKey: process.env.AIRBRAKE_API_KEY
+  })
+  debug('Airbrake has been set up: ', (airbrake))
+}
+
+/** Debug logging when not in production **/
+if (process.env.NODE_ENV !== 'production') logger.level = 'debug'
 
 const app = express(feathers())
 app.configure(configuration())
@@ -178,6 +201,7 @@ app.configure(sockets.channels)
 /**
  * Error handlers
  */
+if (process.env.USE_OPBEAT) app.use(opbeat.middleware.express())
 app.use(express.notFound())
 app.use(express.errorHandler({ logger: options.logger || logger }))
 /**

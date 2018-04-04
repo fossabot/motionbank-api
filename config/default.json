@@ -14,7 +14,10 @@
       "default": 10,
       "max": 50
     },
-    "uuidUnknown": "00000000-0000-0000-0000-000000000000"
+    "uuid": {
+      "root": "00000000-0000-0000-0000-000000000000",
+      "domain": "motionbank.org"
+    }
   },
 
   "file": {
@@ -90,7 +93,7 @@
       "clientID": "AUTH0_CLIENT_ID",
       "clientSecret": "AUTH0_CLIENT_SECRET",
       "domain": "motionbank.eu.auth0.com",
-      "scope": ["openid", "email", "profile"]
+      "scope": ["offline_access", "openid", "email", "profile"]
     },
 
     "cookie": {

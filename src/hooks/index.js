@@ -3,7 +3,9 @@ import winston from 'winston'
 import hooks from '../base/hooks'
 
 import app from './app'
+import author from './handlers/author'
 import method from './handlers/method'
+import * as uuid5Hooks from './handlers/uuid5'
 import resource from './resource'
 
 const logger = winston.createLogger({
@@ -19,7 +21,9 @@ export {
 
 const defaultHooks = {
   app,
+  author,
   method,
+  uuid5Hooks,
   resource
 }
 

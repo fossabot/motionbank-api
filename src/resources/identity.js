@@ -15,8 +15,6 @@ const Schema = initSchema({
   email: {type: String, required: true},
   // if using local strategy
   password: {type: String, minLength: 6, invisible: true},
-  // JWT
-  pkey: {type: String, invisible: true},
   // all external IDs go here
   // for querying
   sub: [String]

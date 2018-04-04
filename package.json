@@ -36,7 +36,7 @@
   },
   "engines": {
     "node": "^9.0.0",
-    "npm": ">= 3.0.0"
+    "npm": ">= 5.0.0"
   },
   "metapak": {
     "configs": [
@@ -89,11 +89,13 @@
     "@feathersjs/express": "^1.2.1",
     "@feathersjs/feathers": "^3.1.4",
     "@feathersjs/primus": "^3.0.1",
+    "airbrake-js": "^1.0.7",
     "assign-deep": "^0.4.7",
     "binary-search-tree": "git+https://github.com/dasantonym/node-binary-search-tree.git",
     "bluebird": "^3.5.1",
     "compression": "^1.7.1",
     "cors": "^2.8.4",
+    "debug": "^3.1.0",
     "dotenv": "^4.0.0",
     "express-jwt": "^5.3.0",
     "express-jwt-authz": "^1.0.0",
@@ -106,6 +108,7 @@
     "merge-deep": "^3.0.1",
     "mongodb": "^3.0.2",
     "nedb": "^1.8.0",
+    "opbeat": "^4.17.0",
     "passport-auth0": "^0.6.0",
     "passport-jwt": "^3.0.1",
     "schema-object": "^4.0.11",
