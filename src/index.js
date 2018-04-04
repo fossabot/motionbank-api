@@ -18,8 +18,6 @@ import { createService, Util } from './base'
 
 import * as resources from './resources'
 
-import buildVars from './build-vars'
-
 /** Debug logging when not in production **/
 if (process.env.NODE_ENV !== 'production') {
   logger.level = 'debug'
@@ -29,12 +27,11 @@ const app = express(feathers())
 app.configure(configuration())
 
 const options = {
-  buildVars: buildVars(),
   basePath: path.join(__dirname, '..', '..'),
   logger
 }
 app.set('appconf', options)
-const serviceOptions = app.get('services')
+const serviceOptions = app.get('service')
 
 /**
  * Basics
@@ -44,8 +41,14 @@ app.use(helmet())
 app.use(compress())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
-app.use('/', express.static(app.get('public')))
+
+/**
+ * Filesystem
+ */
+const fileconf = app.get('file')
+app.use(favicon(path.join(fileconf.public, 'favicon.ico')))
+app.use('/', express.static(fileconf.public))
+
 /**
  * Transport Providers
  */
@@ -106,6 +109,30 @@ app.configure(createService({
   hooks: resources.user.resourceHooks
 }, persist))
 
+/**
+ * User Auth callback
+ */
+app.use('/users/callback', function (req, res, next) {
+  console.log(req, res)
+  next()
+})
+
+/**
+ * Connect resource
+ */
+app.configure(createService({
+  logger,
+  paginate,
+  name: 'connects',
+  Schema: resources.connect.Schema,
+  schemaOptions: resources.connect.schemaOptions,
+  hooks: resources.connect.resourceHooks
+}, persist))
+
+/**
+ * Main Resources
+ * used for core functionality
+ */
 persist = Util.parseConfig(persistence, serviceOptions.resources.persistence)
 persist.options.logger = logger
 /**
@@ -133,6 +160,18 @@ app.configure(createService({
 }, persist))
 
 /**
+ * Profile resource
+ */
+app.configure(createService({
+  logger,
+  paginate,
+  name: 'profiles',
+  Schema: resources.profile.Schema,
+  schemaOptions: resources.profile.schemaOptions,
+  hooks: resources.profile.resourceHooks
+}, persist))
+
+/**
  * Event Channels
  */
 app.configure(sockets.channels)
@@ -149,10 +188,11 @@ app.hooks(hooks.app)
 process.on('unhandledRejection', (reason, p) =>
   process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`))
 
-app.listen(app.get('port')).on('listening', () => {
+const htconf = app.get('api').http
+app.listen(htconf.port).on('listening', () => {
   const pkg = require('../package.json')
   process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` +
-    `started on http://${app.get('host')}:${app.get('port')}\n\n`)
+    `started on http://${htconf.host}:${htconf.port}\n\n`)
 })
 
 export {

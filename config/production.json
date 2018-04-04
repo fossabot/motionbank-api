@@ -1,13 +1,7 @@
 {
   "host": "HOST",
   "port": "PORT",
-  "authentication": {
-    "secret": "AUTH_SECRET",
-    "auth0": {
-      "clientID": "AUTH0_CLIENT_ID",
-      "clientSecret": "AUTH0_CLIENT_SECRET"
-    }
-  },
+
   "services": {
     "acl": {
       "persistence": {

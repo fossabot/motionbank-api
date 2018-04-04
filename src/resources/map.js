@@ -18,8 +18,8 @@ const Schema = initSchema({
  * Route access matrix by HTTP verb and OAuth grants
  */
 schemaOptions.accessMatrix = {
-  find: ['retrieve:maps'],
-  get: ['retrieve:maps'],
+  find: ['find:maps'],
+  get: ['get:maps'],
   create: ['create:maps'],
   update: ['update:maps'],
   patch: ['update:maps'],

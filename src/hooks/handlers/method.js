@@ -1,4 +1,3 @@
-import buildVars from '../../build-vars'
 import errors from '@feathersjs/errors'
 
 const checkMethod = function () {
@@ -12,7 +11,7 @@ const checkMethod = function () {
         throw new errors.MethodNotAllowed()
       }
       else {
-        params.user = { uuid: buildVars().uuidUnknown }
+        params.user = null // { uuid: buildVars().uuidUnknown }
       }
     }
   }
