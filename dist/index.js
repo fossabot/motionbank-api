@@ -29,6 +29,10 @@ var _httpProxyMiddleware = require('http-proxy-middleware');
 
 var _httpProxyMiddleware2 = _interopRequireDefault(_httpProxyMiddleware);
 
+var _debug = require('debug');
+
+var _debug2 = _interopRequireDefault(_debug);
+
 var _feathers = require('@feathersjs/feathers');
 
 var _feathers2 = _interopRequireDefault(_feathers);
@@ -40,6 +44,14 @@ var _configuration2 = _interopRequireDefault(_configuration);
 var _express = require('@feathersjs/express');
 
 var _express2 = _interopRequireDefault(_express);
+
+var _opbeat = require('opbeat');
+
+var _opbeat2 = _interopRequireDefault(_opbeat);
+
+var _airbrakeJs = require('airbrake-js');
+
+var _airbrakeJs2 = _interopRequireDefault(_airbrakeJs);
 
 var _hooks = require('./hooks');
 
@@ -63,29 +75,44 @@ var _resources = require('./resources');
 
 var resources = _interopRequireWildcard(_resources);
 
-var _buildVars = require('./build-vars');
-
-var _buildVars2 = _interopRequireDefault(_buildVars);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/** Debug logging when not in production **/
-if (process.env.NODE_ENV !== 'production') {
-  _hooks.logger.level = 'debug';
+/**
+ * Motion Bank API
+ * Main Entry File
+ */
+
+const debug = (0, _debug2.default)('mbapi');
+
+/** Opbeat for measuring app performance **/
+if (process.env.USE_OPBEAT) {
+  _opbeat2.default.start();
+  debug('Opbeat has started.');
 }
+
+/** Airbrake for detecting exceptions and errors **/
+if (process.env.USE_AIRBRAKE) {
+  const airbrake = new _airbrakeJs2.default({
+    projectId: process.env.AIRBRAKE_PROJECT_ID,
+    projectKey: process.env.AIRBRAKE_API_KEY
+  });
+  debug('Airbrake has been set up: ', airbrake);
+}
+
+/** Debug logging when not in production **/
+if (process.env.NODE_ENV !== 'production') _hooks.logger.level = 'debug';
 
 const app = (0, _express2.default)((0, _feathers2.default)());
 app.configure((0, _configuration2.default)());
 
 const options = {
-  buildVars: (0, _buildVars2.default)(),
   basePath: _path2.default.join(__dirname, '..', '..'),
   logger: _hooks.logger
 };
 app.set('appconf', options);
-const serviceOptions = app.get('services');
+const serviceOptions = app.get('service');
 
 /**
  * Basics
@@ -95,8 +122,14 @@ app.use((0, _helmet2.default)());
 app.use((0, _compression2.default)());
 app.use(_express2.default.json());
 app.use(_express2.default.urlencoded({ extended: true }));
-app.use((0, _serveFavicon2.default)(_path2.default.join(app.get('public'), 'favicon.ico')));
-app.use('/', _express2.default.static(app.get('public')));
+
+/**
+ * Filesystem
+ */
+const fileconf = app.get('file');
+app.use((0, _serveFavicon2.default)(_path2.default.join(fileconf.public, 'favicon.ico')));
+app.use('/', _express2.default.static(fileconf.public));
+
 /**
  * Transport Providers
  */
@@ -156,6 +189,30 @@ app.configure((0, _base.createService)({
   hooks: resources.user.resourceHooks
 }, persist));
 
+/**
+ * User Auth callback
+ */
+app.use('/users/callback', function (req, res, next) {
+  console.log(req, res);
+  next();
+});
+
+/**
+ * Connect resource
+ */
+app.configure((0, _base.createService)({
+  logger: _hooks.logger,
+  paginate,
+  name: 'connects',
+  Schema: resources.connect.Schema,
+  schemaOptions: resources.connect.schemaOptions,
+  hooks: resources.connect.resourceHooks
+}, persist));
+
+/**
+ * Main Resources
+ * used for core functionality
+ */
 persist = _base.Util.parseConfig(_persistence2.default, serviceOptions.resources.persistence);
 persist.options.logger = _hooks.logger;
 /**
@@ -183,12 +240,25 @@ app.configure((0, _base.createService)({
 }, persist));
 
 /**
+ * Profile resource
+ */
+app.configure((0, _base.createService)({
+  logger: _hooks.logger,
+  paginate,
+  name: 'profiles',
+  Schema: resources.profile.Schema,
+  schemaOptions: resources.profile.schemaOptions,
+  hooks: resources.profile.resourceHooks
+}, persist));
+
+/**
  * Event Channels
  */
 app.configure(_sockets2.default.channels);
 /**
  * Error handlers
  */
+if (process.env.USE_OPBEAT) app.use(_opbeat2.default.middleware.express());
 app.use(_express2.default.notFound());
 app.use(_express2.default.errorHandler({ logger: options.logger || _hooks.logger }));
 /**
@@ -198,9 +268,10 @@ app.hooks(_hooks2.default.app);
 
 process.on('unhandledRejection', (reason, p) => process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`));
 
-app.listen(app.get('port')).on('listening', () => {
+const htconf = app.get('api').http;
+app.listen(htconf.port).on('listening', () => {
   const pkg = require('../package.json');
-  process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` + `started on http://${app.get('host')}:${app.get('port')}\n\n`);
+  process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` + `started on http://${htconf.host}:${htconf.port}\n\n`);
 });
 
 exports.app = app;

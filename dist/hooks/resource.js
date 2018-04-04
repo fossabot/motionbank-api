@@ -12,6 +12,10 @@ var _method = require('./handlers/method');
 
 var _method2 = _interopRequireDefault(_method);
 
+var _author = require('./handlers/author');
+
+var _author2 = _interopRequireDefault(_author);
+
 var _hooks3 = require('./handlers/acl/hooks');
 
 var _hooks4 = _interopRequireDefault(_hooks3);
@@ -31,6 +35,7 @@ const { authenticate } = _authentication2.default.hooks;
 const resourceHooks = (0, _mergeDeep2.default)((0, _hooks2.default)(), {
   before: {
     all: [authenticate('jwt'), (0, _method2.default)()],
+    create: [(0, _author2.default)()],
     get: [_hooks4.default.permissionHook],
     update: [_hooks4.default.permissionHook],
     patch: [_hooks4.default.permissionHook],

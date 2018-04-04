@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.user = exports.map = exports.annotation = exports.acl = undefined;
+exports.user = exports.profile = exports.map = exports.connect = exports.annotation = exports.acl = undefined;
 
 var _acl = require('./acl');
 
@@ -13,9 +13,17 @@ var _annotation = require('./annotation');
 
 var annotation = _interopRequireWildcard(_annotation);
 
+var _identity = require('./identity');
+
+var connect = _interopRequireWildcard(_identity);
+
 var _map = require('./map');
 
 var map = _interopRequireWildcard(_map);
+
+var _profile = require('./profile');
+
+var profile = _interopRequireWildcard(_profile);
 
 var _user = require('./user');
 
@@ -25,5 +33,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 exports.acl = acl;
 exports.annotation = annotation;
+exports.connect = connect;
 exports.map = map;
+exports.profile = profile;
 exports.user = user;

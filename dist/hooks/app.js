@@ -12,6 +12,8 @@ var _logger = require('./handlers/logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
+var _uuid = require('./handlers/uuid5');
+
 var _mergeDeep = require('merge-deep');
 
 var _mergeDeep2 = _interopRequireDefault(_mergeDeep);
@@ -20,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = (0, _mergeDeep2.default)((0, _hooks2.default)(), {
   before: {
-    all: [(0, _logger2.default)()]
+    all: [(0, _uuid.getLocalNamespace)(), (0, _logger2.default)()]
   },
   after: {
     all: [(0, _logger2.default)()]

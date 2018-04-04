@@ -12,10 +12,6 @@ var _service = require('./service');
 
 var _service2 = _interopRequireDefault(_service);
 
-var _errors = require('@feathersjs/errors');
-
-var _errors2 = _interopRequireDefault(_errors);
-
 var _feathersHooksCommon = require('feathers-hooks-common');
 
 var _feathersHooksCommon2 = _interopRequireDefault(_feathersHooksCommon);

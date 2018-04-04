@@ -17,25 +17,30 @@ const resourceHooks = _hooks2.default.resource,
       schemaOptions = { idField: 'uuid', created: true, updated: true
 
   /**
-   * Map Schema
+   * Identity Schema
+   *
    * @type {SchemaObjectInstance<any>}
    */
 };const Schema = (0, _base.initSchema)({
-  type: { type: [String], required: true },
-  author: { type: String, required: true },
-  title: { type: String, required: true }
+  // TODO: maybe generate UUIDv5 from email?
+  email: { type: String, required: true },
+  // if using local strategy
+  password: { type: String, minLength: 6, invisible: true },
+  // all external IDs go here
+  // for querying
+  sub: [String]
 }, schemaOptions);
 
 /**
  * Route access matrix by HTTP verb and OAuth grants
  */
 schemaOptions.accessMatrix = {
-  find: ['find:maps'],
-  get: ['get:maps'],
-  create: ['create:maps'],
-  update: ['update:maps'],
-  patch: ['update:maps'],
-  remove: ['remove:maps']
+  find: ['find:identity'],
+  get: ['get:identity'],
+  create: ['create:identity'],
+  update: ['update:identity'],
+  patch: ['update:identity'],
+  remove: ['remove:identity']
 };
 
 exports.Schema = Schema;
