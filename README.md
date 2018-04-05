@@ -6,7 +6,9 @@
 
 [![NPM version](https://badge.fury.io/js/motionbank-api.svg)](https://npmjs.org/package/motionbank-api)
 [![Build status](https://secure.travis-ci.org/motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank-js/motionbank-api)
-[![Code Climate](https://codeclimate.com/github/motionbank-js/motionbank-api.svg)](https://codeclimate.com/github/motionbank-js/motionbank-api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/70c45f51827e46a1901aecec7b781a29)](https://www.codacy.com/app/motionbank-js/motionbank-api)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cacea3e5d1271429151e/maintainability)](https://codeclimate.com/github/motionbank-js/motionbank-api)
+[![Dependency Status](https://tidelift.com/badges/github/motionbank-js/motionbank-api)](https://tidelift.com/repo/github/motionbank-js/motionbank-api)
 
 
 ## About
@@ -50,8 +52,6 @@ $ feathers help                           # Show all commands
 ## Help
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
-
-# API Documentation
 
 
 ## License
