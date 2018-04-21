@@ -3,7 +3,7 @@ import checkMethod from './handlers/method'
 import setAuthor from './handlers/author'
 import ACLHooks from './handlers/acl/hooks'
 import authentication from '@feathersjs/authentication'
-import merge from 'merge-deep'
+import merge from 'deepmerge'
 const { authenticate } = authentication.hooks
 
 const resourceHooks = merge(baseHooks(), {

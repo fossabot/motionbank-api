@@ -30,8 +30,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "auth_",
-          "url": "mongodb://localhost:27017/mb-api-auth",
-          "dbName": "mb-api-auth"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     },
@@ -39,8 +39,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "res_",
-          "url": "mongodb://localhost:27017/mb-api-resources",
-          "dbName": "mb-api-resources"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     },
@@ -48,8 +48,8 @@
       "persistence": {
         "mongodb": {
           "prefix": "sys_",
-          "url": "mongodb://localhost:27017/mb-api-system",
-          "dbName": "mb-api-system"
+          "url": "mongodb://localhost:27017/motionbank-api",
+          "dbName": "motionbank-api"
         }
       }
     }
@@ -73,10 +73,10 @@
     },
 
     "jwt": {
-      "audience": "https://motionbank-api.herokuapp.com",
+      "audience": "https://api.motionbank.org",
       "issuer": "https://motionbank.eu.auth0.com/",
       "callbackURL": "http://localhost:3030/users/callback",
-      "algorithm": "RS256",
+      "algorithm": "JWT_ALGORITHM",
       "expiresIn": "1d"
     },
 

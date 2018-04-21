@@ -3,11 +3,19 @@ import { UUID_NULL } from './uuid5'
 
 const checkMethod = function () {
   return function (context) {
+    let user
     const
       { app, params } = context,
-      user = params.user,
       nsuuid = app.get('api.uuid.namespace')
-    console.log('UUID', nsuuid)
+
+    try {
+      user = { uuid: params.payload.userId }
+    }
+    catch (e) {
+      user = params.user
+    }
+
+    console.log('Namespace UUID', nsuuid)
     // TODO: add configurable id field
     if ((!params.authenticated || !user || !user.uuid)) {
       if (['get', 'find'].indexOf(context.method) === -1) {

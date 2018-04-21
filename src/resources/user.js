@@ -1,5 +1,6 @@
 import authentication from '@feathersjs/authentication'
 import local from '@feathersjs/authentication-local'
+import merge from 'deepmerge'
 
 import { hooks } from '../hooks'
 import { initSchema } from '../base'
@@ -22,14 +23,15 @@ const Schema = initSchema({
   password: {type: String, required: true, minLength: 6},
   location: {type: String},
   organisation: {type: String},
-  auth0Id: {type: String, invisible: true}
+  auth0Id: {type: String, invisible: true},
+  scopes: {type: [String], invisible: true}
 }, schemaOptions)
 
 /**
  * Add service userHooks
  */
 const resourceHooks = hooks()
-resourceHooks.before = Object.assign(resourceHooks.before, {
+resourceHooks.before = merge(resourceHooks.before, {
   find: [authenticate('jwt')],
   get: [
     authenticate('jwt'),
@@ -44,7 +46,7 @@ resourceHooks.before = Object.assign(resourceHooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 })
-resourceHooks.after = Object.assign(resourceHooks.after, {
+resourceHooks.after = merge(resourceHooks.after, {
   all: [
     /**
      * Make sure the password field is never sent to the client
@@ -58,11 +60,11 @@ resourceHooks.after = Object.assign(resourceHooks.after, {
  * Route access matrix by HTTP verb and OAuth grants
  */
 schemaOptions.accessMatrix = {
-  find: ['retrieve:users'],
-  get: ['retrieve:users'],
+  find: ['find:users'],
+  get: ['get:users'],
   create: ['create:users'],
   update: ['update:users'],
-  patch: ['update:users'],
+  patch: ['patch:users'],
   remove: ['remove:users']
 }
 
