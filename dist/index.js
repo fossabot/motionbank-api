@@ -45,10 +45,6 @@ var _express = require('@feathersjs/express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _opbeat = require('opbeat');
-
-var _opbeat2 = _interopRequireDefault(_opbeat);
-
 var _airbrakeJs = require('airbrake-js');
 
 var _airbrakeJs2 = _interopRequireDefault(_airbrakeJs);
@@ -69,10 +65,6 @@ var _persistence = require('./persistence');
 
 var _persistence2 = _interopRequireDefault(_persistence);
 
-var _authExpress = require('./services/auth-express');
-
-var _authExpress2 = _interopRequireDefault(_authExpress);
-
 var _base = require('./base');
 
 var _resources = require('./resources');
@@ -85,18 +77,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const debug = (0, _debug2.default)('mbapi');
 
-/** Opbeat for measuring app performance **/
+/** Airbrake for detecting exceptions and errors **/
 /**
  * Motion Bank API
  * Main Entry File
  */
 
-if (process.env.USE_OPBEAT) {
-  _opbeat2.default.start();
-  debug('Opbeat has started.');
-}
-
-/** Airbrake for detecting exceptions and errors **/
 if (process.env.USE_AIRBRAKE) {
   const airbrake = new _airbrakeJs2.default({
     projectId: process.env.AIRBRAKE_PROJECT_ID,
@@ -261,7 +247,6 @@ app.configure(_sockets2.default.channels);
 /**
  * Error handlers
  */
-if (process.env.USE_OPBEAT) app.use(_opbeat2.default.middleware.express());
 app.use(_express2.default.notFound());
 app.use(_express2.default.errorHandler({ logger: options.logger || _hooks.logger }));
 /**
@@ -271,10 +256,12 @@ app.hooks(_hooks2.default.app);
 
 process.on('unhandledRejection', (reason, p) => process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`));
 
-const htconf = app.get('api').http;
-app.listen(htconf.port).on('listening', () => {
+const htconf = app.get('api').http,
+      hthost = process.env.HOST || htconf.host,
+      htport = process.env.PORT || htconf.port;
+app.listen(htport, hthost).on('listening', () => {
   const pkg = require('../package.json');
-  process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` + `started on http://${htconf.host}:${htconf.port}\n\n`);
+  process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` + `started on http://${hthost}:${htport}\n\n`);
 });
 
 exports.app = app;
