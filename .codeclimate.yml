@@ -6,24 +6,28 @@ engines:
     enabled: true
   nodesecurity:
     enabled: true
-  bfixme:
+  fixme:
     enabled: true
   eslint:
     enabled: true
   csslint:
+    enabled: true
+  git-legal:
+    enabled: true
+  stylelint:
     enabled: true
   duplication:
     enabled: true
     config:
       languages:
       - javascript:
-
 ratings:
   paths:
   - src/**
   - "**.md"
 exclude_paths:
 - dist/**
+- test/**
 - node_modules/**
 - README.md
 - .readme/api.md

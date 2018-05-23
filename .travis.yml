@@ -7,6 +7,8 @@ matrix:
       node_js:
         - "9.11.1"
       script:
+        - npm run dist || true
+        - npm run build || true
         - npm run lint
         - npm test
     # macOS 10.12
@@ -15,5 +17,7 @@ matrix:
       node_js:
         - "9.11.1"
       script:
+        - npm run dist || true
+        - npm run build || true
         - npm run lint
         - npm test

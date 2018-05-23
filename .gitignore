@@ -65,4 +65,14 @@ _book
 *.mobi
 *.pdf
 
+# JetBrains
 .idea
+
+# nyc coverage
+.nyc_output
+
+# Quasar
+.quasar
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www

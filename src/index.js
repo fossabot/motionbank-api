@@ -22,6 +22,8 @@ import services from './services'
 import sockets from './sockets'
 import persistence from './persistence'
 
+import AuthExpress from './services/auth-express'
+
 import { createService, Util } from './base'
 
 import * as resources from './resources'
@@ -76,13 +78,14 @@ app.use('/', express.static(fileconf.public))
  * Transport Providers
  */
 app.configure(express.rest())
-app.configure(sockets.provider.primus)
+// app.configure(sockets.provider.primus)
 
 /**
  * Authentication
  * TODO: needs a whole lotta fixin'
  */
-app.configure(services.Authentication())
+// app.configure(services.Authentication())
+app.configure(AuthExpress())
 
 /**
  * GET Request proxy

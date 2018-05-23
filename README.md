@@ -2,13 +2,13 @@
 [comment]: # (To edit its contents please refer to the project dir '.readme')
 
 # Motion Bank API
+
 > Combined API server for Motion Bank web services
 
-[![NPM version](https://badge.fury.io/js/motionbank-api.svg)](https://npmjs.org/package/motionbank-api)
 [![Build status](https://secure.travis-ci.org/motionbank-js/motionbank-api.svg)](https://travis-ci.org/motionbank-js/motionbank-api)
+[![Dependency Status](https://tidelift.com/badges/github/motionbank-js/motionbank-api?style=flat)](https://tidelift.com/repo/github/motionbank-js/motionbank-api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/70c45f51827e46a1901aecec7b781a29)](https://www.codacy.com/app/motionbank-js/motionbank-api)
-[![Maintainability](https://api.codeclimate.com/v1/badges/cacea3e5d1271429151e/maintainability)](https://codeclimate.com/github/motionbank-js/motionbank-api)
-[![Dependency Status](https://tidelift.com/badges/github/motionbank-js/motionbank-api)](https://tidelift.com/repo/github/motionbank-js/motionbank-api)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cacea3e5d1271429151e/maintainability)](https://codeclimate.com/github/motionbank-js/motionbank-api/maintainability)
 
 
 ## About
