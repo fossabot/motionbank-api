@@ -57,28 +57,11 @@
 
   "authentication": {
     "path": "/authentication",
-    "strategies": ["jwt", "local", "auth0"],
+    "strategies": ["jwt", "local"],
 
     "service": "users",
     "idField": "uuid",
     "secret": "AUTH_SECRET",
-
-    "jwks": {
-      "secret": {
-        "cache": true,
-        "rateLimit": true,
-        "jwksRequestsPerMinute": 5,
-        "jwksUri": "https://motionbank.eu.auth0.com/.well-known/jwks.json"
-      }
-    },
-
-    "jwt": {
-      "audience": "https://api.motionbank.org",
-      "issuer": "https://motionbank.eu.auth0.com/",
-      "callbackURL": "http://localhost:3030/users/callback",
-      "algorithm": "JWT_ALGORITHM",
-      "expiresIn": "1d"
-    },
 
     "local": {
       "entity": "user",
@@ -86,14 +69,11 @@
       "passwordField": "password"
     },
 
-    "auth0": {
-      "name": "auth0",
-      "secretOrKey": "JWT_SECRET",
-      "idField": "uuid",
-      "clientID": "AUTH0_CLIENT_ID",
-      "clientSecret": "AUTH0_CLIENT_SECRET",
-      "domain": "motionbank.eu.auth0.com",
-      "scope": ["offline_access", "openid", "email", "profile"]
+    "jwt": {
+      "audience": "https://motionbank-api.herokuapp.com",
+      "issuer": "https://motionbank.eu.auth0.com/",
+      "algorithms": ["RS256"],
+      "credentialsRequired": false
     },
 
     "cookie": {

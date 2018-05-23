@@ -32,12 +32,12 @@ const Schema = initSchema({
  */
 const resourceHooks = hooks()
 resourceHooks.before = merge(resourceHooks.before, {
-  find: [authenticate('jwt')],
+  // find: [authenticate('jwt')],
   get: [
-    authenticate('jwt'),
+    // authenticate('jwt'),
     function (context) {
       if (context.id === 'me') {
-        context.id = context.params.payload.userId
+        context.id = context.params.user ? context.params.user.sub : context.id
       }
     }
   ],

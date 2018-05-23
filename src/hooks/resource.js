@@ -8,7 +8,7 @@ const { authenticate } = authentication.hooks
 
 const resourceHooks = merge(baseHooks(), {
   before: {
-    all: [authenticate('jwt'), checkMethod()],
+    all: [checkMethod()],
     create: [setAuthor()],
     get: [ACLHooks.permissionHook],
     update: [ACLHooks.permissionHook],

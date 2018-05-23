@@ -1,9 +1,24 @@
-const jwt = require('express-jwt')
-const jwks = require('jwks-rsa')
-const ExtractJwt = require('passport-jwt').ExtractJwt
-// const jwtAuthz = require('express-jwt-authz')
+import authentication from '@feathersjs/authentication'
+import jwtFeathers, { Verifier } from '@feathersjs/authentication-jwt'
+import { ExtractJwt } from 'passport-jwt'
+import { app } from '../index'
 
-// import Util from '../base/util'
+const
+  jwt = require('express-jwt'),
+  jwks = require('jwks-rsa')
+
+class CustomVerifier extends Verifier {
+  // The verify function has the exact same inputs and
+  // return values as a vanilla passport strategy
+  verify (req, payload, done) {
+    // do your custom stuff. You can call internal Verifier methods
+    // and reference this.app and this.options. This method must be implemented.
+    console.debug('CustomVerifier:', req, payload)
+    // the 'user' variable can be any truthy value
+    // the 'payload' is the payload for the JWT access token that is generated after successful authentication
+    done(null, {}, payload)
+  }
+}
 
 /**
  * Authentication Service Factory (express)
@@ -12,6 +27,25 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 export default function AuthExpress () {
   return function (app) {
     // const authConfig = app.get('authentication')
+
+    /*
+    const authConfig = app.get('authentication')
+    app.configure(authentication(authConfig))
+    const jwtconf = {
+      secret: false,
+      secretOrKeyProvider: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: 'https://motionbank.eu.auth0.com/.well-known/jwks.json'
+      }),
+      algorithms: ['RS256'],
+      jwtFromRequest: ExtractJwt.fromHeader('authorization')
+    }
+    app.configure(jwtFeathers(jwtconf, (...args) => {
+      console.debug('JWT callback:', args)
+    }))
+    */
 
     // Authentication middleware. When used, the
     // access token must exist and be verified against
@@ -59,6 +93,10 @@ export default function AuthExpress () {
 
     app.use(function (req, res, next) {
       jwtCheck(req, res, next)
+    })
+    app.use(function (req, res, next) {
+      req.feathers.user = req.user || {}
+      next()
     })
     /*
     app.use(function (req, res, next) {
