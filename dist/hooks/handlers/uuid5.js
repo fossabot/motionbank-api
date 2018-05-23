@@ -35,14 +35,14 @@ const getLocalNamespace = function () {
   return function (context) {
     const { app } = context;
 
-    if (!app.has('api.uuid.namespace')) {
-      if (app.has('api.uuid.domain')) {
+    if (!app.get('api.uuid.namespace')) {
+      if (app.get('api.uuid.domain')) {
         app.set('api.uuid.namespace', getDomainUUIDv5(app.get('api.uuid.domain')));
         return context;
       }
 
       (0, _debug2.default)('mbapi')('WARNING: UUID namespace domain is not configured (api.uuid.domain)');
-      if (app.has('api.uuid.root')) {
+      if (app.get('api.uuid.root')) {
         app.set('api.uuid.namespace', getDomainUUIDv5(app.get('api.uuid.root')));
         return context;
       }

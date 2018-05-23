@@ -13,6 +13,10 @@ var _authenticationLocal = require('@feathersjs/authentication-local');
 
 var _authenticationLocal2 = _interopRequireDefault(_authenticationLocal);
 
+var _deepmerge = require('deepmerge');
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
 var _hooks = require('../hooks');
 
 var _base = require('../base');
@@ -37,14 +41,15 @@ const schemaOptions = { idField: 'uuid', created: true, updated: true
   password: { type: String, required: true, minLength: 6 },
   location: { type: String },
   organisation: { type: String },
-  auth0Id: { type: String, invisible: true }
+  auth0Id: { type: String, invisible: true },
+  scopes: { type: [String], invisible: true }
 }, schemaOptions);
 
 /**
  * Add service userHooks
  */
 const resourceHooks = (0, _hooks.hooks)();
-resourceHooks.before = Object.assign(resourceHooks.before, {
+resourceHooks.before = (0, _deepmerge2.default)(resourceHooks.before, {
   find: [authenticate('jwt')],
   get: [authenticate('jwt'), function (context) {
     if (context.id === 'me') {
@@ -56,7 +61,7 @@ resourceHooks.before = Object.assign(resourceHooks.before, {
   patch: [hashPassword(), authenticate('jwt')],
   remove: [authenticate('jwt')]
 });
-resourceHooks.after = Object.assign(resourceHooks.after, {
+resourceHooks.after = (0, _deepmerge2.default)(resourceHooks.after, {
   all: [
   /**
    * Make sure the password field is never sent to the client
@@ -69,11 +74,11 @@ resourceHooks.after = Object.assign(resourceHooks.after, {
  * Route access matrix by HTTP verb and OAuth grants
  */
 schemaOptions.accessMatrix = {
-  find: ['retrieve:users'],
-  get: ['retrieve:users'],
+  find: ['find:users'],
+  get: ['get:users'],
   create: ['create:users'],
   update: ['update:users'],
-  patch: ['update:users'],
+  patch: ['patch:users'],
   remove: ['remove:users']
 
   /**

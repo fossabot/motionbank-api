@@ -1,7 +1,7 @@
-import Authentication from './authentication'
+import AuthExpress from './auth-express'
 import Proxy from './proxy'
 
 export default {
-  Authentication,
+  AuthExpress,
   Proxy
 }

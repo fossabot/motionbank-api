@@ -82,10 +82,8 @@ app.configure(express.rest())
 
 /**
  * Authentication
- * TODO: needs a whole lotta fixin'
  */
-// app.configure(services.Authentication())
-app.configure(AuthExpress())
+app.configure(services.AuthExpress())
 
 /**
  * GET Request proxy

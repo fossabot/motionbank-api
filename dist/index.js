@@ -69,6 +69,10 @@ var _persistence = require('./persistence');
 
 var _persistence2 = _interopRequireDefault(_persistence);
 
+var _authExpress = require('./services/auth-express');
+
+var _authExpress2 = _interopRequireDefault(_authExpress);
+
 var _base = require('./base');
 
 var _resources = require('./resources');
@@ -79,14 +83,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const debug = (0, _debug2.default)('mbapi');
+
+/** Opbeat for measuring app performance **/
 /**
  * Motion Bank API
  * Main Entry File
  */
 
-const debug = (0, _debug2.default)('mbapi');
-
-/** Opbeat for measuring app performance **/
 if (process.env.USE_OPBEAT) {
   _opbeat2.default.start();
   debug('Opbeat has started.');
@@ -134,13 +138,12 @@ app.use('/', _express2.default.static(fileconf.public));
  * Transport Providers
  */
 app.configure(_express2.default.rest());
-app.configure(_sockets2.default.provider.primus);
+// app.configure(sockets.provider.primus)
 
 /**
  * Authentication
- * TODO: needs a whole lotta fixin'
  */
-app.configure(_services2.default.Authentication());
+app.configure(_services2.default.AuthExpress());
 
 /**
  * GET Request proxy
