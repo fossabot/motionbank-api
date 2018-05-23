@@ -118,7 +118,6 @@
     "moment": "^2.22.1",
     "mongodb": "^3.0.6",
     "nedb": "^1.8.0",
-    "opbeat": "^4.17.0",
     "passport-auth0": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "schema-object": "^4.0.11",

@@ -14,7 +14,6 @@ import Debug from 'debug'
 import feathers from '@feathersjs/feathers'
 import configuration from '@feathersjs/configuration'
 import express from '@feathersjs/express'
-import opbeat from 'opbeat'
 import AirbrakeClient from 'airbrake-js'
 
 import hooks, { logger } from './hooks'
@@ -22,19 +21,11 @@ import services from './services'
 import sockets from './sockets'
 import persistence from './persistence'
 
-import AuthExpress from './services/auth-express'
-
 import { createService, Util } from './base'
 
 import * as resources from './resources'
 
 const debug = Debug('mbapi')
-
-/** Opbeat for measuring app performance **/
-if (process.env.USE_OPBEAT) {
-  opbeat.start()
-  debug('Opbeat has started.')
-}
 
 /** Airbrake for detecting exceptions and errors **/
 if (process.env.USE_AIRBRAKE) {
@@ -202,7 +193,6 @@ app.configure(sockets.channels)
 /**
  * Error handlers
  */
-if (process.env.USE_OPBEAT) app.use(opbeat.middleware.express())
 app.use(express.notFound())
 app.use(express.errorHandler({ logger: options.logger || logger }))
 /**
@@ -213,11 +203,14 @@ app.hooks(hooks.app)
 process.on('unhandledRejection', (reason, p) =>
   process.stderr.write(`Unhandled Rejection at: Promise p:${p} reason:${reason}\n`))
 
-const htconf = app.get('api').http
-app.listen(htconf.port).on('listening', () => {
+const
+  htconf = app.get('api').http,
+  hthost = process.env.HOST || htconf.host,
+  htport = process.env.PORT || htconf.port
+app.listen(htport, hthost).on('listening', () => {
   const pkg = require('../package.json')
   process.stdout.write(`${pkg.productName || pkg.name} v${pkg.version} ` +
-    `started on http://${htconf.host}:${htconf.port}\n\n`)
+    `started on http://${hthost}:${htport}\n\n`)
 })
 
 export {
