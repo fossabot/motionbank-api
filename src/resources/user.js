@@ -42,9 +42,9 @@ resourceHooks.before = merge(resourceHooks.before, {
     }
   ],
   create: [hashPassword()],
-  update: [hashPassword(), authenticate('jwt')],
-  patch: [hashPassword(), authenticate('jwt')],
-  remove: [authenticate('jwt')]
+  update: [hashPassword()],
+  patch: [hashPassword()],
+  remove: []
 })
 resourceHooks.after = merge(resourceHooks.after, {
   all: [
@@ -60,12 +60,12 @@ resourceHooks.after = merge(resourceHooks.after, {
  * Route access matrix by HTTP verb and OAuth grants
  */
 schemaOptions.accessMatrix = {
-  find: ['find:users'],
-  get: ['get:users'],
-  create: ['create:users'],
-  update: ['update:users'],
-  patch: ['patch:users'],
-  remove: ['remove:users']
+  find: ['read'],
+  get: ['read'],
+  create: ['write'],
+  update: ['write'],
+  patch: ['write'],
+  remove: ['write']
 }
 
 /**
