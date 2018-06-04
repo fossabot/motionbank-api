@@ -9,6 +9,7 @@
 [![Dependency Status](https://tidelift.com/badges/github/motionbank-js/motionbank-api?style=flat)](https://tidelift.com/repo/github/motionbank-js/motionbank-api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/70c45f51827e46a1901aecec7b781a29)](https://www.codacy.com/app/motionbank-js/motionbank-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/cacea3e5d1271429151e/maintainability)](https://codeclimate.com/github/motionbank-js/motionbank-api/maintainability)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-api.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-api?ref=badge_shield)
 
 
 ## About
@@ -59,3 +60,6 @@ For more information on all the things you can do with Feathers visit [docs.feat
 :copyright: 2018 Mainz University of Applied Sciences (Motion Bank Project) – 
 Released under the [MIT](https://github.com/motionbank-js/motionbank-api/blob/master/LICENSE) license
 
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-api.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-api?ref=badge_large)
